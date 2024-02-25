@@ -12,8 +12,8 @@ use std::mem;
 pub use crate::utils::*;
 use helper::get_module_symbol_address;
 pub use omprs_codegen::{callback, main};
-pub use players::*;
 use paste::paste;
+pub use players::*;
 
 pub fn init_functions() {
     load_function!(SendClientMessage);
