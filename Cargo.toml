@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "omprs-gdk",
+    "omprs-codegen",
+    "examples/grandlarc"
+]
