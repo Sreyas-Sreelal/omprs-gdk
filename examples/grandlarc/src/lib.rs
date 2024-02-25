@@ -7,14 +7,16 @@ fn OnGameModeInit() {
 
 #[callback]
 fn OnPlayerConnect(playerid: isize) -> bool {
-    omprs_gdk::SendClientMessage(playerid, -1, "Welcome to Grandlarc");
+    let mut name = String::new();
+    omprs_gdk::GetPlayerName(playerid, &mut name);
+
+    omprs_gdk::Console_Print(&format!("Player name is {name}"));
+    omprs_gdk::SendClientMessage(playerid, -1, &format!("Welcome {name} to GrandLarc"));
+    
     true
 }
 
 #[main]
 fn entry() {
-    omprs_gdk::Console_Print("Hello world");
-    omprs_gdk::Console_Print("Hello world");
-    omprs_gdk::Console_Print("Hello world");
     omprs_gdk::Console_Print("Hello world");
 }

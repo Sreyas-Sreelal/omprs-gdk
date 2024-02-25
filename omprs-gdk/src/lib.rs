@@ -18,4 +18,5 @@ pub use players::*;
 pub fn init_functions() {
     load_function!(SendClientMessage);
     load_function!(Print);
+    load_function!(GetPlayerName);
 }
