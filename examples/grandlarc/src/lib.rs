@@ -12,7 +12,7 @@ fn OnPlayerConnect(playerid: isize) -> bool {
 
     omprs_gdk::Console_Print(&format!("Player name is {name}"));
     omprs_gdk::SendClientMessage(playerid, -1, &format!("Welcome {name} to GrandLarc"));
-    
+
     true
 }
 
