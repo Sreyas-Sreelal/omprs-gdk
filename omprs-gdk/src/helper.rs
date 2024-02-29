@@ -1,5 +1,4 @@
-use std::{ffi::CString, iter};
-
+#[cfg(target_os = "windows")]
 use windows::{
     core::{PCSTR, PCWSTR},
     Win32::System::LibraryLoader::{GetModuleHandleW, GetProcAddress},
@@ -9,11 +8,9 @@ use windows::{
 use std::os::raw;
 
 #[cfg(target_os = "linux")]
-#[cfg(link(name = "dl"))]
+#[link(name = "dl")]
 extern "C" {
-    fn dlopen(filename: *const raw::c_char, flags: raw::c_int) -> *mut raw::c_void;
     fn dlsym(handle: *mut raw::c_void, symbol: *const raw::c_char) -> *mut raw::c_void;
-    fn dlerror() -> *mut raw::c_char;
 }
 
 macro_rules! cstr {
@@ -35,22 +32,26 @@ macro_rules! load_function {
     };
 }
 
+#[cfg(target_os = "windows")]
 pub fn get_module_symbol_address(module: &str, symbol: &str) -> Option<usize> {
+    use std::{ffi::CString, iter};
+
     let module = module
         .encode_utf16()
         .chain(iter::once(0))
         .collect::<Vec<u16>>();
     let symbol = CString::new(symbol).unwrap();
 
-    #[cfg(target_os = "windows")]
     unsafe {
         let handle = GetModuleHandleW(PCWSTR(module.as_ptr() as _)).unwrap();
         GetProcAddress(handle, PCSTR(symbol.as_ptr() as _)).map(|func| func as usize)
     }
+}
 
-    #[cfg(target_os = "linux")]
-    unsafe {
-        let handle = dlopen("omprs",1);
-        dlsym(handle, symbol.as_ptr() as _) as usize
-    }
+#[cfg(target_os = "linux")]
+pub fn get_module_symbol_address(_module: &str, symbol: &str) -> Option<usize> {
+    use std::ffi::CString;
+    let symbol = CString::new(symbol).unwrap();
+
+    unsafe { Some(dlsym(std::ptr::null_mut(), symbol.as_ptr()) as usize) }
 }
