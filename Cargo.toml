@@ -4,3 +4,4 @@ members = [
     "omprs-codegen",
     "examples/grandlarc"
 ]
+resolver = "2"
