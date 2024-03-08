@@ -19,6 +19,12 @@ macro_rules! cstr {
     }};
 }
 
+macro_rules! from_cstr {
+    ($e: expr) => {
+        unsafe { CStr::from_ptr($e.as_ptr()).to_string_lossy().to_string() }
+    };
+}
+
 macro_rules! load_function {
     ($name: expr) => {
         paste! {

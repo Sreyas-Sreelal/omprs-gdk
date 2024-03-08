@@ -13,10 +13,7 @@ pub fn SendClientMessage(playerid: isize, colour: isize, message: &str) -> isize
 
 pub fn GetPlayerName(playerid: isize, name: &mut String) -> isize {
     let mut addr = vec![0 as c_char; 25];
-
     let length = unsafe { OMPRS_GetPlayerName.unwrap()(playerid, addr.as_mut_ptr()) };
-
-    *name = unsafe { CStr::from_ptr(addr.as_ptr()).to_string_lossy().to_string() };
-
+    *name = from_cstr!(addr);
     length
 }

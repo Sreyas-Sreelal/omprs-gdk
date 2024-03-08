@@ -83,11 +83,8 @@ pub fn RedirectDownload(playerid: isize, url: &str) -> bool {
 
 pub fn FindModelFileNameFromCRC(crc: isize, output: &mut String, size: usize) -> bool {
     let mut addr = vec![0 as c_char; size];
-
     let ret = unsafe { OMPRS_FindModelFileNameFromCRC.unwrap()(crc, addr.as_mut_ptr()) };
-
-    *output = unsafe { CStr::from_ptr(addr.as_ptr()).to_string_lossy().to_string() };
-
+    *output = from_cstr!(addr);
     ret
 }
 
@@ -117,17 +114,8 @@ pub fn GetCustomModelPath(
         )
     };
 
-    *dff_path = unsafe {
-        CStr::from_ptr(dff_path_addr.as_ptr())
-            .to_string_lossy()
-            .to_string()
-    };
-
-    *txd_path = unsafe {
-        CStr::from_ptr(txd_path_addr.as_ptr())
-            .to_string_lossy()
-            .to_string()
-    };
+    *dff_path = from_cstr!(dff_path_addr);
+    *txd_path = from_cstr!(txd_path_addr);
 
     ret
 }
