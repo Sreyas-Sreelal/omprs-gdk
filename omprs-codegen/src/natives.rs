@@ -93,10 +93,17 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         }
     }
 
-    let decl_address_var = quote!(
-        pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
-        None;
-    );
+    let decl_address_var = if let Some(ref return_type) = return_type {
+        quote!(
+            pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
+            None;
+        )
+    } else {
+        quote!(
+            pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*)> =
+            None;
+        )
+    };
     if !address_decl_stmts.is_empty() {
         body.push(quote!(
             #(#address_decl_stmts)*
@@ -104,7 +111,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
 
     body.push(quote!(
-        let output = unsafe { #orig_name.unwrap()(#(#orig_arg_list)*)};
+        let ret_val = unsafe { #orig_name.unwrap()(#(#orig_arg_list)*)};
     ));
 
     if !mutate_stmts.is_empty() {
@@ -113,7 +120,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         ));
     }
     if return_type.is_some() {
-        body.push(quote!(output));
+        body.push(quote!(ret_val));
     }
 
     let user_func = if let Some(return_type) = return_type {
