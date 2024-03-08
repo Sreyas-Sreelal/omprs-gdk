@@ -12,7 +12,7 @@ use std::mem;
 
 pub use crate::utils::*;
 use helper::get_module_symbol_address;
-pub use omprs_codegen::{callback, main};
+pub use omprs_codegen::{callback, main, native};
 use paste::paste;
 
 pub use models::*;

@@ -1,0 +1,138 @@
+use proc_macro::TokenStream;
+use quote::quote;
+use syn::{
+    parse::{Parse, ParseStream},
+    parse_macro_input, token, Ident, Token,
+};
+
+#[derive(Debug, Clone)]
+struct CreateNative {
+    name: Ident,
+    params: Vec<(Ident, Ident, bool)>,
+    return_type: Option<Ident>,
+}
+
+impl Parse for CreateNative {
+    fn parse(input: ParseStream) -> Result<Self, syn::Error> {
+        let name: Ident = input.parse()?;
+        let mut params = Vec::new();
+        let mut return_type = None;
+
+        while !input.is_empty() {
+            let _: Token![,] = input.parse()?;
+            if input.peek(token::RArrow) {
+                let _: token::RArrow = input.parse()?;
+                return_type = Some(input.parse()?);
+            } else {
+                let param_name: Ident = input.parse()?;
+                let _: Token![:] = input.parse()?;
+
+                if input.peek(token::Mut) {
+                    let _: token::Mut = input.parse()?;
+                    let param_type: Ident = input.parse()?;
+                    params.push((param_name, param_type, true));
+                } else {
+                    let param_type: Ident = input.parse()?;
+                    params.push((param_name, param_type, false));
+                }
+            }
+        }
+        Ok(CreateNative {
+            name,
+            params,
+            return_type,
+        })
+    }
+}
+
+pub fn create_native(input: TokenStream) -> TokenStream {
+    let native = parse_macro_input!(input as CreateNative);
+    let name = native.name;
+    let orig_name = Ident::new(&format!("OMPRS_{}", name), name.span());
+    let return_type = native.return_type;
+
+    let mut param_list = Vec::new();
+    let mut body = Vec::new();
+    let mut address_decl_stmts = Vec::new();
+    let mut mutate_stmts = Vec::new();
+    let mut orig_arg_list = Vec::new();
+    let mut orig_param_list = Vec::new();
+
+    for (param_name, param_type, is_mut) in native.params {
+        if param_name.to_string().contains("_len") {
+            param_list.push(quote!(#param_name: #param_type,));
+            continue;
+        }
+        if is_mut {
+            if param_type == "str" {
+                param_list.push(quote!(#param_name:&mut String,));
+                let addr_var_name = Ident::new(&format!("addr_{}", param_name), param_name.span());
+                let len_var_name = Ident::new(&format!("{}_len", param_name), param_name.span());
+
+                address_decl_stmts.push(quote!(
+                    let mut #addr_var_name = vec![0 as c_char; #len_var_name];
+                ));
+                orig_arg_list.push(quote!(#addr_var_name.as_mut_ptr(),));
+                mutate_stmts.push(quote!(
+                    *#param_name = from_cstr!(#addr_var_name);
+                ));
+                orig_param_list.push(quote!(#param_name:*mut c_char,))
+            } else {
+                param_list.push(quote!(mut #param_name:#param_type,));
+                orig_arg_list.push(quote!(&mut #param_name,));
+                orig_param_list.push(quote!(#param_name:#param_type,))
+            }
+        } else if param_type == "str" {
+            orig_arg_list.push(quote!(cstr!(#param_name),));
+            param_list.push(quote!(#param_name: &#param_type,));
+            orig_param_list.push(quote!(#param_name:*const c_char,))
+        } else {
+            orig_arg_list.push(quote!(#param_name,));
+            param_list.push(quote!(#param_name: #param_type,));
+            orig_param_list.push(quote!(#param_name:#param_type,))
+        }
+    }
+
+    let decl_address_var = quote!(
+        pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> isize> =
+        None;
+    );
+    if !address_decl_stmts.is_empty() {
+        body.push(quote!(
+            #(#address_decl_stmts)*
+        ));
+    }
+
+    body.push(quote!(
+        let output = unsafe { #orig_name.unwrap()(#(#orig_arg_list)*)};
+    ));
+
+    if !mutate_stmts.is_empty() {
+        body.push(quote!(
+            #(#mutate_stmts)*
+        ));
+    }
+    if return_type.is_some() {
+        body.push(quote!(output));
+    }
+
+    let user_func = if let Some(return_type) = return_type {
+        quote!(
+            pub fn #name(#(#param_list)*) -> #return_type {
+                #(#body)*
+            }
+        )
+    } else {
+        quote!(
+            pub fn #name(#(#param_list)*) {
+                #(#body)*
+            }
+        )
+    };
+
+    quote!(
+        #decl_address_var
+        #user_func
+    )
+    .into()
+}
