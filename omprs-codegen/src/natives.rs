@@ -94,7 +94,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
 
     let decl_address_var = quote!(
-        pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> isize> =
+        pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
         None;
     );
     if !address_decl_stmts.is_empty() {
