@@ -1,6 +1,9 @@
-use std::{mem,ffi::{c_char, CStr}};
 use omprs_codegen::native;
 use paste::paste;
+use std::{
+    ffi::{c_char, CStr},
+    mem,
+};
 
 use crate::helper::get_module_symbol_address;
 

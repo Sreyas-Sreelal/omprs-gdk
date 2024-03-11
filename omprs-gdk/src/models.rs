@@ -29,7 +29,7 @@ native!(FindTextureFileNameFromCRC,crc: isize, output: mut str, output_len: usiz
 native!(IsValidCustomModel,modelid: isize, -> bool);
 native!(
     GetCustomModelPath,
-    modelid: isize, 
+    modelid: isize,
     dff_path: mut str,
     dff_path_len: usize,
     txd_path: mut str,
