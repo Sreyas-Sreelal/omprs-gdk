@@ -33,4 +33,6 @@ pub fn init_functions() {
     load_function!(FindTextureFileNameFromCRC);
     load_function!(IsValidCustomModel);
     load_function!(GetCustomModelPath);
+
+    load_player_functions();
 }
