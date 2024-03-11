@@ -80,7 +80,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             } else {
                 param_list.push(quote!(mut #param_name:#param_type,));
                 orig_arg_list.push(quote!(&mut #param_name,));
-                orig_param_list.push(quote!(#param_name:#param_type,))
+                orig_param_list.push(quote!(#param_name:*mut #param_type,))
             }
         } else if param_type == "str" {
             orig_arg_list.push(quote!(cstr!(#param_name),));
