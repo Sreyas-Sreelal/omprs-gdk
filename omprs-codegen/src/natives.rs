@@ -67,25 +67,23 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             if param_type == "str" {
                 param_list.push(quote!(#param_name:&mut String,));
                 let addr_var_name = Ident::new(&format!("addr_{}", param_name), param_name.span());
-                let len_var_name = Ident::new(&format!("{}_len", param_name), param_name.span());
-
-                address_decl_stmts.push(quote!(
-                    let mut #addr_var_name = vec![0 as c_char; #len_var_name];
-                ));
-                orig_arg_list.push(quote!(#addr_var_name.as_mut_ptr(),));
+                address_decl_stmts.push(
+                    quote!(let mut #addr_var_name = crate::types::stringview::StringView::new();),
+                );
+                orig_arg_list.push(quote!(&mut #addr_var_name,));
                 mutate_stmts.push(quote!(
-                    *#param_name = from_cstr!(#addr_var_name);
+                    *#param_name = #addr_var_name.get_data();
                 ));
-                orig_param_list.push(quote!(#param_name:*mut c_char,))
+                orig_param_list.push(quote!(#param_name:*mut crate::types::stringview::StringView,))
             } else {
                 param_list.push(quote!(#param_name:&mut #param_type,));
                 orig_arg_list.push(quote!(#param_name,));
                 orig_param_list.push(quote!(#param_name:*mut #param_type,))
             }
         } else if param_type == "str" {
-            orig_arg_list.push(quote!(cstr!(#param_name),));
+            orig_arg_list.push(quote!(crate::types::stringview::StringView::from(#param_name),));
             param_list.push(quote!(#param_name: &#param_type,));
-            orig_param_list.push(quote!(#param_name:*const c_char,))
+            orig_param_list.push(quote!(#param_name: crate::types::stringview::StringView,))
         } else {
             orig_arg_list.push(quote!(#param_name,));
             param_list.push(quote!(#param_name: #param_type,));

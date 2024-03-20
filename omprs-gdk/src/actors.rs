@@ -1,11 +1,4 @@
 use omprs_codegen::native;
-use paste::paste;
-use std::{
-    ffi::{c_char, CStr},
-    mem,
-};
-
-use crate::helper::get_module_symbol_address;
 
 native!(CreateActor,skin: isize, x: f32, y: f32, z: f32, angle: f32,-> isize);
 native!(DestroyActor,actorid: isize,->bool);
@@ -25,7 +18,7 @@ native!(IsActorInvulnerable,actorid: isize,->bool);
 native!(IsValidActor,actorid: isize,->bool);
 native!(SetActorSkin,actorid: isize, skin: isize,->bool);
 native!(GetActorSkin,actorid: isize,-> isize);
-native!(GetActorAnimation,actorid: isize, animationLibrary: mut str, animationLibrary_len: usize, animationName: mut str, animationName_len: usize, delta: mut f32, animloop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut usize,->bool);
+native!(GetActorAnimation,actorid: isize, animationLibrary: mut str, animationName: mut str, delta: mut f32, animloop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut usize,->bool);
 native!(GetActorSpawnInfo,actorid: isize, skin: mut isize, x: mut f32, y: mut f32, z: mut f32, angle: mut f32,->bool);
 
 pub fn load_actor_functions() {

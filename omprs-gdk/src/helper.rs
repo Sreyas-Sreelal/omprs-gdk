@@ -13,26 +13,26 @@ extern "C" {
     fn dlsym(handle: *mut raw::c_void, symbol: *const raw::c_char) -> *mut raw::c_void;
 }
 
-macro_rules! cstr {
+/* macro_rules! cstr {
     ($e: expr) => {{
         std::ffi::CString::new($e).unwrap().into_raw()
     }};
-}
+} */
 
-macro_rules! from_cstr {
+/* macro_rules! from_cstr {
     ($e: expr) => {
         unsafe { CStr::from_ptr($e.as_ptr()).to_string_lossy().to_string() }
     };
-}
+} */
 
 macro_rules! load_function {
     ($name: expr) => {
-        paste! {
+        paste::paste! {
             let prefixed =  format!("OMPRS_{}",stringify!($name));
-            let address = get_module_symbol_address("omprs", &prefixed)
+            let address = crate::helper::get_module_symbol_address("omprs", &prefixed)
                 .expect(&format!("could not find '{prefixed}' address"));
             unsafe {
-                [<OMPRS_ $name>] = Some(mem::transmute(address));
+                [<OMPRS_ $name>] = Some(std::mem::transmute(address));
             }
         }
     };

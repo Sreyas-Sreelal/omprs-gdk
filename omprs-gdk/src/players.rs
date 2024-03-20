@@ -1,13 +1,6 @@
 use omprs_codegen::native;
-use paste::paste;
-use std::{
-    ffi::{c_char, CStr},
-    mem,
-};
 
-use crate::helper::get_module_symbol_address;
-
-native!(GetPlayerName,playerid: isize, name: mut str,name_len:usize, -> isize );
+native!(GetPlayerName,playerid: isize, name: mut str, -> isize );
 native!(SendClientMessage,playerid: isize, colour: usize, message: str, -> isize);
 native!(SendClientMessageToAll,colour:usize, message:str, -> bool);
 native!(SetPlayerCameraPos,playerid:isize, x:f32, y:f32, z:f32, -> bool);
@@ -90,7 +83,7 @@ native!(SetPlayerMapIcon,playerid:isize, iconID:isize, x:f32,y:f32,z:f32, catego
 native!(ResetPlayerWeapons,playerid:isize, -> bool);
 native!(SetPlayerAmmo,playerid:isize, id:isize, ammo:isize, -> bool);
 native!(SetPlayerArmedWeapon,playerid:isize, weapon:isize, -> bool);
-native!(SetPlayerChatBubble,playerid:isize, text:mut str, text_len:usize, colour:usize, drawdistance:f32, expiretime:isize, -> bool);
+native!(SetPlayerChatBubble,playerid:isize, text:mut str, colour:usize, drawdistance:f32, expiretime:isize, -> bool);
 native!(SetPlayerPosFindZ,playerid:isize, x:f32, y:f32, z:f32, -> bool);
 native!(SetPlayerSkillLevel,playerid:isize, weapon:isize, level:isize, -> bool);
 native!(SetPlayerSpecialAction,playerid:isize, action:isize, -> bool);
@@ -98,7 +91,7 @@ native!(ShowPlayerNameTagForPlayer,playerid:isize, otherid:isize, enable:bool, -
 native!(TogglePlayerControllable,playerid:isize, enable:bool, -> bool);
 native!(TogglePlayerSpectating,playerid:isize, enable:bool, -> bool);
 native!(ApplyAnimation,playerid:isize, animlib:str, animname:str, delta:f32, looping:bool, lockX:bool, lockY:bool, freeze:bool, time:isize, sync:isize, -> bool);
-native!(GetAnimationName,index:isize, lib:mut str,lib_len:usize, name:mut str, name_len:usize,-> bool);
+native!(GetAnimationName,index:isize, lib:mut str, name:mut str,-> bool);
 native!(EditAttachedObject,playerid:isize, index:isize, -> bool);
 native!(EnablePlayerCameraTarget,playerid:isize, enable:bool, -> bool);
 native!(EnableStuntBonusForPlayer,playerid:isize, enable:bool, -> bool);
@@ -106,7 +99,7 @@ native!(EnableStuntBonusForAll,enable:bool, -> bool);
 native!(GetPlayerAmmo,playerid:isize, -> isize);
 native!(GetPlayerAnimationIndex,playerid:isize, -> isize);
 native!(GetPlayerFacingAngle,playerid:isize,angle:mut f32, -> bool);
-native!(GetPlayerIp,playerid:isize, ip:mut str, ip_len:usize, -> isize);
+native!(GetPlayerIp,playerid:isize, ip:mut str, -> isize);
 native!(GetPlayerSpecialAction,playerid:isize, -> isize);
 native!(GetPlayerVehicleID,playerid:isize, -> isize);
 native!(GetPlayerVehicleSeat,playerid:isize, -> isize);
@@ -143,19 +136,19 @@ native!(SelectTextDraw,playerid:isize, hoverColour:usize, -> bool);
 native!(CancelSelectTextDraw,playerid:isize, -> bool);
 native!(SendClientCheck,playerid:isize, actioncategory:isize, address:isize, offset:isize, count:isize, -> bool);
 native!(SpawnPlayer,playerid:isize, -> bool);
-native!(gpci,playerid:isize, output:mut str,output_len:usize, -> isize);
+native!(gpci,playerid:isize, output:mut str,-> isize);
 native!(IsPlayerAdmin,playerid:isize, -> bool);
 native!(Kick,playerid:isize, -> bool);
-native!(GameTextForPlayer,playerid:isize, message:mut str,message_len:usize, time:isize, style:isize, -> bool);
+native!(GameTextForPlayer,playerid:isize, message:mut str, time:isize, style:isize, -> bool);
 native!(HideGameTextForPlayer,playerid:isize, style:isize, -> bool);
 native!(HasGameText,playerid:isize, style:isize, -> bool);
-native!(GetGameText,playerid:isize, style:isize, message:mut str,message_len:usize, time:isize, remaining:isize, -> bool);
+native!(GetGameText,playerid:isize, style:isize, message:mut str,time:isize, remaining:isize, -> bool);
 native!(Ban,playerid:isize, -> bool);
-native!(BanEx,playerid:isize, message:mut str,message_len:usize, -> bool);
+native!(BanEx,playerid:isize, message:mut str, -> bool);
 native!(SendDeathMessageToPlayer,playerid:isize, killerid:isize, killeeid:isize, weapon:isize, -> bool);
 native!(SendPlayerMessageToPlayer,playerid:isize, senderid:isize, message:str, -> bool);
 native!(SendPlayerMessageToPlayerf,playerid:isize, senderid:isize, message:str, -> bool);
-native!(GetPlayerVersion,playerid:isize, version:mut str,version_len:usize, -> isize);
+native!(GetPlayerVersion,playerid:isize, version:mut str, -> isize);
 native!(GetPlayerSkillLevel,playerid:isize, skill:isize, -> isize);
 native!(GetPlayerZAim,playerid:isize, -> f32);
 native!(GetPlayerSurfingOffsets,playerid:isize, x:mut f32, y:mut f32, z:mut f32, -> bool);
