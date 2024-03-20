@@ -7,16 +7,17 @@ mod helper;
 mod models;
 mod players;
 mod utils;
+mod actors;
 
 use std::mem;
-
-pub use crate::utils::*;
 use helper::get_module_symbol_address;
-pub use omprs_codegen::{callback, main, native};
 use paste::paste;
 
+pub use omprs_codegen::{callback, main, native};
+pub use crate::utils::*;
 pub use models::*;
 pub use players::*;
+pub use actors::*;
 
 pub fn init_functions() {
     load_function!(SendClientMessage);
@@ -35,4 +36,5 @@ pub fn init_functions() {
     load_function!(GetCustomModelPath);
 
     load_player_functions();
+    load_actor_functions();
 }
