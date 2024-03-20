@@ -4,6 +4,12 @@ pub struct StringView {
     size: usize,
 }
 
+impl Default for StringView {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl StringView {
     pub fn new() -> Self {
         StringView {
