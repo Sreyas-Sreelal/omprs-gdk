@@ -1,3 +1,4 @@
+#[derive(Copy, Clone, Debug)]
 #[repr(C)]
 pub struct StringView {
     data: *const std::ffi::c_char,
