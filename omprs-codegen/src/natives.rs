@@ -1,15 +1,14 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    parse::{Parse, ParseStream},
-    parse_macro_input, token, Ident, Token,
+    parse::{Parse, ParseStream}, parse_macro_input, token, Ident, Type, Token
 };
 
-#[derive(Debug, Clone)]
+#[derive( Clone)]
 struct CreateNative {
     name: Ident,
     params: Vec<(Ident, Ident, bool)>,
-    return_type: Option<Ident>,
+    return_type: Option<Type>,
 }
 
 impl Parse for CreateNative {
