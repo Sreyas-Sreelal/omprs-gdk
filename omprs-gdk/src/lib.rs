@@ -16,6 +16,7 @@ pub use actors::*;
 pub use models::*;
 pub use omprs_codegen::{callback, main, native};
 pub use players::*;
+pub use types::*;
 
 pub fn init_functions() {
     load_function!(SendClientMessage);
