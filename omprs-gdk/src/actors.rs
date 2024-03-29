@@ -118,7 +118,7 @@ pub struct ActorsComponent {
 impl ActorsComponent {
     #[inline]
     pub fn create(&self, skin: isize, pos: Vector3, angle: f32) -> &'static Actor {
-        ((self.vtbl).create)(self, skin, pos, angle)
+        (self.vtbl.create)(self, skin, pos, angle)
     }
 }
 
@@ -170,51 +170,51 @@ pub struct Actor {
 impl Actor {
     #[inline]
     pub fn setSkin(&self, id: isize) {
-        ((self.vtbl).setSkin)(self, id);
+        (self.vtbl.setSkin)(self, id);
     }
 
     #[inline]
     pub fn getSkin(&self) -> isize {
-        ((self.vtbl).getSkin)(self)
+        (self.vtbl.getSkin)(self)
     }
 
     #[inline]
     pub fn applyAnimation(&self, animation_data: &AnimationData) {
-        ((self.vtbl).applyAnimation)(self, animation_data);
+        (self.vtbl.applyAnimation)(self, animation_data);
     }
 
     #[inline]
     pub fn clearAnimations(&self) {
-        ((self.vtbl).clearAnimations)(self);
+        (self.vtbl.clearAnimations)(self);
     }
 
     #[inline]
     pub fn getAnimation(&self) -> &'static AnimationData {
-        ((self.vtbl).getAnimation)(self)
+        (self.vtbl.getAnimation)(self)
     }
 
     #[inline]
     pub fn setHealth(&self, health: f32) {
-        ((self.vtbl).setHealth)(self, health);
+        (self.vtbl.setHealth)(self, health);
     }
 
     #[inline]
     pub fn getHealth(&self) -> f32 {
-        ((self.vtbl).getHealth)(self)
+        (self.vtbl.getHealth)(self)
     }
 
     #[inline]
     pub fn setInvulnerable(&self, invulnerable: bool) {
-        ((self.vtbl).setInvulnerable)(self, invulnerable);
+        (self.vtbl.setInvulnerable)(self, invulnerable);
     }
 
     #[inline]
     pub fn isInvulnerable(&self) -> bool {
-        ((self.vtbl).isInvulnerable)(self)
+        (self.vtbl.isInvulnerable)(self)
     }
 
     #[inline]
     pub fn getSpawnData(&self) -> &ActorSpawnData {
-        ((self.vtbl).getSpawnData)(self)
+        (self.vtbl.getSpawnData)(self)
     }
 }
