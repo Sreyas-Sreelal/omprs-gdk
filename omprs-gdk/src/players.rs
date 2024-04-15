@@ -345,3 +345,158 @@ pub fn load_player_functions() {
     load_function!(IsPlayerInDriveByMode);
     load_function!(IsPlayerCuffed);
 }
+
+#[repr(C)]
+pub enum MapIconStyle{
+	MapIconStyleLocal,
+	MapIconStyleGlobal,
+	MapIconStyleLocalCheckpoint,
+	MapIconStyleGlobalCheckpoint
+}
+
+#[repr(u8)]
+pub enum ClientVersion
+{
+	ClientVersionSamp037,
+	ClientVersionSamp03dl,
+	ClientVersionOpenmp
+}
+
+#[repr(C)]
+pub enum PlayerCameraCutType
+{
+	PlayerCameraCutTypeCut,
+	PlayerCameraCutTypeMove
+}
+
+/// The player's name status returned when updating their name
+#[repr(C)]
+pub enum EPlayerNameStatus
+{
+	Updated, // The name has successfully been updated
+	Taken, // The name is already taken by another player
+	Invalid // The name is invalid
+}
+
+pub enum PlayerAnimationSyncType
+{
+	PlayerAnimationSyncTypeNoSync,
+	PlayerAnimationSyncTypeSync,
+	PlayerAnimationSyncTypeSyncOthers
+}
+
+#[repr(C)]
+pub struct WeaponSlotData {
+    id:u8,
+	ammo:u32,
+}
+
+#[repr(C)]
+pub struct PlayerAnimationData{
+	ID:u16,
+	flags:u16,
+
+}
+#[repr(C)]
+pub enum PlayerFightingStyle
+{
+	PlayerFightingStyleNormal = 4,
+	PlayerFightingStyleBoxing = 5,
+	PlayerFightingStyleKungFu = 6,
+	PlayerFightingStyleKneeHead = 7,
+	PlayerFightingStyleGrabKick = 15,
+	PlayerFightingStyleElbow = 16
+}
+
+#[repr(C)]
+pub enum PlayerState
+{
+	PlayerStateNone = 0,
+	PlayerStateOnFoot = 1,
+	PlayerStateDriver = 2,
+	PlayerStatePassenger = 3,
+	PlayerStateExitVehicle = 4,
+	PlayerStateEnterVehicleDriver = 5,
+	PlayerStateEnterVehiclePassenger = 6,
+	PlayerStateWasted = 7,
+	PlayerStateSpawned = 8,
+	PlayerStateSpectating = 9
+}
+
+#[repr(C)]
+pub enum PlayerWeaponSkill
+{
+	PlayerWeaponSkillPistol,
+	PlayerWeaponSkillSilencedPistol,
+	PlayerWeaponSkillDesertEagle,
+	PlayerWeaponSkillShotgun,
+	PlayerWeaponSkillSawnOff,
+	PlayerWeaponSkillSpas12,
+	PlayerWeaponSkillUzi,
+	PlayerWeaponSkillMp5,
+	PlayerWeaponSkillAk47,
+	PlayerWeaponSkillM4,
+	PlayerWeaponSkillSniper
+}
+
+#[repr(C)]
+pub enum PlayerSpecialAction
+{
+	SpecialActionNone,
+	SpecialActionDuck,
+	SpecialActionJetpack,
+	SpecialActionEnterVehicle,
+	SpecialActionExitVehicle,
+	SpecialActionDance1,
+	SpecialActionDance2,
+	SpecialActionDance3,
+	SpecialActionDance4,
+	SpecialActionHandsUp = 10,
+	SpecialActionCellphone,
+	SpecialActionSitting,
+	SpecialActionStopCellphone,
+	SpecialActionBeer = 20,
+	SpecialactionSmoke,
+	SpecialActionWine,
+	SpecialActionSprunk,
+	SpecialActionCuffed,
+	SpecialActionCarry,
+	SpecialActionPissing = 68
+}
+
+#[repr(C)]
+pub struct PlayerSurfingData
+{
+	surftype: isize,
+	ID:isize,
+	offset:Vector3,
+}
+
+#[repr(C)]
+pub struct PlayerKeyData
+{
+	// todo fill with union
+	keys:u32,
+	upDown:i16,
+	leftRight:i16,
+}
+
+#[repr(C)]
+pub struct PlayerBulletData
+{
+	origin:Vector3,
+	hitPos:Vector3,
+	offset:Vector3,
+	weapon:u8,
+	hitType:PlayerBulletHitType,
+	hitID:u16,
+}
+#[repr(C)]
+pub enum PlayerBulletHitType
+{
+	PlayerBulletHitTypeNone,
+	PlayerBulletHitTypePlayer = 1,
+	PlayerBulletHitTypeVehicle = 2,
+	PlayerBulletHitTypeObject = 3,
+	PlayerBulletHitTypePlayerObject = 4,
+}
