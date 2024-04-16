@@ -65,6 +65,13 @@ pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
         if param_type == "String" {
             orig_callback_params.push(quote!(#param_name:*const std::ffi::c_char,));
             user_func_args.push(quote!(unsafe { std::ffi::CStr::from_ptr(#param_name).to_string_lossy().to_string() },));
+        } else if param_type == "Player"
+            || param_type == "Actor"
+            || param_type == "Vehicle"
+            || param_type == "Object"
+        {
+            orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
+            user_func_args.push(quote!(#param_type::new(#param_name),));
         } else {
             orig_callback_params.push(quote!(#param_name:#param_type,));
             user_func_args.push(quote!(#param_name,));
