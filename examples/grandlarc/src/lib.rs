@@ -1,5 +1,6 @@
-use omprs_gdk::{callback, main, vector::Vector3, AnimationData};
 use std::time::Duration;
+
+use omprs_gdk::{callback, colour::Colour, main, Player};
 
 #[callback]
 fn OnGameModeInit() {
@@ -7,39 +8,41 @@ fn OnGameModeInit() {
 }
 
 #[callback]
-fn OnPlayerConnect(playerid: isize) -> bool {
-    let mut name = String::new();
-    omprs_gdk::GetPlayerName(playerid, &mut name);
-    omprs_gdk::Print(&format!("Player name is {name}"));
-    omprs_gdk::SendClientMessage(
-        playerid,
-        usize::MAX,
-        &format!("Welcome {name} to GrandLarc"),
+fn OnPlayerConnect(player: Player) -> bool {
+    omprs_gdk::Print(&format!("Player name is {}", player.get_name()));
+    player.send_client_message(
+        Colour::from_rgba(0xFF000000),
+        &format!("Welcome {} to GrandLarc", player.get_name()),
     );
 
     true
 }
 
 #[callback]
-fn OnPlayerSpawn(playerid: isize) -> bool {
-    omprs_gdk::SetPlayerSkin(playerid, 230);
+fn OnPlayerSpawn(player: Player) -> bool {
+    player.set_skin(230);
     std::thread::spawn(move || loop {
         std::thread::sleep(Duration::from_millis(5000));
-        omprs_gdk::SendClientMessageToAll(0xFF000000, "{FF0000}Still {00FF00}running!!");
-        let mut x = 0.0;
-        let mut y = 0.0;
-        let mut z = 0.0;
-        omprs_gdk::GetPlayerPos(playerid, &mut x, &mut y, &mut z);
-        omprs_gdk::SendClientMessage(playerid, usize::MAX, &format!("POS: {x} {y} {z}"));
+        player.send_client_message(
+            Colour::from_rgba(0xFF000000),
+            "{FF0000}Still {00FF00}running!!",
+        );
+
+        let vector = player.get_pos();
+        player.send_client_message(
+            Colour::from_rgba(u32::MAX),
+            &format!("POS: {} {} {}", vector.x, vector.y, vector.z),
+        );
     });
     true
 }
 
 #[callback]
-fn OnPlayerText(playerid: isize, text: String) -> bool {
-    let mut name = String::new();
-    omprs_gdk::GetPlayerName(playerid, &mut name);
-    omprs_gdk::SendClientMessageToAll(0xFF000000, &format!("{name}:{text}"));
+fn OnPlayerText(player: Player, text: String) -> bool {
+    player.send_client_message(
+        Colour::from_rgba(0xFF000000),
+        &format!("{}:{text}", player.get_name()),
+    );
     true
 }
 
@@ -47,7 +50,7 @@ fn OnPlayerText(playerid: isize, text: String) -> bool {
 fn entry() {
     omprs_gdk::Print("Hello world");
 
-    let component = omprs_gdk::GetActorsComponent();
+    /* let component = omprs_gdk::GetActorsComponent();
 
     let actor = (*component).create(
         215,
@@ -79,5 +82,5 @@ fn entry() {
         actor.getAnimation().get_name(),
         actor.getAnimation().get_animation_library(),
         actor.getAnimation()
-    );
+    ); */
 }
