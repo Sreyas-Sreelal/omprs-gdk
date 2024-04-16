@@ -8,8 +8,8 @@ use syn::{
 #[derive(Clone)]
 struct CreateNative {
     name: Ident,
-    params: Vec<(Ident, Ident, bool)>,
-    return_type: Option<Type>,
+    params: Vec<(Ident, Ident, bool, bool)>,
+    return_type: Option<(Type, bool)>,
 }
 
 impl Parse for CreateNative {
@@ -22,7 +22,12 @@ impl Parse for CreateNative {
             let _: Token![,] = input.parse()?;
             if input.peek(token::RArrow) {
                 let _: token::RArrow = input.parse()?;
-                return_type = Some(input.parse()?);
+                if input.peek(token::Struct) {
+                    let _: token::Struct = input.parse()?;
+                    return_type = Some((input.parse()?, true));
+                } else {
+                    return_type = Some((input.parse()?, false));
+                }
             } else {
                 let param_name: Ident = input.parse()?;
                 let _: Token![:] = input.parse()?;
@@ -30,10 +35,14 @@ impl Parse for CreateNative {
                 if input.peek(token::Mut) {
                     let _: token::Mut = input.parse()?;
                     let param_type: Ident = input.parse()?;
-                    params.push((param_name, param_type, true));
+                    params.push((param_name, param_type, true, false));
+                } else if input.peek(token::Struct) {
+                    let _: token::Struct = input.parse()?;
+                    let param_type: Ident = input.parse()?;
+                    params.push((param_name, param_type, false, true));
                 } else {
                     let param_type: Ident = input.parse()?;
-                    params.push((param_name, param_type, false));
+                    params.push((param_name, param_type, false, false));
                 }
             }
         }
@@ -58,7 +67,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     let mut orig_arg_list = Vec::new();
     let mut orig_param_list = Vec::new();
 
-    for (param_name, param_type, is_mut) in native.params {
+    for (param_name, param_type, is_mut, is_struct) in native.params {
         if param_name.to_string().contains("_len") {
             param_list.push(quote!(#param_name: #param_type,));
             continue;
@@ -80,6 +89,10 @@ pub fn create_native(input: TokenStream) -> TokenStream {
                 orig_arg_list.push(quote!(#param_name,));
                 orig_param_list.push(quote!(#param_name:*mut #param_type,))
             }
+        } else if is_struct {
+            orig_arg_list.push(quote!(#param_name.get_handle(),));
+            param_list.push(quote!(#param_name: &#param_type,));
+            orig_param_list.push(quote!(#param_name:*const c_void,))
         } else if param_type == "str" {
             orig_arg_list.push(quote!(crate::types::stringview::StringView::from(#param_name),));
             param_list.push(quote!(#param_name: &#param_type,));
@@ -91,11 +104,18 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         }
     }
 
-    let decl_address_var = if let Some(ref return_type) = return_type {
-        quote!(
-            pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
-            None;
-        )
+    let decl_address_var = if let Some((ref return_type, is_struct)) = return_type {
+        if is_struct {
+            quote!(
+                pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> *const c_void> =
+                None;
+            )
+        } else {
+            quote!(
+                pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
+                None;
+            )
+        }
     } else {
         quote!(
             pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*)> =
@@ -117,11 +137,15 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             #(#mutate_stmts)*
         ));
     }
-    if return_type.is_some() {
-        body.push(quote!(ret_val));
+    if let Some((ref return_type, is_struct)) = return_type {
+        if is_struct {
+            body.push(quote!(#return_type::new(ret_val)))
+        } else {
+            body.push(quote!(ret_val));
+        }
     }
 
-    let user_func = if let Some(return_type) = return_type {
+    let user_func = if let Some((return_type, _)) = return_type {
         quote!(
             pub fn #name(#(#param_list)*) -> #return_type {
                 #(#body)*
