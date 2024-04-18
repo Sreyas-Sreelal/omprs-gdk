@@ -752,7 +752,6 @@ impl Player {
     }
 }
 
-unsafe impl Send for Player {}
 #[repr(C)]
 pub enum MapIconStyle {
     MapIconStyleLocal,
