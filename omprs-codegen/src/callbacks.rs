@@ -9,7 +9,7 @@ use syn::{
 };
 struct CreateCallback {
     name: Ident,
-    params: Vec<(Ident, Ident)>,
+    params: Vec<(Ident, Ident, bool)>,
     return_type: Option<Ident>,
     body: Block,
 }
@@ -27,8 +27,14 @@ impl Parse for CreateCallback {
             let param_name: Ident = params_input.parse()?;
             let _: Token![:] = params_input.parse()?;
             let param_type: Ident = params_input.parse()?;
-            params.push((param_name, param_type));
-
+            if param_type == "Option" {
+                let _: Token![<] = params_input.parse()?;
+                let param_type: Ident = params_input.parse()?;
+                let _: Token![>] = params_input.parse()?;
+                params.push((param_name, param_type, true));
+            } else {
+                params.push((param_name, param_type, false));
+            }
             if params_input.peek(Token![,]) {
                 let _: Token![,] = params_input.parse()?;
             }
@@ -60,8 +66,12 @@ pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
     let orig_callback_name = Ident::new(&format!("OMPRS_{user_func_name}"), user_func_name.span());
     let mut orig_callback_params = Vec::new();
 
-    for (param_name, param_type) in callback.params {
-        user_func_params.push(quote!(#param_name:#param_type,));
+    for (param_name, param_type, is_option) in callback.params {
+        if is_option {
+            user_func_params.push(quote!(#param_name:Option<#param_type>,));
+        } else {
+            user_func_params.push(quote!(#param_name:#param_type,));
+        }
         if param_type == "String" {
             orig_callback_params.push(quote!(#param_name:*const std::ffi::c_char,));
             user_func_args.push(quote!(unsafe { std::ffi::CStr::from_ptr(#param_name).to_string_lossy().to_string() },));
@@ -70,8 +80,19 @@ pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
             || param_type == "Vehicle"
             || param_type == "Object"
         {
-            orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
-            user_func_args.push(quote!(#param_type::new(#param_name),));
+            if is_option {
+                orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
+                user_func_args.push(quote!(
+                if #param_name.is_null(){
+                   None
+                } else {
+                    Some(#param_type::new(#param_name))
+                },
+                ));
+            } else {
+                orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
+                user_func_args.push(quote!(#param_type::new(#param_name),));
+            }
         } else {
             orig_callback_params.push(quote!(#param_name:#param_type,));
             user_func_args.push(quote!(#param_name,));
