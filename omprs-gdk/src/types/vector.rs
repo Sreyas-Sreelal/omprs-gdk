@@ -1,11 +1,11 @@
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug,Default)]
 #[repr(C)]
 pub struct Vector2 {
     pub x: f32,
     pub y: f32,
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug,Default)]
 #[repr(C)]
 pub struct Vector3 {
     pub x: f32,
@@ -13,7 +13,7 @@ pub struct Vector3 {
     pub z: f32,
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug,Default)]
 #[repr(C)]
 pub struct Vector4 {
     pub x: f32,
