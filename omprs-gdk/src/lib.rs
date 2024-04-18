@@ -14,7 +14,9 @@ mod players;
 mod utils;
 mod vehicles;
 
-use functions::{actors::load_actor_functions, players::load_player_functions,models::load_model_functions};
+use functions::{
+    actors::load_actor_functions, models::load_model_functions, players::load_player_functions,
+};
 
 pub use crate::utils::*;
 pub use actors::*;

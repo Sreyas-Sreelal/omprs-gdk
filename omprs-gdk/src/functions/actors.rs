@@ -1,8 +1,5 @@
 use crate::actors::*;
-use crate::{
-    players::Player,
-    vector::Vector3,
-};
+use crate::{players::Player, vector::Vector3};
 use omprs_codegen::native;
 use std::ffi::c_void;
 

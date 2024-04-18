@@ -1,5 +1,4 @@
-
-#[derive(Clone, Debug,Default)]
+#[derive(Clone, Debug, Default)]
 pub struct AnimationData {
     pub delta: f32,
     pub looping: bool,
