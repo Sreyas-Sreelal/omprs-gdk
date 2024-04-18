@@ -14,7 +14,7 @@ mod players;
 mod utils;
 mod vehicles;
 
-use functions::{actors::load_actor_functions, players::load_player_functions};
+use functions::{actors::load_actor_functions, players::load_player_functions,models::load_model_functions};
 
 pub use crate::utils::*;
 pub use actors::*;
@@ -28,15 +28,7 @@ pub use vehicles::*;
 pub fn init_functions() {
     load_function!(Print);
     // models
-    /* load_function!(AddCharModel);
-    load_function!(AddSimpleModel);
-    load_function!(AddSimpleModelTimed);
-    load_function!(GetPlayerCustomSkin);
-    load_function!(RedirectDownload);
-    load_function!(FindModelFileNameFromCRC);
-    load_function!(FindTextureFileNameFromCRC);
-    load_function!(IsValidCustomModel);
-    load_function!(GetCustomModelPath); */
+    load_model_functions();
 
     load_player_functions();
     load_actor_functions();

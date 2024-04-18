@@ -31,3 +31,13 @@ native!(
     txd_path: mut str,
     -> bool
 );
+
+pub fn load_model_functions() {
+    load_function!(AddCharModel);
+    load_function!(AddSimpleModel);
+    load_function!(AddSimpleModelTimed);
+    load_function!(FindModelFileNameFromCRC);
+    load_function!(FindTextureFileNameFromCRC);
+    load_function!(IsValidCustomModel);
+    load_function!(GetCustomModelPath);
+}
