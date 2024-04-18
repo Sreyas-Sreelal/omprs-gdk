@@ -4,7 +4,6 @@ use std::ffi::c_void;
 
 use crate::{
     actors::Actor,
-    animationdata::AnimationData,
     colour::Colour,
     objects::{Object, PlayerObject},
     vector::{Vector3, Vector4},
@@ -100,7 +99,7 @@ native!(SetPlayerSpecialAction, player: struct Player, action: PlayerSpecialActi
 native!(ShowPlayerNameTagForPlayer, player: struct Player, other:struct Player, enable: bool);
 native!(TogglePlayerControllable, player: struct Player, enable: bool);
 native!(TogglePlayerSpectating, player: struct Player, enable: bool);
-native!(ApplyAnimation, player: struct Player, animationData: AnimationData, sync: PlayerAnimationSyncType);
+native!(ApplyAnimation,player:struct Player, animlib: str, animname:str, delta:f32, animloop:bool, lockX:bool, lockY:bool ,freeze:bool, time:usize, sync:PlayerAnimationSyncType);
 native!(GetAnimationName, index: isize, lib: mut str, name: mut str);
 native!(EditAttachedObject, player: struct Player, index: isize);
 native!(EnablePlayerCameraTarget, player: struct Player, enable: bool);

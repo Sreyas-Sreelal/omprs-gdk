@@ -1,16 +1,14 @@
-use crate::hybridstring::HybridString;
 
-#[derive(Copy, Clone, Debug)]
-#[repr(C)]
+#[derive(Clone, Debug,Default)]
 pub struct AnimationData {
-    delta: f32,
-    looping: bool,
-    lockX: bool,
-    lockY: bool,
-    freeze: bool,
-    time: usize,
-    lib: HybridString<16>,
-    name: HybridString<24>,
+    pub delta: f32,
+    pub looping: bool,
+    pub lockX: bool,
+    pub lockY: bool,
+    pub freeze: bool,
+    pub time: usize,
+    lib: String,
+    name: String,
 }
 
 impl AnimationData {
