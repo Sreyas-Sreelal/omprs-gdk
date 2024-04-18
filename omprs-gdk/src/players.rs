@@ -418,7 +418,18 @@ impl Player {
     }
 
     pub fn apply_animation(&self, animation_data: AnimationData, sync: PlayerAnimationSyncType) {
-        functions::players::ApplyAnimation(self, animation_data, sync)
+        functions::players::ApplyAnimation(
+            self,
+            &animation_data.get_animation_library(),
+            &animation_data.get_name(),
+            animation_data.delta,
+            animation_data.looping,
+            animation_data.lockX,
+            animation_data.lockY,
+            animation_data.freeze,
+            animation_data.time,
+            sync,
+        )
     }
 
     /* pub fn get_animation_name(&self, index: isize, lib: &mut String, name: &mut String) {
@@ -736,8 +747,8 @@ impl Player {
         functions::players::GetPlayerCustomSkin(self)
     }
 
-    pub fn redirect_download(&self,url:&str) -> bool {
-        functions::players::RedirectDownload(self,url)
+    pub fn redirect_download(&self, url: &str) -> bool {
+        functions::players::RedirectDownload(self, url)
     }
 }
 
