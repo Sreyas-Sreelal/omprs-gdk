@@ -21,8 +21,6 @@ native!(
     timeoff: isize,
  -> bool
 );
-native!(GetPlayerCustomSkin,playerid: isize,-> isize);
-native!(RedirectDownload,playerid: isize, url: str, -> bool);
 native!(FindModelFileNameFromCRC,crc: isize, output: mut str,  -> bool);
 native!(FindTextureFileNameFromCRC,crc: isize, output: mut str, -> bool);
 native!(IsValidCustomModel,modelid: isize, -> bool);

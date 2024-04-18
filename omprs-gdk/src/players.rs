@@ -731,6 +731,14 @@ impl Player {
     pub fn is_cuffed(&self) -> bool {
         functions::players::IsPlayerCuffed(self)
     }
+
+    pub fn get_custom_skin(&self) -> isize {
+        functions::players::GetPlayerCustomSkin(self)
+    }
+
+    pub fn redirect_download(&self,url:&str) -> bool {
+        functions::players::RedirectDownload(self,url)
+    }
 }
 
 unsafe impl Send for Player {}
