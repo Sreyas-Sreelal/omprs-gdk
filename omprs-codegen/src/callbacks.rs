@@ -1,77 +1,73 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    parenthesized,
     parse::{Parse, ParseStream},
-    parse_macro_input,
-    token::RArrow,
-    Block, Ident, Token,
+    parse_macro_input, token, Ident, Token, Type,
 };
+fn convert_to_snake_case(name: Ident) -> Ident {
+    let characters = name.to_string();
+    let mut characters = characters.chars();
+    let mut out = String::new();
+    out.push(characters.next().unwrap().to_ascii_lowercase());
+    for x in characters {
+        if x.is_uppercase() {
+            out.push('_');
+            out.push(x.to_ascii_lowercase());
+        } else {
+            out.push(x);
+        }
+    }
+    Ident::new(&out, name.span())
+}
+
+#[derive(Clone)]
 struct CreateCallback {
     name: Ident,
     params: Vec<(Ident, Ident, bool)>,
-    return_type: Option<Ident>,
-    body: Block,
+    return_type: Option<Type>,
 }
 
 impl Parse for CreateCallback {
     fn parse(input: ParseStream) -> Result<Self, syn::Error> {
-        let _: Token![fn] = input.parse()?;
         let name: Ident = input.parse()?;
-        let params_input;
         let mut params = Vec::new();
-        parenthesized!(params_input in input);
-        let mut return_type: Option<Ident> = None;
+        let mut return_type = None;
 
-        while !params_input.is_empty() {
-            let param_name: Ident = params_input.parse()?;
-            let _: Token![:] = params_input.parse()?;
-            let param_type: Ident = params_input.parse()?;
-            if param_type == "Option" {
-                let _: Token![<] = params_input.parse()?;
-                let param_type: Ident = params_input.parse()?;
-                let _: Token![>] = params_input.parse()?;
-                params.push((param_name, param_type, true));
+        while !input.is_empty() {
+            let _: Token![,] = input.parse()?;
+            if input.peek(token::RArrow) {
+                let _: token::RArrow = input.parse()?;
+                return_type = Some(input.parse()?);
             } else {
-                params.push((param_name, param_type, false));
-            }
-            if params_input.peek(Token![,]) {
-                let _: Token![,] = params_input.parse()?;
+                let param_name: Ident = input.parse()?;
+                let _: Token![:] = input.parse()?;
+                let param_type: Ident = input.parse()?;
+                if param_type == "Option" {
+                    let _: Token![<] = input.parse()?;
+                    let param_type: Ident = input.parse()?;
+                    let _: Token![>] = input.parse()?;
+                    params.push((param_name, param_type, true));
+                } else {
+                    params.push((param_name, param_type, false));
+                }
             }
         }
-
-        if input.peek(RArrow) {
-            let _: RArrow = input.parse()?;
-            return_type = Some(input.parse()?);
-        }
-
-        let body: Block = input.parse()?;
-
         Ok(CreateCallback {
             name,
             params,
             return_type,
-            body,
         })
     }
 }
-pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn create_callback(input: TokenStream) -> TokenStream {
     let callback = parse_macro_input!(input as CreateCallback);
-
     let user_func_name = callback.name;
-    let mut user_func_params = Vec::new();
-    let mut user_func_args = Vec::new();
-    let user_func_body = callback.body;
-
     let orig_callback_name = Ident::new(&format!("OMPRS_{user_func_name}"), user_func_name.span());
     let mut orig_callback_params = Vec::new();
+    let user_func_name = convert_to_snake_case(user_func_name);
+    let mut user_func_args = Vec::new();
 
     for (param_name, param_type, is_option) in callback.params {
-        if is_option {
-            user_func_params.push(quote!(#param_name:Option<#param_type>,));
-        } else {
-            user_func_params.push(quote!(#param_name:#param_type,));
-        }
         if param_type == "String" {
             orig_callback_params.push(quote!(#param_name:*const std::ffi::c_char,));
             user_func_args.push(quote!(unsafe { std::ffi::CStr::from_ptr(#param_name).to_string_lossy().to_string() },));
@@ -83,11 +79,11 @@ pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
             if is_option {
                 orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
                 user_func_args.push(quote!(
-                if #param_name.is_null(){
-                   None
-                } else {
-                    Some(#param_type::new(#param_name))
-                },
+                    if #param_name.is_null(){
+                        None
+                    } else {
+                        Some(#param_type::new(#param_name))
+                    },
                 ));
             } else {
                 orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
@@ -99,39 +95,22 @@ pub fn create_callback(_args: TokenStream, input: TokenStream) -> TokenStream {
         }
     }
 
-    let user_function = if let Some(ref return_type) = callback.return_type {
-        quote!(
-            #[allow(non_snake_case)]
-            fn #user_func_name(#(#user_func_params)*) -> #return_type {
-                #user_func_body
-            }
-        )
-    } else {
-        quote!(
-            #[allow(non_snake_case)]
-            fn #user_func_name(#(#user_func_params)*) {
-                #user_func_body
-            }
-        )
-    };
-
     let orig_function = if let Some(ref return_type) = callback.return_type {
         quote!(
             #[no_mangle]
             pub unsafe extern "C" fn #orig_callback_name(#(#orig_callback_params)*) -> #return_type {
-                #user_func_name(#(#user_func_args)*)
+                crate::runtime::Runtime.as_mut().unwrap().#user_func_name(#(#user_func_args)*)
             }
         )
     } else {
         quote!(
             #[no_mangle]
             pub unsafe extern "C" fn #orig_callback_name(#(#orig_callback_params)*) {
-                #user_func_name(#(#user_func_args)*);
+                crate::runtime::Runtime.as_mut().unwrap().#user_func_name(#(#user_func_args)*);
             }
         )
     };
     let code = quote! {
-        #user_function
         #orig_function
     };
 

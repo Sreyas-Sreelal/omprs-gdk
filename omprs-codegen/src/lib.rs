@@ -4,9 +4,9 @@ mod callbacks;
 mod entrypoint;
 mod natives;
 
-#[proc_macro_attribute]
-pub fn callback(args: TokenStream, input: TokenStream) -> TokenStream {
-    callbacks::create_callback(args, input)
+#[proc_macro]
+pub fn callback(args: TokenStream) -> TokenStream {
+    callbacks::create_callback(args)
 }
 
 #[proc_macro_attribute]
