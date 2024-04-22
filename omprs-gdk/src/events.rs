@@ -1,4 +1,5 @@
 use crate::{
+    actors::Actor,
     models::ModelDownloadType,
     network::PeerDisconnectReason,
     objects::{Object, PlayerObject},
@@ -146,4 +147,18 @@ pub trait Events {
     ) -> bool {
         true
     }
+
+    /// Actor Event handlers
+    fn on_player_give_damage_actor(
+        &mut self,
+        player: Player,
+        actor: Actor,
+        amount: f32,
+        weapon: usize,
+        part: BodyPart,
+    ) {
+    }
+
+    fn on_actor_stream_in(&mut self, actor: Actor, player: Player) {}
+    fn on_actor_stream_out(&mut self, actor: Actor, player: Player) {}
 }
