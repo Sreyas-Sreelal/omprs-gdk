@@ -1,4 +1,5 @@
 use crate::{
+    models::ModelDownloadType,
     network::PeerDisconnectReason,
     objects::{Object, PlayerObject},
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
@@ -131,6 +132,18 @@ pub trait Events {
 
     /// Player update event handler
     fn on_player_update(&mut self, player: Player, now: isize) -> bool {
+        true
+    }
+
+    // Player Model event handlers
+    fn on_player_finished_downloading(&mut self, player: Player) {}
+
+    fn on_player_request_download(
+        &mut self,
+        player: Player,
+        model_type: ModelDownloadType,
+        checksum: u32,
+    ) -> bool {
         true
     }
 }
