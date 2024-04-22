@@ -1,12 +1,13 @@
 use omprs_gdk::{
-    animationdata::AnimationData, colour::Colour, main, register, Actor, Events, Player,
+    actors::Actor, animationdata::AnimationData, colour::Colour, core::Print, main,
+    players::Player, register, Events,
 };
 
 struct GrandLarc;
 
 impl Events for GrandLarc {
     fn on_player_connect(&mut self, player: Player) {
-        omprs_gdk::Print(&format!("Player name is {}", player.get_name()));
+        Print(&format!("Player name is {}", player.get_name()));
         player.send_client_message(
             Colour::from_rgba(0xFF000000),
             &format!("Welcome {} to GrandLarc", player.get_name()),
@@ -52,9 +53,11 @@ impl Events for GrandLarc {
         );
         true
     }
+
     fn on_player_death(&mut self, _player: Player, killer: Option<Player>, _reason: isize) {
         dbg!(killer.is_some());
     }
+
     fn on_player_spawn(&mut self, player: Player) {
         player.set_skin(230);
     }
@@ -63,5 +66,5 @@ impl Events for GrandLarc {
 #[main]
 fn entry() {
     register!(GrandLarc);
-    omprs_gdk::Print("Hello world");
+    Print("Hello world");
 }

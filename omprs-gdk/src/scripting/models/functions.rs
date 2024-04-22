@@ -32,7 +32,7 @@ native!(
     -> bool
 );
 
-pub fn load_model_functions() {
+pub fn load_functions() {
     load_function!(AddCharModel);
     load_function!(AddSimpleModel);
     load_function!(AddSimpleModelTimed);

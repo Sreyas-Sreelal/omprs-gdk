@@ -1,3 +1,6 @@
+pub mod events;
+pub mod functions;
+
 use std::ffi::c_void;
 
 pub struct Object {

@@ -1,6 +1,9 @@
 use crate::{
-    network::PeerDisconnectReason, vector::Vector3, BodyPart, Object, Player, PlayerBulletData,
-    PlayerClickSource, PlayerObject, PlayerState, Vehicle,
+    network::PeerDisconnectReason,
+    objects::{Object, PlayerObject},
+    players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
+    vector::Vector3,
+    vehicles::Vehicle,
 };
 
 #[allow(unused_variables)]

@@ -1,4 +1,9 @@
-use crate::players::*;
+use crate::players::{
+    EPlayerNameStatus, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
+    PlayerAnimationSyncType, PlayerBulletData, PlayerCameraCutType, PlayerFightingStyle,
+    PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
+    PlayerSurfingData, PlayerWeaponSkill, WeaponSlotData,
+};
 use omprs_codegen::native;
 use std::ffi::c_void;
 
@@ -173,9 +178,10 @@ native!(IsPlayerInDriveByMode, player: struct Player, -> bool);
 native!(IsPlayerCuffed, player: struct Player, -> bool);
 native!(GetPlayerCustomSkin,player: struct Player,-> isize);
 native!(RedirectDownload,player: struct Player, url: str, -> bool);
+//native!(IsValidPlayer, player: struct Player, -> bool);
 //native!(GetPlayersPool, -> c_void*);
 
-pub fn load_player_functions() {
+pub fn load_functions() {
     load_function!(SendClientMessage);
     load_function!(GetPlayerName);
     load_function!(SendClientMessageToAll);
@@ -339,4 +345,5 @@ pub fn load_player_functions() {
     load_function!(IsPlayerCuffed);
     load_function!(GetPlayerCustomSkin);
     load_function!(RedirectDownload);
+    //load_function!(IsValidPlayer);
 }

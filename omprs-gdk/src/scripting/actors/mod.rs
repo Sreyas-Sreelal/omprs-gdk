@@ -1,6 +1,12 @@
+pub mod events;
+pub mod functions;
+
+pub use functions::load_functions;
+//pub use events::ActorEvents;
+
 use crate::animationdata::AnimationData;
 use crate::players::Player;
-use crate::{functions, types::vector::Vector3};
+use crate::types::vector::Vector3;
 
 use std::ffi::c_void;
 
@@ -18,27 +24,27 @@ impl Actor {
     }
 
     pub fn create_actor(skin: isize, pos: Vector3, angle: f32) -> Actor {
-        functions::actors::CreateActor(skin, pos, angle)
+        functions::CreateActor(skin, pos, angle)
     }
 
     pub fn destroy(&self) {
-        functions::actors::DestroyActor(self)
+        functions::DestroyActor(self)
     }
 
     pub fn is_streamed_in(&self, player: &Player) -> bool {
-        functions::actors::IsActorStreamedIn(self, player)
+        functions::IsActorStreamedIn(self, player)
     }
 
     pub fn set_virtual_world(&self, virtual_world: isize) {
-        functions::actors::SetActorVirtualWorld(self, virtual_world)
+        functions::SetActorVirtualWorld(self, virtual_world)
     }
 
     pub fn get_virtual_world(&self) -> isize {
-        functions::actors::GetActorVirtualWorld(self)
+        functions::GetActorVirtualWorld(self)
     }
 
     pub fn apply_animation(&self, animation_data: AnimationData) {
-        functions::actors::ApplyActorAnimation(
+        functions::ApplyActorAnimation(
             self,
             &animation_data.get_animation_library(),
             &animation_data.get_name(),
@@ -52,11 +58,11 @@ impl Actor {
     }
 
     pub fn clear_animations(&self) -> bool {
-        functions::actors::ClearActorAnimations(self)
+        functions::ClearActorAnimations(self)
     }
 
     pub fn set_pos(&self, pos: Vector3) {
-        functions::actors::SetActorPos(self, pos)
+        functions::SetActorPos(self, pos)
     }
 
     pub fn getpos(&self) -> Vector3 {
@@ -65,44 +71,44 @@ impl Actor {
             y: 0.0,
             z: 0.0,
         };
-        functions::actors::GetActorPos(self, &mut position);
+        functions::GetActorPos(self, &mut position);
         position
     }
 
     pub fn setfacing_angle(&self, angle: f32) {
-        functions::actors::SetActorFacingAngle(self, angle)
+        functions::SetActorFacingAngle(self, angle)
     }
 
     pub fn getfacing_angle(&self) -> f32 {
-        functions::actors::GetActorFacingAngle(self)
+        functions::GetActorFacingAngle(self)
     }
 
     pub fn sethealth(&self, health: f32) {
-        functions::actors::SetActorHealth(self, health)
+        functions::SetActorHealth(self, health)
     }
 
     pub fn gethealth(&self) -> f32 {
-        functions::actors::GetActorHealth(self)
+        functions::GetActorHealth(self)
     }
 
     pub fn setinvulnerable(&self, invulnerable: bool) {
-        functions::actors::SetActorInvulnerable(self, invulnerable)
+        functions::SetActorInvulnerable(self, invulnerable)
     }
 
     pub fn isinvulnerable(&self) -> bool {
-        functions::actors::IsActorInvulnerable(self)
+        functions::IsActorInvulnerable(self)
     }
 
     pub fn is_valid(&self) -> bool {
-        functions::actors::IsValidActor(self)
+        functions::IsValidActor(self)
     }
 
     pub fn set_skin(&self, skin: isize) {
-        functions::actors::SetActorSkin(self, skin)
+        functions::SetActorSkin(self, skin)
     }
 
     pub fn get_skin(&self) -> isize {
-        functions::actors::GetActorSkin(self)
+        functions::GetActorSkin(self)
     }
 
     pub fn get_animation(&self) -> AnimationData {
@@ -117,7 +123,7 @@ impl Actor {
             mut time,
         ) = Default::default();
 
-        functions::actors::GetActorAnimation(
+        functions::GetActorAnimation(
             self,
             &mut animation_library,
             &mut animation_name,
@@ -143,7 +149,7 @@ impl Actor {
 
     pub fn get_spawn_info(&self) -> ActorSpawnData {
         let mut spawn_data = ActorSpawnData::default();
-        functions::actors::GetActorSpawnInfo(self, &mut spawn_data);
+        functions::GetActorSpawnInfo(self, &mut spawn_data);
         spawn_data
     }
 }

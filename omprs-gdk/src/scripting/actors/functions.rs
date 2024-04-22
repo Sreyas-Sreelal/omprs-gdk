@@ -25,7 +25,7 @@ native!(GetActorAnimation,actor: struct Actor, animationLibrary: mut str, animat
 native!(GetActorSpawnInfo, actor: struct Actor, spawnData:mut ActorSpawnData);
 //native!(GetActorsComponent, -> struct ActorsComponent);
 
-pub fn load_actor_functions() {
+pub fn load_functions() {
     load_function!(CreateActor);
     load_function!(DestroyActor);
     load_function!(IsActorStreamedIn);

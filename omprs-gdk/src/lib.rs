@@ -6,38 +6,27 @@
 mod helper;
 mod types;
 
-mod actors;
 mod events;
-mod functions;
-mod models;
-mod objects;
-mod players;
-mod utils;
-mod vehicles;
+mod scripting;
 
 #[macro_use]
 mod runtime;
 
-use functions::{
-    actors::load_actor_functions, models::load_model_functions, players::load_player_functions,
-};
-
-pub use crate::utils::*;
-pub use actors::*;
-//pub use models::*;
 pub use events::Events;
-pub use objects::*;
-pub use omprs_codegen::{callback, main, native};
-pub use players::*;
+pub use omprs_codegen::main;
 pub use runtime::Runtime;
+pub use scripting::actors;
+pub use scripting::core;
+pub use scripting::models;
+pub use scripting::objects;
+pub use scripting::players;
+pub use scripting::vehicles;
 pub use types::*;
-pub use vehicles::*;
 
 pub fn init_functions() {
-    load_function!(Print);
+    core::load_functions();
     // models
-    load_model_functions();
-
-    load_player_functions();
-    load_actor_functions();
+    models::load_functions();
+    players::load_functions();
+    actors::load_functions();
 }
