@@ -10,7 +10,7 @@ use crate::{
 pub trait Events {
     /// Player spawn event handlers
     fn on_player_request_spawn(&mut self, player: Player) -> bool {
-        return true;
+        true
     }
     fn on_player_spawn(&mut self, player: Player) {}
 
@@ -26,15 +26,15 @@ pub trait Events {
 
     /// Player text and commands event handlers
     fn on_player_text(&mut self, player: Player, message: String) -> bool {
-        return true;
+        true
     }
     fn on_player_command_text(&mut self, player: Player, message: String) -> bool {
-        return false;
+        false
     }
 
     /// Player shooting event handlers
     fn on_player_shot_missed(&mut self, player: Player, bullet_data: PlayerBulletData) -> bool {
-        return true;
+        true
     }
     fn on_player_shot_player(
         &mut self,
@@ -42,7 +42,7 @@ pub trait Events {
         target: Player,
         bullet_data: PlayerBulletData,
     ) -> bool {
-        return true;
+        true
     }
     fn on_player_shot_vehicle(
         &mut self,
@@ -50,7 +50,7 @@ pub trait Events {
         target: Vehicle,
         bullet_data: PlayerBulletData,
     ) -> bool {
-        return true;
+        true
     }
     fn on_player_shot_object(
         &mut self,
@@ -58,7 +58,7 @@ pub trait Events {
         target: Object,
         bullet_data: PlayerBulletData,
     ) -> bool {
-        return true;
+        true
     }
     fn on_player_shot_player_object(
         &mut self,
@@ -66,7 +66,7 @@ pub trait Events {
         target: PlayerObject,
         bullet_data: PlayerBulletData,
     ) -> bool {
-        return true;
+        true
     }
 
     /// Player data change event handlers
@@ -131,6 +131,6 @@ pub trait Events {
 
     /// Player update event handler
     fn on_player_update(&mut self, player: Player, now: isize) -> bool {
-        return true;
+        true
     }
 }

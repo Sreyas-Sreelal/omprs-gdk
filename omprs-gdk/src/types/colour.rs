@@ -1,5 +1,5 @@
 #[repr(C)]
-struct RGBA {
+struct Rgba {
     r: u8,
     g: u8,
     b: u8,
@@ -7,7 +7,7 @@ struct RGBA {
 }
 #[repr(C)]
 union ColourData {
-    rgba: std::mem::ManuallyDrop<RGBA>,
+    rgba: std::mem::ManuallyDrop<Rgba>,
 }
 
 #[repr(C)]
@@ -19,7 +19,7 @@ impl Colour {
     pub fn from_rgba(from: u32) -> Colour {
         Colour {
             data: ColourData {
-                rgba: std::mem::ManuallyDrop::new(RGBA {
+                rgba: std::mem::ManuallyDrop::new(Rgba {
                     r: ((from & 0xFF000000) >> 24) as u8,
                     g: ((from & 0x00FF0000) >> 16) as u8,
                     b: ((from & 0x0000FF00) >> 8) as u8,
