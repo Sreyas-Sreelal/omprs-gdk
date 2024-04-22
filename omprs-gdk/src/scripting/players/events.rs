@@ -1,5 +1,5 @@
 use crate::network::PeerDisconnectReason;
-use crate::players::{BodyPart, Player, PlayerClickSource, PlayerState};
+use super::{BodyPart, Player, PlayerClickSource, PlayerState};
 use crate::vector::Vector3;
 use omprs_codegen::callback;
 

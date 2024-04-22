@@ -1,4 +1,4 @@
-use crate::players::{
+use super::{
     EPlayerNameStatus, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
     PlayerAnimationSyncType, PlayerBulletData, PlayerCameraCutType, PlayerFightingStyle,
     PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
