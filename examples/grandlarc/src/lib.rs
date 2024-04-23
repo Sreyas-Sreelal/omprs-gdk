@@ -45,8 +45,14 @@ impl Events for GrandLarc {
                     actor.get_animation()
                 );
             }
+            "checkpoint" => {
+                let mut pos = player.get_pos();
+                pos.y += 2.0;
+                player.set_player_checkpoint(pos, 3.0);
+            }
             _ => {}
         }
+
         player.send_client_message(
             Colour::from_rgba(0xFF000000),
             &format!("{}:{message}", player.get_name()),
@@ -60,6 +66,14 @@ impl Events for GrandLarc {
 
     fn on_player_spawn(&mut self, player: Player) {
         player.set_skin(230);
+    }
+
+    fn on_player_enter_checkpoint(&mut self, player: Player) {
+        player.send_client_message(Colour::from_rgba(0x0000EE00), "You reached checkpoint!!");
+    }
+
+    fn on_player_leave_checkpoint(&mut self, player: Player) {
+        player.send_client_message(Colour::from_rgba(0x0000DD00), "You left checkpoint!!");
     }
 }
 
