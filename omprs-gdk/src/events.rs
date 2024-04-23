@@ -160,5 +160,14 @@ pub trait Events {
     }
 
     fn on_actor_stream_in(&mut self, actor: Actor, player: Player) {}
+
     fn on_actor_stream_out(&mut self, actor: Actor, player: Player) {}
+
+    fn on_player_enter_checkpoint(&mut self, player: Player) {}
+
+    fn on_player_leave_checkpoint(&mut self, player: Player) {}
+
+    fn on_player_enter_race_checkpoint(&mut self, player: Player) {}
+
+    fn on_player_leave_race_checkpoint(&mut self, player: Player) {}
 }

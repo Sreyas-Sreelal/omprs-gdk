@@ -16,6 +16,7 @@ pub use events::Events;
 pub use omprs_codegen::main;
 pub use runtime::Runtime;
 pub use scripting::actors;
+pub use scripting::checkpoints;
 pub use scripting::core;
 pub use scripting::models;
 pub use scripting::objects;
@@ -29,4 +30,5 @@ pub fn init_functions() {
     models::load_functions();
     players::load_functions();
     actors::load_functions();
+    checkpoints::load_functions();
 }

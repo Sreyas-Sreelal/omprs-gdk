@@ -13,6 +13,10 @@ use crate::{
 };
 use std::os::raw::c_void;
 
+use super::checkpoints::{
+    self, PlayerCheckPointData, PlayerRaceCheckPointData, RaceCheckpointType,
+};
+
 pub struct Player {
     handle: *const c_void,
 }
@@ -752,6 +756,71 @@ impl Player {
 
     pub fn redirect_download(&self, url: &str) -> bool {
         functions::RedirectDownload(self, url)
+    }
+
+    // Player Checkpoints methods
+    pub fn set_player_checkpoint(&self, centre_position: Vector3, radius: f32) {
+        checkpoints::functions::SetPlayerCheckpoint(self, centre_position, radius);
+    }
+
+    pub fn disable_player_checkpoint(&self) {
+        checkpoints::functions::DisablePlayerCheckpoint(self);
+    }
+
+    pub fn is_player_in_checkpoint(&self) -> bool {
+        checkpoints::functions::IsPlayerInCheckpoint(self)
+    }
+
+    pub fn set_player_race_checkpoint(
+        &self,
+        race_check_point_type: RaceCheckpointType,
+        centre_position: Vector3,
+        next_position: Vector3,
+        radius: f32,
+    ) {
+        checkpoints::functions::SetPlayerRaceCheckpoint(
+            self,
+            race_check_point_type,
+            centre_position,
+            next_position,
+            radius,
+        )
+    }
+
+    pub fn disable_player_race_checkpoint(&self) {
+        checkpoints::functions::DisablePlayerRaceCheckpoint(self)
+    }
+
+    pub fn is_player_in_race_checkpoint(&self) -> bool {
+        checkpoints::functions::IsPlayerInRaceCheckpoint(self)
+    }
+
+    pub fn is_player_checkpoint_active(&self) -> bool {
+        checkpoints::functions::IsPlayerCheckpointActive(self)
+    }
+
+    pub fn get_player_checkpoint(&self) -> PlayerCheckPointData {
+        let mut center_pos = Vector3::default();
+        let mut radius = 0.0;
+        checkpoints::functions::GetPlayerCheckpoint(self, &mut center_pos, &mut radius);
+        PlayerCheckPointData::new(center_pos, radius)
+    }
+
+    pub fn is_player_race_checkpoint_active(&self) -> bool {
+        checkpoints::functions::IsPlayerRaceCheckpointActive(self)
+    }
+
+    pub fn get_player_race_checkpoint(&self) -> PlayerRaceCheckPointData {
+        let mut center_pos = Vector3::default();
+        let mut next_pos = Vector3::default();
+        let mut radius = 0.0;
+        checkpoints::functions::GetPlayerRaceCheckpoint(
+            self,
+            &mut center_pos,
+            &mut next_pos,
+            &mut radius,
+        );
+        PlayerRaceCheckPointData::new(center_pos, next_pos, radius)
     }
 }
 
