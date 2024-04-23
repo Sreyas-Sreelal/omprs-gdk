@@ -6,8 +6,10 @@ pub use functions::load_functions;
 use crate::{
     actors::Actor,
     animationdata::AnimationData,
+    classes::{self, PlayerClass},
     colour::Colour,
     objects::{Object, PlayerObject},
+    staticarray::StaticArray,
     vector::{Vector3, Vector4},
     vehicles::Vehicle,
 };
@@ -822,6 +824,16 @@ impl Player {
         );
         PlayerRaceCheckPointData::new(center_pos, next_pos, radius)
     }
+
+    pub fn SetSpawnInfo(&self, player_class: PlayerClass) {
+        classes::functions::SetSpawnInfo(self, player_class)
+    }
+
+    pub fn GetSpawnInfo(&self) -> PlayerClass {
+        let mut data = PlayerClass::default();
+        classes::functions::GetSpawnInfo(self, &mut data);
+        data
+    }
 }
 
 #[repr(C)]
@@ -860,9 +872,16 @@ pub enum PlayerAnimationSyncType {
 }
 
 #[repr(C)]
+#[derive(Default, Clone, Copy)]
 pub struct WeaponSlotData {
     id: u8,
     ammo: u32,
+}
+
+impl WeaponSlotData {
+    pub fn new(id: u8, ammo: u32) -> Self {
+        Self { id, ammo }
+    }
 }
 
 #[repr(C)]
@@ -1022,3 +1041,5 @@ pub enum BodyPart {
 pub enum PlayerClickSource {
     PlayerClickSourceScoreboard,
 }
+
+pub type WeaponSlots = StaticArray<WeaponSlotData, 13>;

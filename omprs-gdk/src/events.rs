@@ -170,4 +170,8 @@ pub trait Events {
     fn on_player_enter_race_checkpoint(&mut self, player: Player) {}
 
     fn on_player_leave_race_checkpoint(&mut self, player: Player) {}
+
+    fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
+        true
+    }
 }

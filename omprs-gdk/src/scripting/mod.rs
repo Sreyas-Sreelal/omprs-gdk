@@ -1,5 +1,6 @@
 pub mod actors;
 pub mod checkpoints;
+pub mod classes;
 pub mod core;
 pub mod models;
 pub mod objects;
