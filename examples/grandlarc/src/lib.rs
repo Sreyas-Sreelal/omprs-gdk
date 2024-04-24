@@ -4,6 +4,7 @@ use omprs_gdk::{
     classes::CreateClass,
     colour::Colour,
     core::Print,
+    dialogs::{DialogResponse, DialogStyle},
     main,
     players::{Player, WeaponSlotData, WeaponSlots},
     register,
@@ -20,6 +21,15 @@ impl Events for GrandLarc {
             Colour::from_rgba(0xFF000000),
             &format!("Welcome {} to GrandLarc", player.get_name()),
         );
+
+        player.show_dialog(
+            0,
+            DialogStyle::Password,
+            "Enter Password",
+            "You need special password to enter here",
+            "Access",
+            "",
+        );
     }
 
     fn on_player_text(&mut self, player: Player, message: String) -> bool {
@@ -30,7 +40,7 @@ impl Events for GrandLarc {
             "create actor" => {
                 let mut pos = player.get_pos();
                 pos.y += 2.0;
-                
+
                 let actor = Actor::create_actor(215, pos, 9.0);
                 actor.set_skin(235);
                 actor.apply_animation(AnimationData::new(
@@ -78,12 +88,52 @@ impl Events for GrandLarc {
     fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
         true
     }
+
+    fn on_dialog_response(
+        &mut self,
+        player: Player,
+        dialog_id: i16,
+        response: omprs_gdk::dialogs::DialogResponse,
+        _list_item: isize,
+        input_text: String,
+    ) {
+        match dialog_id {
+            0 => {
+                if let DialogResponse::Left = response {
+                    match input_text.as_str() {
+                        "password" => {
+                            player.send_client_message(
+                                Colour::from_rgba(0x00FF0000),
+                                "Access granted!!",
+                            );
+                        }
+                        _ => {
+                            player.send_client_message(
+                                Colour::from_rgba(0xFF000000),
+                                "Access denied! Try again",
+                            );
+                            player.show_dialog(
+                                dialog_id,
+                                DialogStyle::Password,
+                                "Enter Password",
+                                "You need special password to enter here",
+                                "Access",
+                                "",
+                            );
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
 }
 
 #[main]
 fn entry() {
     register!(GrandLarc);
     let pos = Vector3::new(1958.33, 1343.12, 15.36);
+
     let mut slots = WeaponSlots::default();
     slots[0] = WeaponSlotData::new(24, 36);
     slots[1] = WeaponSlotData::new(28, 150);
