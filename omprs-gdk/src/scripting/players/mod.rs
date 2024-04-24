@@ -825,11 +825,11 @@ impl Player {
         PlayerRaceCheckPointData::new(center_pos, next_pos, radius)
     }
 
-    pub fn SetSpawnInfo(&self, player_class: PlayerClass) {
+    pub fn set_spawn_info(&self, player_class: PlayerClass) {
         classes::functions::SetSpawnInfo(self, player_class)
     }
 
-    pub fn GetSpawnInfo(&self) -> PlayerClass {
+    pub fn get_spawn_info(&self) -> PlayerClass {
         let mut data = PlayerClass::default();
         classes::functions::GetSpawnInfo(self, &mut data);
         data
