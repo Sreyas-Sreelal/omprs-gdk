@@ -8,6 +8,7 @@ use crate::{
     animationdata::AnimationData,
     classes::{self, PlayerClass},
     colour::Colour,
+    dialogs::{self, DialogStyle},
     objects::{Object, PlayerObject},
     staticarray::StaticArray,
     vector::{Vector3, Vector4},
@@ -833,6 +834,26 @@ impl Player {
         let mut data = PlayerClass::default();
         classes::functions::GetSpawnInfo(self, &mut data);
         data
+    }
+
+    pub fn show_dialog(
+        &self,
+        dialog: i16,
+        style: DialogStyle,
+        title: &str,
+        body: &str,
+        button1: &str,
+        button2: &str,
+    ) {
+        dialogs::functions::ShowPlayerDialog(self, dialog, style, title, body, button1, button2)
+    }
+
+    pub fn get_dialog_id(&self) -> i16 {
+        dialogs::functions::GetPlayerDialogID(self)
+    }
+
+    pub fn hide_dialog(&self) -> bool {
+        dialogs::functions::HidePlayerDialog(self)
     }
 }
 

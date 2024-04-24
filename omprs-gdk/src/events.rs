@@ -4,6 +4,7 @@ use crate::{
     network::PeerDisconnectReason,
     objects::{Object, PlayerObject},
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
+    scripting::dialogs::DialogResponse,
     vector::Vector3,
     vehicles::Vehicle,
 };
@@ -173,5 +174,16 @@ pub trait Events {
 
     fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
         true
+    }
+
+    // Dialog callbacks
+    fn on_dialog_response(
+        &mut self,
+        player: Player,
+        dialog_id: i16,
+        response: DialogResponse,
+        list_item: isize,
+        input_text: String,
+    ) {
     }
 }
