@@ -16,13 +16,13 @@ impl<T: Default + Copy, const SIZE: usize> Default for StaticArray<T, SIZE> {
 
 impl<T: Default + Copy, const SIZE: usize> Index<usize> for StaticArray<T, SIZE> {
     type Output = T;
-    fn index<'a>(&'a self, i: usize) -> &'a T {
+    fn index(&self, i: usize) -> &T {
         &self.elements[i]
     }
 }
 
 impl<T: Default + Copy, const SIZE: usize> IndexMut<usize> for StaticArray<T, SIZE> {
-    fn index_mut<'a>(&'a mut self, i: usize) -> &'a mut T {
+    fn index_mut(&mut self, i: usize) -> &mut T {
         &mut self.elements[i]
     }
 }
