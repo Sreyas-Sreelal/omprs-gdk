@@ -3,6 +3,7 @@ pub mod checkpoints;
 pub mod classes;
 pub mod core;
 pub mod dialogs;
+pub mod gangzones;
 pub mod models;
 pub mod objects;
 pub mod players;

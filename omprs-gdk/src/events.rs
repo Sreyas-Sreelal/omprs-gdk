@@ -1,5 +1,6 @@
 use crate::{
     actors::Actor,
+    gangzones::GangZone,
     models::ModelDownloadType,
     network::PeerDisconnectReason,
     objects::{Object, PlayerObject},
@@ -186,4 +187,9 @@ pub trait Events {
         input_text: String,
     ) {
     }
+
+    // GangZone callbacks
+    fn on_player_enter_gang_zone(&mut self, player: Player, zone: GangZone) {}
+    fn on_player_leave_gang_zone(&mut self, player: Player, zone: GangZone) {}
+    fn on_player_click_gang_zone(&mut self, player: Player, zone: GangZone) {}
 }

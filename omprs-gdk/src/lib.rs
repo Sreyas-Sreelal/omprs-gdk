@@ -20,6 +20,7 @@ pub use scripting::checkpoints;
 pub use scripting::classes;
 pub use scripting::core;
 pub use scripting::dialogs;
+pub use scripting::gangzones;
 pub use scripting::models;
 pub use scripting::objects;
 pub use scripting::players;
@@ -35,4 +36,5 @@ pub fn init_functions() {
     checkpoints::load_functions();
     classes::load_functions();
     dialogs::load_functions();
+    gangzones::load_functions();
 }
