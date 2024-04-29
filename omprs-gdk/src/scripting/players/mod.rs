@@ -855,6 +855,10 @@ impl Player {
     pub fn hide_dialog(&self) -> bool {
         dialogs::functions::HidePlayerDialog(self)
     }
+
+    pub fn get_id(&self) -> usize {
+        functions::GetPlayerID(self)
+    }
 }
 
 #[repr(C)]

@@ -180,6 +180,7 @@ native!(GetPlayerCustomSkin,player: struct Player,-> isize);
 native!(RedirectDownload,player: struct Player, url: str, -> bool);
 //native!(IsValidPlayer, player: struct Player, -> bool);
 //native!(GetPlayersPool, -> c_void*);
+native!(GetPlayerID,player:struct Player, -> usize);
 
 pub fn load_functions() {
     load_function!(SendClientMessage);
@@ -346,4 +347,5 @@ pub fn load_functions() {
     load_function!(GetPlayerCustomSkin);
     load_function!(RedirectDownload);
     //load_function!(IsValidPlayer);
+    load_function!(GetPlayerID);
 }
