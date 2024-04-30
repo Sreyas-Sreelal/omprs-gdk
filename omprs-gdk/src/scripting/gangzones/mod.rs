@@ -33,7 +33,7 @@ impl GangZone {
         Self { handle }
     }
 
-    pub fn create(pos: GangZonePos) -> Self {
+    pub fn create(pos: GangZonePos) -> Option<Self> {
         functions::GangZoneCreate(pos)
     }
 

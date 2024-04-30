@@ -8,3 +8,4 @@ pub mod models;
 pub mod objects;
 pub mod players;
 pub mod vehicles;
+pub mod menus;

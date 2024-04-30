@@ -23,7 +23,7 @@ impl Actor {
         Self { handle }
     }
 
-    pub fn create_actor(skin: isize, pos: Vector3, angle: f32) -> Actor {
+    pub fn create_actor(skin: isize, pos: Vector3, angle: f32) -> Option<Actor> {
         functions::CreateActor(skin, pos, angle)
     }
 

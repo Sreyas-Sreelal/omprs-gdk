@@ -51,7 +51,7 @@ impl Events for GrandLarc {
                 let mut pos = player.get_pos();
                 pos.y += 2.0;
 
-                let actor = Actor::create_actor(215, pos, 9.0);
+                let actor = Actor::create_actor(215, pos, 9.0).unwrap();
                 actor.set_skin(235);
                 actor.apply_animation(AnimationData::new(
                     1.0,
@@ -75,7 +75,7 @@ impl Events for GrandLarc {
                 let zone = gangzones::GangZone::create(GangZonePos::new(
                     Vector2::new(pos.x, pos.y),
                     Vector2::new(pos.x + 100.0, pos.y + 100.0),
-                ));
+                )).unwrap();
                 zone.show_for_player(&player, Colour::from_rgba(0xFFA50065));
                 zone.use_check(true);
             }

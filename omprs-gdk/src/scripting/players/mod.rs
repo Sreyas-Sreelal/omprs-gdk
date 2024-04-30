@@ -334,19 +334,19 @@ impl Player {
         functions::GetPlayerLastShotVectors(self)
     }
 
-    pub fn get_camera_target_player(&self) -> Player {
+    pub fn get_camera_target_player(&self) -> Option<Player> {
         functions::GetPlayerCameraTargetPlayer(self)
     }
 
-    pub fn get_camera_target_actor(&self) -> Actor {
+    pub fn get_camera_target_actor(&self) -> Option<Actor> {
         functions::GetPlayerCameraTargetActor(self)
     }
 
-    pub fn get_camera_target_object(&self) -> Object {
+    pub fn get_camera_target_object(&self) -> Option<Object> {
         functions::GetPlayerCameraTargetObject(self)
     }
 
-    pub fn get_camera_target_vehicle(&self) -> Vehicle {
+    pub fn get_camera_target_vehicle(&self) -> Option<Vehicle> {
         functions::GetPlayerCameraTargetVehicle(self)
     }
 
@@ -551,11 +551,11 @@ impl Player {
         functions::GetPlayerSurfingData(self)
     }
 
-    pub fn get_target_player(&self) -> Player {
+    pub fn get_target_player(&self) -> Option<Player> {
         functions::GetPlayerTargetPlayer(self)
     }
 
-    pub fn get_target_actor(&self) -> Actor {
+    pub fn get_target_actor(&self) -> Option<Actor> {
         functions::GetPlayerTargetActor(self)
     }
 

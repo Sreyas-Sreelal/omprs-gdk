@@ -139,18 +139,32 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
     if let Some((ref return_type, is_struct)) = return_type {
         if is_struct {
-            body.push(quote!(#return_type::new(ret_val)))
+            body.push(quote!(
+                if ret_val.is_null() {
+                    None
+                } else {
+                    Some(#return_type::new(ret_val))
+                }
+            ))
         } else {
             body.push(quote!(ret_val));
         }
     }
 
-    let user_func = if let Some((return_type, _)) = return_type {
-        quote!(
-            pub fn #name(#(#param_list)*) -> #return_type {
-                #(#body)*
-            }
-        )
+    let user_func = if let Some((return_type, is_struct)) = return_type {
+        if is_struct{
+            quote!(
+                pub fn #name(#(#param_list)*) -> Option<#return_type> {
+                    #(#body)*
+                }
+            )
+        } else {
+            quote!(
+                pub fn #name(#(#param_list)*) -> #return_type {
+                    #(#body)*
+                }
+            )
+        }
     } else {
         quote!(
             pub fn #name(#(#param_list)*) {
