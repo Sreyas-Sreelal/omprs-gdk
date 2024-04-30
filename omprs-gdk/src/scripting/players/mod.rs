@@ -861,7 +861,7 @@ impl Player {
         functions::GetPlayerID(self)
     }
 
-    pub fn GetPlayerMenu(&self) -> Option<Menu> {
+    pub fn get_menu(&self) -> Option<Menu> {
         menus::functions::GetPlayerMenu(self)
     }
 }
