@@ -8,7 +8,7 @@ use omprs_gdk::{
     core::Print,
     dialogs::{DialogResponse, DialogStyle},
     gangzones::{self, GangZone, GangZonePos},
-    main,
+    main, menus::{self, Menu},
     players::{Player, WeaponSlotData, WeaponSlots},
     register,
     vector::{Vector2, Vector3},
@@ -22,6 +22,7 @@ enum DIALOGIDS {
 struct GrandLarc {
     game_name: String,
     activegangzone: HashMap<usize, GangZone>,
+    active_menu: Menu,
 }
 
 impl Events for GrandLarc {
@@ -75,7 +76,8 @@ impl Events for GrandLarc {
                 let zone = gangzones::GangZone::create(GangZonePos::new(
                     Vector2::new(pos.x, pos.y),
                     Vector2::new(pos.x + 100.0, pos.y + 100.0),
-                )).unwrap();
+                ))
+                .unwrap();
                 zone.show_for_player(&player, Colour::from_rgba(0xFFA50065));
                 zone.use_check(true);
             }
@@ -94,6 +96,9 @@ impl Events for GrandLarc {
                     }
                 }
             }
+            "menu" => {
+                self.active_menu.show_for_player(&player);
+            }
             _ => {}
         }
 
@@ -108,9 +113,9 @@ impl Events for GrandLarc {
         dbg!(killer.is_some());
     }
 
-    fn on_player_spawn(&mut self, player: Player) {
+    /* fn on_player_spawn(&mut self, player: Player) {
         // player.set_skin(230);
-    }
+    } */
 
     fn on_player_enter_checkpoint(&mut self, player: Player) {
         player.send_client_message(Colour::from_rgba(0x0000EE00), "You reached checkpoint!!");
@@ -120,9 +125,9 @@ impl Events for GrandLarc {
         player.send_client_message(Colour::from_rgba(0x0000DD00), "You left checkpoint!!");
     }
 
-    fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
+    /* fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
         true
-    }
+    } */
 
     fn on_dialog_response(
         &mut self,
@@ -181,14 +186,44 @@ impl Events for GrandLarc {
             zone.stop_flash_for_player(&player);
         }
     }
+
+    fn on_player_selected_menu_row(&mut self, player: Player, row: isize) {
+        if let Some(menu) = player.get_menu(){
+            dbg!(menu.get_id());
+            match row {
+                0 => {
+                    player.set_health(0.0);
+                },
+                1 => {
+                    player.give_money(9999);
+                }
+                2=> {
+                    self.active_menu.hide_for_player(&player);
+                }
+                _ => {}
+            }
+        }
+    }
+
+    fn on_player_exited_menu(&mut self, player: Player) {
+        player.send_client_message(Colour::from_rgba(0xFF000000),"Closed menu");
+    }
 }
 
 #[main]
 fn entry() {
+    
+     let menu =   menus::Menu::create("Example Menu", 1, Vector2::new(50.0, 180.0), 200.0, 200.0).unwrap();
+   
+    menu.add_item(0, "Item1");
+    menu.add_item(0,"Item2");
+    menu.add_item(0,"Close");
     register!(GrandLarc {
         game_name: String::from("gg"),
         activegangzone: HashMap::new(),
+        active_menu: menu
     });
+
     let pos = Vector3::new(1958.33, 1343.12, 15.36);
 
     let mut slots = WeaponSlots::default();
@@ -197,5 +232,7 @@ fn entry() {
     slots[2] = WeaponSlotData::new(1, 1);
     CreateClass(255, 6, pos, 269.15, slots);
     CreateClass(1, 230, pos, 269.15, slots);
+    
+
     Print("Hello world");
 }
