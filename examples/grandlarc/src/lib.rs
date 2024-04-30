@@ -8,7 +8,8 @@ use omprs_gdk::{
     core::Print,
     dialogs::{DialogResponse, DialogStyle},
     gangzones::{self, GangZone, GangZonePos},
-    main, menus::{self, Menu},
+    main,
+    menus::{self, Menu},
     players::{Player, WeaponSlotData, WeaponSlots},
     register,
     vector::{Vector2, Vector3},
@@ -188,16 +189,16 @@ impl Events for GrandLarc {
     }
 
     fn on_player_selected_menu_row(&mut self, player: Player, row: isize) {
-        if let Some(menu) = player.get_menu(){
+        if let Some(menu) = player.get_menu() {
             dbg!(menu.get_id());
             match row {
                 0 => {
                     player.set_health(0.0);
-                },
+                }
                 1 => {
                     player.give_money(9999);
                 }
-                2=> {
+                2 => {
                     self.active_menu.hide_for_player(&player);
                 }
                 _ => {}
@@ -206,18 +207,18 @@ impl Events for GrandLarc {
     }
 
     fn on_player_exited_menu(&mut self, player: Player) {
-        player.send_client_message(Colour::from_rgba(0xFF000000),"Closed menu");
+        player.send_client_message(Colour::from_rgba(0xFF000000), "Closed menu");
     }
 }
 
 #[main]
 fn entry() {
-    
-     let menu =   menus::Menu::create("Example Menu", 1, Vector2::new(50.0, 180.0), 200.0, 200.0).unwrap();
-   
+    let menu =
+        menus::Menu::create("Example Menu", 1, Vector2::new(50.0, 180.0), 200.0, 200.0).unwrap();
+
     menu.add_item(0, "Item1");
-    menu.add_item(0,"Item2");
-    menu.add_item(0,"Close");
+    menu.add_item(0, "Item2");
+    menu.add_item(0, "Close");
     register!(GrandLarc {
         game_name: String::from("gg"),
         activegangzone: HashMap::new(),
@@ -232,7 +233,6 @@ fn entry() {
     slots[2] = WeaponSlotData::new(1, 1);
     CreateClass(255, 6, pos, 269.15, slots);
     CreateClass(1, 230, pos, 269.15, slots);
-    
 
     Print("Hello world");
 }
