@@ -16,8 +16,9 @@ use crate::{
 };
 use std::os::raw::c_void;
 
-use super::checkpoints::{
-    self, PlayerCheckPointData, PlayerRaceCheckPointData, RaceCheckpointType,
+use super::{
+    checkpoints::{self, PlayerCheckPointData, PlayerRaceCheckPointData, RaceCheckpointType},
+    menus::{self, Menu},
 };
 
 pub struct Player {
@@ -858,6 +859,10 @@ impl Player {
 
     pub fn get_id(&self) -> usize {
         functions::GetPlayerID(self)
+    }
+
+    pub fn GetPlayerMenu(&self) -> Option<Menu> {
+        menus::functions::GetPlayerMenu(self)
     }
 }
 

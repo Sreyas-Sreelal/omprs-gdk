@@ -21,6 +21,7 @@ pub use scripting::classes;
 pub use scripting::core;
 pub use scripting::dialogs;
 pub use scripting::gangzones;
+pub use scripting::menus;
 pub use scripting::models;
 pub use scripting::objects;
 pub use scripting::players;
@@ -37,4 +38,5 @@ pub fn init_functions() {
     classes::load_functions();
     dialogs::load_functions();
     gangzones::load_functions();
+    menus::load_functions();
 }

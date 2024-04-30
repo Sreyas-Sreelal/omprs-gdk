@@ -152,7 +152,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
 
     let user_func = if let Some((return_type, is_struct)) = return_type {
-        if is_struct{
+        if is_struct {
             quote!(
                 pub fn #name(#(#param_list)*) -> Option<#return_type> {
                     #(#body)*

@@ -192,4 +192,8 @@ pub trait Events {
     fn on_player_enter_gang_zone(&mut self, player: Player, zone: GangZone) {}
     fn on_player_leave_gang_zone(&mut self, player: Player, zone: GangZone) {}
     fn on_player_click_gang_zone(&mut self, player: Player, zone: GangZone) {}
+
+    // Menu callbacks
+    fn on_player_selected_menu_row(&mut self, player: Player, row: isize) {}
+    fn on_player_exited_menu(&mut self, player: Player) {}
 }
