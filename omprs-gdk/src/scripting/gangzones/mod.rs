@@ -23,7 +23,6 @@ pub struct GangZone {
     handle: *const c_void,
 }
 
-#[deny(non_snake_case)]
 impl GangZone {
     pub fn get_handle(&self) -> *const c_void {
         self.handle
