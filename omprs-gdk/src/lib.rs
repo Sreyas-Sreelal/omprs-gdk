@@ -30,7 +30,6 @@ pub use types::*;
 
 pub fn init_functions() {
     core::load_functions();
-    // models
     models::load_functions();
     players::load_functions();
     actors::load_functions();
@@ -39,4 +38,5 @@ pub fn init_functions() {
     dialogs::load_functions();
     gangzones::load_functions();
     menus::load_functions();
+    objects::load_functions();
 }
