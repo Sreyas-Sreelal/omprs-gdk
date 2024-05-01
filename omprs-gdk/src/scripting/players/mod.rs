@@ -874,6 +874,21 @@ impl Player {
     pub fn end_object_editing(&self) {
         objects::functions::EndObjectEditing(self)
     }
+    pub fn create_player_object(
+        &self,
+        modelid: isize,
+        position: Vector3,
+        rotation: Vector3,
+        drawDistance: f32,
+    ) -> Option<PlayerObject> {
+        objects::functions::CreatePlayerObject(self, modelid, position, rotation, drawDistance)
+    }
+    pub fn destroy_player_object(&self, object: PlayerObject) {
+        objects::functions::DestroyPlayerObject(self, &object);
+    }
+    pub fn edit_player_object(&self, object: &PlayerObject) {
+        objects::functions::EditPlayerObject(self, object)
+    }
 }
 
 #[repr(C)]

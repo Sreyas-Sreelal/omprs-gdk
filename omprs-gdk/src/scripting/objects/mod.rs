@@ -11,7 +11,6 @@ pub struct Object {
     handle: *const c_void,
 }
 
-#[deny(non_snake_case)]
 impl Object {
     pub fn get_handle(&self) -> *const c_void {
         self.handle
@@ -55,10 +54,10 @@ impl Object {
         functions::GetObjectPos(self, &mut pos);
         pos
     }
-    pub fn set_rot(&self, rotation: Vector3) {
+    pub fn set_rotation(&self, rotation: Vector3) {
         functions::SetObjectRot(self, rotation)
     }
-    pub fn get_rot(&self) -> Vector3 {
+    pub fn get_rotation(&self) -> Vector3 {
         let mut rotation = Vector3::default();
         functions::GetObjectRot(self, &mut rotation);
         rotation
@@ -66,7 +65,7 @@ impl Object {
     pub fn get_model(&self) -> isize {
         functions::GetObjectModel(self)
     }
-    pub fn set_no_camera_col(&self) {
+    pub fn set_no_camera_collision(&self) {
         functions::SetObjectNoCameraCol(self)
     }
     pub fn is_valid(&self) -> bool {
@@ -123,7 +122,7 @@ impl Object {
             textalignment,
         )
     }
-    pub fn set_objects_default_camera_col(disable: bool) {
+    pub fn set_objects_default_camera_collision(disable: bool) {
         functions::SetObjectsDefaultCameraCol(disable)
     }
     pub fn get_draw_distance(&self) -> f32 {
@@ -206,7 +205,7 @@ impl Object {
             text_alignment,
         )
     }
-    pub fn is_no_camera_col(&self) -> bool {
+    pub fn is_no_camera_collision(&self) -> bool {
         functions::IsObjectNoCameraCol(self)
     }
     pub fn get_id(&self) -> isize {
@@ -225,6 +224,191 @@ impl PlayerObject {
 
     pub fn new(handle: *const c_void) -> Self {
         Self { handle }
+    }
+
+    pub fn attach_player_object_to_vehicle(
+        &self,
+        vehicle: &Vehicle,
+        offset: Vector3,
+        rotation: Vector3,
+    ) {
+        functions::AttachPlayerObjectToVehicle(self, &vehicle, offset, rotation)
+    }
+    pub fn attach_player_object_to_player(
+        &self,
+        player_attached_to: &Player,
+        offset: Vector3,
+        rotation: Vector3,
+    ) {
+        functions::AttachPlayerObjectToPlayer(self, player_attached_to, offset, rotation)
+    }
+    pub fn attach_player_object_to_object(
+        &self,
+        attached_to: &PlayerObject,
+        offset: Vector3,
+        rotation: Vector3,
+    ) {
+        functions::AttachPlayerObjectToObject(self, attached_to, offset, rotation)
+    }
+    pub fn set_player_object_pos(&self, position: Vector3) {
+        functions::SetPlayerObjectPos(self, position)
+    }
+    pub fn get_player_object_pos(&self) -> Vector3 {
+        let mut position = Vector3::default();
+        functions::GetPlayerObjectPos(self, &mut position);
+        position
+    }
+    pub fn set_player_object_rotation(&self, rotation: Vector3) {
+        functions::SetPlayerObjectRot(self, rotation)
+    }
+    pub fn get_player_object_rotation(&self) -> Vector3 {
+        let mut rotation = Vector3::default();
+        functions::GetPlayerObjectRot(self, &mut rotation);
+        rotation
+    }
+    pub fn get_player_object_model(&self) -> isize {
+        functions::GetPlayerObjectModel(self)
+    }
+    pub fn set_player_object_no_camera_collision(&self) {
+        functions::SetPlayerObjectNoCameraCol(self)
+    }
+    pub fn move_player_object(&self, data: ObjectMoveData) -> isize {
+        functions::MovePlayerObject(self, data)
+    }
+    pub fn stop_player_object(&self) {
+        functions::StopPlayerObject(self)
+    }
+    pub fn is_player_object_moving(&self) -> bool {
+        functions::IsPlayerObjectMoving(self)
+    }
+
+    pub fn set_player_object_material(
+        &self,
+        material_index: isize,
+        model_id: isize,
+        texture_library: &str,
+        texture_name: &str,
+        material_colour: Colour,
+    ) {
+        functions::SetPlayerObjectMaterial(
+            self,
+            material_index,
+            model_id,
+            texture_library,
+            texture_name,
+            material_colour,
+        )
+    }
+    pub fn set_player_object_material_text(
+        &self,
+        text: &str,
+        material_index: isize,
+        material_size: isize,
+        fontface: &str,
+        fontsize: isize,
+        bold: bool,
+        font_colour: Colour,
+        background_colour: Colour,
+        textalignment: ObjectMaterialTextAlign,
+    ) {
+        functions::SetPlayerObjectMaterialText(
+            self,
+            &text,
+            material_index,
+            material_size,
+            &fontface,
+            fontsize,
+            bold,
+            font_colour,
+            background_colour,
+            textalignment,
+        )
+    }
+    pub fn get_player_object_draw_distance(&self) -> f32 {
+        functions::GetPlayerObjectDrawDistance(self)
+    }
+    pub fn get_player_object_move_speed(&self) -> f32 {
+        functions::GetPlayerObjectMoveSpeed(self)
+    }
+    pub fn get_player_object_moving_data(&self) -> ObjectMoveData {
+        let mut data = ObjectMoveData::default();
+        functions::GetPlayerObjectMovingData(self, &mut data);
+        data
+    }
+    pub fn get_player_object_attached_data(&self) -> ObjectAttachmentData {
+        let mut data = ObjectAttachmentData::default();
+        functions::GetPlayerObjectAttachedData(self, &mut data);
+        data
+    }
+    pub fn is_player_object_material_slot_used(&self, material_index: isize) -> bool {
+        functions::IsPlayerObjectMaterialSlotUsed(self, material_index)
+    }
+    pub fn get_player_object_material_data(&self, material_index: isize) -> ObjectMaterialData {
+        let (
+            mut modelid,
+            mut texture_library,
+            mut texture_name,
+            mut material_colour,
+            mut text,
+            mut material_size,
+            mut font_face,
+            mut font_size,
+            mut bold,
+            mut font_colour,
+            mut background_colour,
+            mut text_alignment,
+        ): (
+            isize,
+            String,
+            String,
+            Colour,
+            String,
+            isize,
+            String,
+            isize,
+            bool,
+            Colour,
+            Colour,
+            isize,
+        ) = Default::default();
+
+        functions::GetPlayerObjectMaterialData(
+            self,
+            material_index,
+            &mut modelid,
+            &mut texture_library,
+            &mut texture_name,
+            &mut material_colour,
+            &mut text,
+            &mut material_size,
+            &mut font_face,
+            &mut font_size,
+            &mut bold,
+            &mut font_colour,
+            &mut background_colour,
+            &mut text_alignment,
+        );
+
+        ObjectMaterialData::new(
+            modelid,
+            texture_library,
+            texture_name,
+            material_colour,
+            text,
+            material_size,
+            font_face,
+            font_size,
+            bold,
+            font_colour,
+            background_colour,
+            text_alignment,
+        )
+    }
+    pub fn is_player_object_no_camera_collision(&self) -> bool {
+        functions::IsPlayerObjectNoCameraCol(self)
+    }
+    pub fn get_player_object_id(&self) -> isize {
+        functions::GetPlayerObjectID(self)
     }
 }
 
