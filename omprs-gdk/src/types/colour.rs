@@ -14,7 +14,7 @@ union ColourData {
 impl Default for ColourData {
     fn default() -> Self {
         ColourData {
-        rgba: std::mem::ManuallyDrop::new(Rgba::default())
+            rgba: std::mem::ManuallyDrop::new(Rgba::default()),
         }
     }
 }
