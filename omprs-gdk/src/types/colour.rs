@@ -1,4 +1,5 @@
 #[repr(C)]
+#[derive(Default)]
 struct Rgba {
     r: u8,
     g: u8,
@@ -10,7 +11,16 @@ union ColourData {
     rgba: std::mem::ManuallyDrop<Rgba>,
 }
 
+impl Default for ColourData {
+    fn default() -> Self {
+        ColourData {
+        rgba: std::mem::ManuallyDrop::new(Rgba::default())
+        }
+    }
+}
+
 #[repr(C)]
+#[derive(Default)]
 pub struct Colour {
     data: ColourData,
 }
