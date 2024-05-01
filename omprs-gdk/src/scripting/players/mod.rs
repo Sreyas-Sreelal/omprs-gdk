@@ -9,7 +9,7 @@ use crate::{
     classes::{self, PlayerClass},
     colour::Colour,
     dialogs::{self, DialogStyle},
-    objects::{Object, PlayerObject},
+    objects::{self, Object, PlayerObject},
     staticarray::StaticArray,
     vector::{Vector3, Vector4},
     vehicles::Vehicle,
@@ -863,6 +863,16 @@ impl Player {
 
     pub fn get_menu(&self) -> Option<Menu> {
         menus::functions::GetPlayerMenu(self)
+    }
+
+    pub fn edit_object(&self, object: &Object) {
+        objects::functions::EditObject(self, object)
+    }
+    pub fn select_object(&self) {
+        objects::functions::SelectObject(self)
+    }
+    pub fn end_object_editing(&self) {
+        objects::functions::EndObjectEditing(self)
     }
 }
 
