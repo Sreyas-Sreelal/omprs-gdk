@@ -232,7 +232,7 @@ impl PlayerObject {
         offset: Vector3,
         rotation: Vector3,
     ) {
-        functions::AttachPlayerObjectToVehicle(self, &vehicle, offset, rotation)
+        functions::AttachPlayerObjectToVehicle(self, vehicle, offset, rotation)
     }
     pub fn attach_player_object_to_player(
         &self,
@@ -313,10 +313,10 @@ impl PlayerObject {
     ) {
         functions::SetPlayerObjectMaterialText(
             self,
-            &text,
+            text,
             material_index,
             material_size,
-            &fontface,
+            fontface,
             fontsize,
             bold,
             font_colour,
@@ -516,4 +516,21 @@ impl ObjectMaterialData {
             textAlignment,
         }
     }
+}
+#[repr(C)]
+pub enum ObjectEditResponse {
+    Cancel,
+    Final,
+    Update,
+}
+
+#[repr(C)]
+pub struct ObjectAttachmentSlotData {
+    model: isize,
+    bone: isize,
+    offset: Vector3,
+    rotation: Vector3,
+    scale: Vector3,
+    colour1: Colour,
+    colour2: Colour,
 }

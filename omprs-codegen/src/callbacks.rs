@@ -76,6 +76,7 @@ pub fn create_callback(input: TokenStream) -> TokenStream {
             || param_type == "Vehicle"
             || param_type == "Object"
             || param_type == "GangZone"
+            || param_type == "PlayerObject"
         {
             if is_option {
                 orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));

@@ -3,7 +3,7 @@ use crate::{
     gangzones::GangZone,
     models::ModelDownloadType,
     network::PeerDisconnectReason,
-    objects::{Object, PlayerObject},
+    objects::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject},
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
     scripting::dialogs::DialogResponse,
     vector::Vector3,
@@ -196,4 +196,50 @@ pub trait Events {
     // Menu callbacks
     fn on_player_selected_menu_row(&mut self, player: Player, row: isize) {}
     fn on_player_exited_menu(&mut self, player: Player) {}
+
+    // Object callbacks
+    fn on_object_moved(&mut self, object: Object) {}
+    fn on_player_object_moved(&mut self, player: Player, object: PlayerObject) {}
+    fn on_player_edit_object(
+        &mut self,
+        player: Player,
+        object: Object,
+        response: ObjectEditResponse,
+        offset: Vector3,
+        rotation: Vector3,
+    ) {
+    }
+    fn on_player_object_edited(
+        &mut self,
+        player: Player,
+        object: PlayerObject,
+        response: ObjectEditResponse,
+        offset: Vector3,
+        rotation: Vector3,
+    ) {
+    }
+    fn on_player_edit_attached_object(
+        &mut self,
+        player: Player,
+        index: isize,
+        saved: bool,
+        data: ObjectAttachmentSlotData,
+    ) {
+    }
+    fn on_player_select_object(
+        &mut self,
+        player: Player,
+        object: Object,
+        model: isize,
+        position: Vector3,
+    ) {
+    }
+    fn on_player_object_selected(
+        &mut self,
+        player: Player,
+        object: PlayerObject,
+        model: isize,
+        position: Vector3,
+    ) {
+    }
 }
