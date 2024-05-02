@@ -11,7 +11,8 @@ use crate::{
     dialogs::{self, DialogStyle},
     objects::{self, Object, PlayerObject},
     staticarray::StaticArray,
-    vector::{Vector3, Vector4},
+    textdraws::{self, PlayerTextDraw},
+    vector::{Vector2, Vector3, Vector4},
     vehicles::Vehicle,
 };
 use std::os::raw::c_void;
@@ -888,6 +889,12 @@ impl Player {
     }
     pub fn edit_player_object(&self, object: &PlayerObject) {
         objects::functions::EditPlayerObject(self, object)
+    }
+    pub fn create_player_text_draw(&self, position: Vector2, text: &str) -> Option<PlayerTextDraw> {
+        textdraws::functions::CreatePlayerTextDraw(self, position, text)
+    }
+    pub fn player_text_draw_destroy(&self, textdraw: &PlayerTextDraw) {
+        textdraws::functions::PlayerTextDrawDestroy(self, textdraw)
     }
 }
 

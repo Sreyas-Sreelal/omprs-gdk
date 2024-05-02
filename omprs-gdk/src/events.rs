@@ -7,6 +7,7 @@ use crate::{
     pickups::Pickup,
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
     scripting::dialogs::DialogResponse,
+    textdraws::{PlayerTextDraw, TextDraw},
     vector::Vector3,
     vehicles::Vehicle,
 };
@@ -246,4 +247,14 @@ pub trait Events {
 
     // Pickup callbacks
     fn on_player_pick_up_pickup(&mut self, player: Player, pickup: Pickup) {}
+
+    // TextDraw callbacks
+    fn on_player_cancel_text_draw_selection(&mut self, player: Player) -> bool {
+        true
+    }
+    fn on_player_cancel_player_text_draw_selection(&mut self, player: Player) -> bool {
+        true
+    }
+    fn on_player_click_text_draw(&mut self, player: Player, textdraw: TextDraw) {}
+    fn on_player_click_player_text_draw(&mut self, player: Player, textdraw: PlayerTextDraw) {}
 }

@@ -9,4 +9,5 @@ pub mod models;
 pub mod objects;
 pub mod pickups;
 pub mod players;
+pub mod textdraws;
 pub mod vehicles;
