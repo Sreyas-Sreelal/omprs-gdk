@@ -10,6 +10,7 @@ use omprs_gdk::{
     gangzones::{self, GangZone, GangZonePos},
     main,
     menus::{self, Menu},
+    pickups::Pickup,
     players::{Player, WeaponSlotData, WeaponSlots},
     register,
     vector::{Vector2, Vector3},
@@ -99,6 +100,11 @@ impl Events for GrandLarc {
             }
             "menu" => {
                 self.active_menu.show_for_player(&player);
+            }
+            "pickup" => {
+                let mut pos = player.get_pos();
+                pos.y += 2.0;
+                Pickup::create(1242, 2, pos, -1);
             }
             _ => {}
         }
@@ -208,6 +214,13 @@ impl Events for GrandLarc {
 
     fn on_player_exited_menu(&mut self, player: Player) {
         player.send_client_message(Colour::from_rgba(0xFF000000), "Closed menu");
+    }
+
+    fn on_player_pick_up_pickup(&mut self, player: Player, pickup: Pickup) {
+        player.send_client_message(
+            Colour::from_rgba(0xFF000000),
+            &format!("picked pickup {}", pickup.get_id()),
+        );
     }
 }
 

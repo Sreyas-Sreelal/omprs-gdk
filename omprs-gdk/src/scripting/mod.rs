@@ -7,5 +7,6 @@ pub mod gangzones;
 pub mod menus;
 pub mod models;
 pub mod objects;
+pub mod pickups;
 pub mod players;
 pub mod vehicles;

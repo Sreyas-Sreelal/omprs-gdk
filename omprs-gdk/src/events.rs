@@ -4,6 +4,7 @@ use crate::{
     models::ModelDownloadType,
     network::PeerDisconnectReason,
     objects::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject},
+    pickups::Pickup,
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
     scripting::dialogs::DialogResponse,
     vector::Vector3,
@@ -242,4 +243,7 @@ pub trait Events {
         position: Vector3,
     ) {
     }
+
+    // Pickup callbacks
+    fn on_player_pick_up_pickup(&mut self, player: Player, pickup: Pickup) {}
 }

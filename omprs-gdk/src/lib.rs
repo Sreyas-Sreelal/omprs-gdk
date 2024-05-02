@@ -24,6 +24,7 @@ pub use scripting::gangzones;
 pub use scripting::menus;
 pub use scripting::models;
 pub use scripting::objects;
+pub use scripting::pickups;
 pub use scripting::players;
 pub use scripting::vehicles;
 pub use types::*;
@@ -39,4 +40,5 @@ pub fn init_functions() {
     gangzones::load_functions();
     menus::load_functions();
     objects::load_functions();
+    pickups::load_functions();
 }
