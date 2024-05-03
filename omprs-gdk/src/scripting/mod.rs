@@ -10,4 +10,5 @@ pub mod objects;
 pub mod pickups;
 pub mod players;
 pub mod textdraws;
+pub mod textlabels;
 pub mod vehicles;

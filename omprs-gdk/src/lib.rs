@@ -27,6 +27,7 @@ pub use scripting::objects;
 pub use scripting::pickups;
 pub use scripting::players;
 pub use scripting::textdraws;
+pub use scripting::textlabels;
 pub use scripting::vehicles;
 pub use types::*;
 
@@ -43,4 +44,5 @@ pub fn init_functions() {
     objects::load_functions();
     pickups::load_functions();
     textdraws::load_functions();
+    textlabels::load_functions();
 }

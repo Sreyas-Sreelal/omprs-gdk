@@ -20,6 +20,7 @@ use std::os::raw::c_void;
 use super::{
     checkpoints::{self, PlayerCheckPointData, PlayerRaceCheckPointData, RaceCheckpointType},
     menus::{self, Menu},
+    textlabels::{self, PlayerTextLabel},
 };
 
 pub struct Player {
@@ -895,6 +896,65 @@ impl Player {
     }
     pub fn player_text_draw_destroy(&self, textdraw: &PlayerTextDraw) {
         textdraws::functions::PlayerTextDrawDestroy(self, textdraw)
+    }
+
+    pub fn create_player_text_label_on_player(
+        &self,
+        attachedPlayer: &Player,
+        text: &str,
+        colour: Colour,
+        position: Vector3,
+        drawDistance: f32,
+        los: bool,
+    ) -> Option<PlayerTextLabel> {
+        textlabels::functions::CreatePlayer3DTextLabelOnPlayer(
+            self,
+            attachedPlayer,
+            text,
+            colour,
+            position,
+            drawDistance,
+            los,
+        )
+    }
+    pub fn create_player_text_label_on_vehicle(
+        &self,
+        attachedVehicle: &Vehicle,
+        text: &str,
+        colour: Colour,
+        position: Vector3,
+        drawDistance: f32,
+        los: bool,
+    ) -> Option<PlayerTextLabel> {
+        textlabels::functions::CreatePlayer3DTextLabelOnVehicle(
+            self,
+            attachedVehicle,
+            text,
+            colour,
+            position,
+            drawDistance,
+            los,
+        )
+    }
+    pub fn create_player_text_label(
+        &self,
+        text: &str,
+        colour: Colour,
+        position: Vector3,
+        drawDistance: f32,
+        los: bool,
+    ) -> Option<PlayerTextLabel> {
+        textlabels::functions::CreatePlayer3DTextLabel(
+            self,
+            text,
+            colour,
+            position,
+            drawDistance,
+            los,
+        )
+    }
+    pub fn delete_player_text_label(&self, textlabel: PlayerTextLabel) {
+        textlabels::functions::DeletePlayer3DTextLabel(self, &textlabel)
     }
 }
 
