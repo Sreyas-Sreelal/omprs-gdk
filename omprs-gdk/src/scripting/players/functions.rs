@@ -9,9 +9,9 @@ use std::ffi::c_void;
 
 use crate::{
     actors::Actor,
-    colour::Colour,
     objects::{Object, ObjectAttachmentSlotData, PlayerObject},
-    vector::{Vector3, Vector4},
+    types::colour::Colour,
+    types::vector::{Vector3, Vector4},
     vehicles::Vehicle,
 };
 

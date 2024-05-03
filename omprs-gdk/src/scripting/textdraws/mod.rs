@@ -6,9 +6,9 @@ pub mod functions;
 pub use functions::load_functions;
 
 use crate::{
-    colour::Colour,
     players::Player,
-    vector::{Vector2, Vector3},
+    types::colour::Colour,
+    types::vector::{Vector2, Vector3},
 };
 
 pub struct TextDraw {

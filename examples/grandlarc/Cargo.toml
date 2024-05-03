@@ -7,4 +7,4 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-omprs-gdk = {path="../../omprs-gdk"}
+omprs = {path="../../omprs"}

@@ -1,7 +1,7 @@
 use omprs_codegen::native;
 use std::ffi::c_void;
 
-use crate::{players::Player, vector::Vector2};
+use crate::{players::Player, types::vector::Vector2};
 
 use super::Menu;
 

@@ -1,4 +1,4 @@
-use crate::vector::Vector3;
+use crate::types::vector::Vector3;
 
 pub mod events;
 pub mod functions;

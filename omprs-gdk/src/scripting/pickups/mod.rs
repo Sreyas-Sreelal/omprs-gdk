@@ -5,7 +5,7 @@ pub mod functions;
 
 pub use functions::load_functions;
 
-use crate::{players::Player, vector::Vector3};
+use crate::{players::Player, types::vector::Vector3};
 
 pub struct Pickup {
     handle: *const c_void,

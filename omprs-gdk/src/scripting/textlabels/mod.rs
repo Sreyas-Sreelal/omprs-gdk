@@ -2,7 +2,7 @@ pub mod functions;
 
 use std::ffi::c_void;
 
-use crate::{colour::Colour, players::Player, vector::Vector3, vehicles::Vehicle};
+use crate::{players::Player, types::colour::Colour, types::vector::Vector3, vehicles::Vehicle};
 
 pub use functions::load_functions;
 

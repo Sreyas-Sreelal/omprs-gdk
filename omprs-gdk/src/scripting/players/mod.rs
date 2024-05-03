@@ -5,14 +5,14 @@ pub use functions::load_functions;
 
 use crate::{
     actors::Actor,
-    animationdata::AnimationData,
     classes::{self, PlayerClass},
-    colour::Colour,
     dialogs::{self, DialogStyle},
     objects::{self, Object, ObjectAttachmentSlotData, PlayerObject},
-    staticarray::StaticArray,
     textdraws::{self, PlayerTextDraw},
-    vector::{Vector2, Vector3, Vector4},
+    types::animationdata::AnimationData,
+    types::colour::Colour,
+    types::staticarray::StaticArray,
+    types::vector::{Vector2, Vector3, Vector4},
     vehicles::{self, Vehicle},
 };
 use std::os::raw::c_void;

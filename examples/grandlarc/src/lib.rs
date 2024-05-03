@@ -1,20 +1,20 @@
 use std::collections::HashMap;
 
-use omprs_gdk::{
+use omprs::{
     actors::Actor,
-    animationdata::AnimationData,
     classes::CreateClass,
-    colour::Colour,
     core::Print,
     dialogs::{DialogResponse, DialogStyle},
+    events::Events,
     gangzones::{self, GangZone, GangZonePos},
     main,
     menus::{self, Menu},
     pickups::Pickup,
     players::{Player, WeaponSlotData, WeaponSlots},
     register,
-    vector::{Vector2, Vector3},
-    Events,
+    types::animationdata::AnimationData,
+    types::colour::Colour,
+    types::vector::{Vector2, Vector3},
 };
 
 enum DIALOGIDS {
@@ -140,7 +140,7 @@ impl Events for GrandLarc {
         &mut self,
         player: Player,
         dialog_id: i16,
-        response: omprs_gdk::dialogs::DialogResponse,
+        response: omprs::dialogs::DialogResponse,
         _list_item: isize,
         input_text: String,
     ) {
@@ -246,6 +246,5 @@ fn entry() {
     slots[2] = WeaponSlotData::new(1, 1);
     CreateClass(255, 6, pos, 269.15, slots);
     CreateClass(1, 230, pos, 269.15, slots);
-
     Print("Hello world");
 }

@@ -4,8 +4,8 @@ pub mod functions;
 pub use functions::load_functions;
 //pub use events::ActorEvents;
 
-use crate::animationdata::AnimationData;
 use crate::players::Player;
+use crate::types::animationdata::AnimationData;
 use crate::types::vector::Vector3;
 
 use std::ffi::c_void;

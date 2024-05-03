@@ -1,6 +1,6 @@
 use super::{BodyPart, Player, PlayerClickSource, PlayerState};
-use crate::network::PeerDisconnectReason;
-use crate::vector::Vector3;
+use crate::types::network::PeerDisconnectReason;
+use crate::types::vector::Vector3;
 use omprs_codegen::callback;
 
 callback!(OnPlayerConnect, player:Player);

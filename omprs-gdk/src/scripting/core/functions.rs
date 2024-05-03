@@ -3,7 +3,7 @@ use std::ffi::c_void;
 use omprs_codegen::native;
 
 use crate::players::Player;
-use crate::vector::Vector3;
+use crate::types::vector::Vector3;
 
 native!(Print,message: str);
 native!(GetTickCount, -> isize);

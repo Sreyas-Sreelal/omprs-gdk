@@ -1,7 +1,7 @@
 pub mod events;
 pub mod functions;
 
-use crate::{players::WeaponSlots, vector::Vector3};
+use crate::{players::WeaponSlots, types::vector::Vector3};
 pub use functions::{
     load_functions, CreateClass, EditClassData, GetAvailableClasses, GetClassData,
 };

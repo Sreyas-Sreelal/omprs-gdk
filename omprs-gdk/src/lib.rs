@@ -4,7 +4,7 @@
 
 #[macro_use]
 mod helper;
-mod types;
+pub mod types;
 
 mod events;
 mod scripting;
@@ -29,7 +29,6 @@ pub use scripting::players;
 pub use scripting::textdraws;
 pub use scripting::textlabels;
 pub use scripting::vehicles;
-pub use types::*;
 
 pub fn init_functions() {
     core::load_functions();

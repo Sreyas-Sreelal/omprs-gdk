@@ -2,9 +2,9 @@ use omprs_codegen::native;
 use std::ffi::c_void;
 
 use crate::{
-    colour::Colour,
     players::Player,
-    vector::{Vector2, Vector3},
+    types::colour::Colour,
+    types::vector::{Vector2, Vector3},
 };
 
 use super::{PlayerTextDraw, TextDraw, TextDrawAlignmentTypes, TextDrawStyle};

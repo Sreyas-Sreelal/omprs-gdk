@@ -5,7 +5,7 @@ use std::ffi::c_void;
 
 pub use functions::load_functions;
 
-use crate::{colour::Colour, players::Player, vector::Vector2};
+use crate::{players::Player, types::colour::Colour, types::vector::Vector2};
 
 #[repr(C)]
 #[derive(Default)]

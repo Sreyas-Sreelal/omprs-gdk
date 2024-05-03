@@ -8,7 +8,7 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
     let code = quote! {
         #[no_mangle]
         pub extern "C" fn OMPRS_Main() {
-            omprs_gdk::init_functions();
+            omprs::init_functions();
             #(#body)*
         }
     };

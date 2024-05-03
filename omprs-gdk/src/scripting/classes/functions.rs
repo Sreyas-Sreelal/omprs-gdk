@@ -2,7 +2,7 @@ use omprs_codegen::native;
 
 use super::PlayerClass;
 use crate::players::{Player, WeaponSlots};
-use crate::vector::Vector3;
+use crate::types::vector::Vector3;
 use std::ffi::c_void;
 
 native!(CreateClass,team: u8, skin: isize, spawnPosition: Vector3, angle: f32, slots: WeaponSlots, ->isize);

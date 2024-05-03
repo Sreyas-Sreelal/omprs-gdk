@@ -2,13 +2,12 @@ use crate::{
     actors::Actor,
     gangzones::GangZone,
     models::ModelDownloadType,
-    network::PeerDisconnectReason,
     objects::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject},
     pickups::Pickup,
     players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
     scripting::dialogs::DialogResponse,
     textdraws::{PlayerTextDraw, TextDraw},
-    vector::Vector3,
+    types::{network::PeerDisconnectReason, vector::Vector3},
     vehicles::{UnoccupiedVehicleUpdate, Vehicle},
 };
 

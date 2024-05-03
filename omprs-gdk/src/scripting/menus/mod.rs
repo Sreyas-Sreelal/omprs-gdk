@@ -5,7 +5,7 @@ use std::ffi::c_void;
 
 pub use functions::load_functions;
 
-use crate::{players::Player, vector::Vector2};
+use crate::{players::Player, types::vector::Vector2};
 
 pub struct Menu {
     handle: *const c_void,

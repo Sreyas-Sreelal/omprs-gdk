@@ -4,7 +4,7 @@ use std::ffi::c_void;
 
 use crate::{
     players::Player,
-    vector::{Vector3, Vector4},
+    types::vector::{Vector3, Vector4},
 };
 
 use super::{Vehicle, VehicleParams};

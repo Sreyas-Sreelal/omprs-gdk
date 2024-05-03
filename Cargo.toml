@@ -2,6 +2,7 @@
 members = [
     "omprs-gdk",
     "omprs-codegen",
+    "omprs",
     "examples/grandlarc"
 ]
 resolver = "2"

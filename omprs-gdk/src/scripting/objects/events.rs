@@ -1,6 +1,6 @@
 use omprs_codegen::callback;
 
-use crate::{players::Player, vector::Vector3};
+use crate::{players::Player, types::vector::Vector3};
 
 use super::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject};
 
