@@ -1,5 +1,5 @@
-mod runtime;
-pub use runtime::RUNTIME;
+#[macro_use]
+pub mod runtime;
 
 pub mod events {
     pub use omprs_gdk::Events;

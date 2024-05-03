@@ -9,7 +9,6 @@ pub mod types;
 mod events;
 mod scripting;
 
-#[macro_use]
 mod runtime;
 
 pub use events::Events;
