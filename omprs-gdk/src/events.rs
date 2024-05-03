@@ -301,4 +301,17 @@ pub trait Events {
     ) -> bool {
         true
     }
+
+    // Core callbacks
+    fn on_rcon_command(&mut self, cmd: String) -> bool {
+        true
+    }
+    fn on_rcon_login_attempt(
+        &mut self,
+        player: Option<Player>,
+        ip: String,
+        password: String,
+        success: bool,
+    ) {
+    }
 }

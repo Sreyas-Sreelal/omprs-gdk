@@ -10,7 +10,7 @@ use std::ffi::c_void;
 use crate::{
     actors::Actor,
     colour::Colour,
-    objects::{Object, PlayerObject},
+    objects::{Object, ObjectAttachmentSlotData, PlayerObject},
     vector::{Vector3, Vector4},
     vehicles::Vehicle,
 };
@@ -134,8 +134,8 @@ native!(IsPlayerInAnyVehicle, player: struct Player, -> bool);
 native!(IsPlayerInRangeOfPoint, player: struct Player, range: f32, coord: Vector3, -> bool);
 native!(PlayCrimeReportForPlayer, player: struct Player, suspect:struct Player, crime: isize, -> bool);
 native!(RemovePlayerAttachedObject, player: struct Player, index: isize);
-//native!(SetPlayerAttachedObject, player: struct Player, index: isize, attachment: ObjectAttachmentSlotData);
-//native!(GetPlayerAttachedObject, player: struct Player, index: isize, -> ObjectAttachmentSlotData);
+native!(SetPlayerAttachedObject, player: struct Player, index: isize, attachment: ObjectAttachmentSlotData);
+native!(GetPlayerAttachedObject, player: struct Player, index: isize, -> ObjectAttachmentSlotData);
 native!(SetPlayerFacingAngle, player: struct Player, angle: f32);
 native!(SetPlayerMarkerForPlayer, player: struct Player, other:struct Player, colour: Colour);
 native!(GetPlayerMarkerForPlayer, player: struct Player, other:struct Player, -> isize);
@@ -178,10 +178,17 @@ native!(IsPlayerInDriveByMode, player: struct Player, -> bool);
 native!(IsPlayerCuffed, player: struct Player, -> bool);
 native!(GetPlayerCustomSkin,player: struct Player,-> isize);
 native!(RedirectDownload,player: struct Player, url: str, -> bool);
-//native!(IsValidPlayer, player: struct Player, -> bool);
-//native!(GetPlayersPool, -> c_void*);
 native!(GetPlayerID,player:struct Player, -> usize);
-
+native!(NetStats_BytesReceived, player: struct Player, -> isize);
+native!(NetStats_BytesSent, player: struct Player, -> isize);
+native!(NetStats_ConnectionStatus, player: struct Player, -> isize);
+native!(NetStats_GetConnectedTime, player: struct Player, -> isize);
+native!(NetStats_GetIpPort, player: struct Player, output: mut str);
+native!(NetStats_MessagesReceived, player: struct Player, -> isize);
+native!(NetStats_MessagesRecvPerSecond, player: struct Player, -> isize);
+native!(NetStats_MessagesSent, player: struct Player, -> isize);
+native!(NetStats_PacketLossPercent, player: struct Player, -> f32);
+native!(SendPlayerMessageToAll, player: struct Player, message: str);
 pub fn load_functions() {
     load_function!(SendClientMessage);
     load_function!(GetPlayerName);
@@ -302,8 +309,8 @@ pub fn load_functions() {
     load_function!(IsPlayerInRangeOfPoint);
     load_function!(PlayCrimeReportForPlayer);
     load_function!(RemovePlayerAttachedObject);
-    //load_function!(SetPlayerAttachedObject);
-    //load_function!(GetPlayerAttachedObject);
+    load_function!(SetPlayerAttachedObject);
+    load_function!(GetPlayerAttachedObject);
     load_function!(SetPlayerFacingAngle);
     load_function!(SetPlayerMarkerForPlayer);
     load_function!(GetPlayerMarkerForPlayer);
@@ -348,4 +355,14 @@ pub fn load_functions() {
     load_function!(RedirectDownload);
     //load_function!(IsValidPlayer);
     load_function!(GetPlayerID);
+    load_function!(NetStats_BytesReceived);
+    load_function!(NetStats_BytesSent);
+    load_function!(NetStats_ConnectionStatus);
+    load_function!(NetStats_GetConnectedTime);
+    load_function!(NetStats_GetIpPort);
+    load_function!(NetStats_MessagesReceived);
+    load_function!(NetStats_MessagesRecvPerSecond);
+    load_function!(NetStats_MessagesSent);
+    load_function!(NetStats_PacketLossPercent);
+    load_function!(SendPlayerMessageToAll);
 }

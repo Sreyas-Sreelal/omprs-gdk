@@ -9,7 +9,7 @@ use crate::{
     classes::{self, PlayerClass},
     colour::Colour,
     dialogs::{self, DialogStyle},
-    objects::{self, Object, PlayerObject},
+    objects::{self, Object, ObjectAttachmentSlotData, PlayerObject},
     staticarray::StaticArray,
     textdraws::{self, PlayerTextDraw},
     vector::{Vector2, Vector3, Vector4},
@@ -971,6 +971,46 @@ impl Player {
     }
     pub fn get_player_train_speed(&self) -> f32 {
         vehicles::functions::GetPlayerTrainSpeed(self)
+    }
+
+    pub fn net_stats__bytes_received(&self) -> isize {
+        functions::NetStats_BytesReceived(self)
+    }
+    pub fn net_stats__bytes_sent(&self) -> isize {
+        functions::NetStats_BytesSent(self)
+    }
+    pub fn net_stats__connection_status(&self) -> isize {
+        functions::NetStats_ConnectionStatus(self)
+    }
+    pub fn net_stats__get_connected_time(&self) -> isize {
+        functions::NetStats_GetConnectedTime(self)
+    }
+    pub fn net_stats__get_ip_port(&self) -> String {
+        let mut output = String::new();
+        functions::NetStats_GetIpPort(self, &mut output);
+        output
+    }
+    pub fn net_stats__messages_received(&self) -> isize {
+        functions::NetStats_MessagesReceived(self)
+    }
+    pub fn net_stats__messages_recv_per_second(&self) -> isize {
+        functions::NetStats_MessagesRecvPerSecond(self)
+    }
+    pub fn net_stats__messages_sent(&self) -> isize {
+        functions::NetStats_MessagesSent(self)
+    }
+    pub fn net_stats__packet_loss_percent(&self) -> f32 {
+        functions::NetStats_PacketLossPercent(self)
+    }
+    pub fn send_message_to_all(&self, message: &str) {
+        functions::SendPlayerMessageToAll(self, message)
+    }
+
+    pub fn set_attached_object(&self, index: isize, attachment: ObjectAttachmentSlotData) {
+        functions::SetPlayerAttachedObject(self, index, attachment)
+    }
+    pub fn get_attached_object(&self, index: isize) -> ObjectAttachmentSlotData {
+        functions::GetPlayerAttachedObject(self, index)
     }
 }
 
