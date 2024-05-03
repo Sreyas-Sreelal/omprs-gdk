@@ -1080,6 +1080,7 @@ pub enum PlayerFightingStyle {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerState {
     PlayerStateNone = 0,
     PlayerStateOnFoot = 1,
@@ -1094,6 +1095,7 @@ pub enum PlayerState {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerWeaponSkill {
     PlayerWeaponSkillPistol,
     PlayerWeaponSkillSilencedPistol,
@@ -1109,6 +1111,7 @@ pub enum PlayerWeaponSkill {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerSpecialAction {
     SpecialActionNone,
     SpecialActionDuck,
@@ -1157,6 +1160,7 @@ pub struct PlayerBulletData {
     hitID: u16,
 }
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerBulletHitType {
     PlayerBulletHitTypeNone,
     PlayerBulletHitTypePlayer = 1,
@@ -1166,6 +1170,7 @@ pub enum PlayerBulletHitType {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum ESpectateType {
     None,
     Vehicle,
@@ -1180,6 +1185,7 @@ pub struct PlayerSpectateData {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerSpectateMode {
     PlayerSpectateModeNormal = 1,
     PlayerSpectateModeFixed,
@@ -1198,6 +1204,7 @@ pub struct PlayerAimData {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerWeaponState {
     PlayerWeaponStateUnknown = -1,
     PlayerWeaponStateNoBullets,
@@ -1207,6 +1214,7 @@ pub enum PlayerWeaponState {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum BodyPart {
     BodyPartTorso = 3,
     BodyPartGroin,
@@ -1218,6 +1226,7 @@ pub enum BodyPart {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerClickSource {
     PlayerClickSourceScoreboard,
 }
