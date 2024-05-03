@@ -13,7 +13,7 @@ use crate::{
     staticarray::StaticArray,
     textdraws::{self, PlayerTextDraw},
     vector::{Vector2, Vector3, Vector4},
-    vehicles::Vehicle,
+    vehicles::{self, Vehicle},
 };
 use std::os::raw::c_void;
 
@@ -955,6 +955,22 @@ impl Player {
     }
     pub fn delete_player_text_label(&self, textlabel: PlayerTextLabel) {
         textlabels::functions::DeletePlayer3DTextLabel(self, &textlabel)
+    }
+
+    pub fn is_player_in_mod_shop(&self) -> bool {
+        vehicles::functions::IsPlayerInModShop(self)
+    }
+    pub fn get_player_siren_state(&self) -> isize {
+        vehicles::functions::GetPlayerSirenState(self)
+    }
+    pub fn get_player_landing_gear_state(&self) -> isize {
+        vehicles::functions::GetPlayerLandingGearState(self)
+    }
+    pub fn get_player_hydra_reactor_angle(&self) -> isize {
+        vehicles::functions::GetPlayerHydraReactorAngle(self)
+    }
+    pub fn get_player_train_speed(&self) -> f32 {
+        vehicles::functions::GetPlayerTrainSpeed(self)
     }
 }
 

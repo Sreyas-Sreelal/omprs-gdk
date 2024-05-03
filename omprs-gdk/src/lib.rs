@@ -45,4 +45,5 @@ pub fn init_functions() {
     pickups::load_functions();
     textdraws::load_functions();
     textlabels::load_functions();
+    vehicles::load_functions();
 }

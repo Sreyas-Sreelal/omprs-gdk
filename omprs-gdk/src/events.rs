@@ -9,7 +9,7 @@ use crate::{
     scripting::dialogs::DialogResponse,
     textdraws::{PlayerTextDraw, TextDraw},
     vector::Vector3,
-    vehicles::Vehicle,
+    vehicles::{UnoccupiedVehicleUpdate, Vehicle},
 };
 
 #[allow(unused_variables)]
@@ -257,4 +257,48 @@ pub trait Events {
     }
     fn on_player_click_text_draw(&mut self, player: Player, textdraw: TextDraw) {}
     fn on_player_click_player_text_draw(&mut self, player: Player, textdraw: PlayerTextDraw) {}
+
+    // Vehicle callbacks
+    fn on_vehicle_stream_in(&mut self, vehicle: Vehicle, player: Player) {}
+    fn on_vehicle_stream_out(&mut self, vehicle: Vehicle, player: Player) {}
+    fn on_vehicle_death(&mut self, vehicle: Vehicle, player: Player) {}
+    fn on_player_enter_vehicle(&mut self, player: Player, vehicle: Vehicle, passenger: bool) {}
+    fn on_player_exit_vehicle(&mut self, player: Player, vehicle: Vehicle) {}
+    fn on_vehicle_damage_status_update(&mut self, vehicle: Vehicle, player: Player) {}
+    fn on_vehicle_paint_job(&mut self, player: Player, vehicle: Vehicle, paintjob: isize) -> bool {
+        true
+    }
+    fn on_vehicle_mod(&mut self, player: Player, vehicle: Vehicle, component: isize) -> bool {
+        true
+    }
+    fn on_vehicle_respray(
+        &mut self,
+        player: Player,
+        vehicle: Vehicle,
+        colour1: isize,
+        colour2: isize,
+    ) -> bool {
+        true
+    }
+    fn on_enter_exit_mod_shop(&mut self, player: Player, enterexit: bool, interior_id: isize) {}
+    fn on_vehicle_spawn(&mut self, vehicle: Vehicle) {}
+    fn on_unoccupied_vehicle_update(
+        &mut self,
+        vehicle: Vehicle,
+        player: Player,
+        updateData: UnoccupiedVehicleUpdate,
+    ) -> bool {
+        true
+    }
+    fn on_trailer_update(&mut self, player: Player, vehicle: Vehicle) -> bool {
+        true
+    }
+    fn on_vehicle_siren_state_change(
+        &mut self,
+        player: Player,
+        vehicle: Vehicle,
+        sirenstate: u8,
+    ) -> bool {
+        true
+    }
 }
