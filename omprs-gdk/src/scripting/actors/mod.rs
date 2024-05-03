@@ -152,6 +152,13 @@ impl Actor {
         functions::GetActorSpawnInfo(self, &mut spawn_data);
         spawn_data
     }
+
+    pub fn get_id(&self) -> usize {
+        functions::GetActorID(self)
+    }
+    pub fn from_id(actorid: isize) -> Option<Actor> {
+        functions::GetActorFromID(actorid)
+    }
 }
 
 #[derive(Copy, Clone, Debug, Default)]

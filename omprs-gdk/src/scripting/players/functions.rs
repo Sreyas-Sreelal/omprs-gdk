@@ -189,6 +189,8 @@ native!(NetStats_MessagesRecvPerSecond, player: struct Player, -> isize);
 native!(NetStats_MessagesSent, player: struct Player, -> isize);
 native!(NetStats_PacketLossPercent, player: struct Player, -> f32);
 native!(SendPlayerMessageToAll, player: struct Player, message: str);
+native!(GetPlayerFromID,playerid:isize, -> struct Player);
+
 pub fn load_functions() {
     load_function!(SendClientMessage);
     load_function!(GetPlayerName);
@@ -365,4 +367,5 @@ pub fn load_functions() {
     load_function!(NetStats_MessagesSent);
     load_function!(NetStats_PacketLossPercent);
     load_function!(SendPlayerMessageToAll);
+    load_function!(GetPlayerFromID);
 }

@@ -23,7 +23,8 @@ native!(SetActorSkin, actor: struct Actor, skin: isize);
 native!(GetActorSkin, actor: struct Actor, -> isize);
 native!(GetActorAnimation,actor: struct Actor, animationLibrary: mut str, animationName: mut str, delta: mut f32, animloop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut usize,->bool);
 native!(GetActorSpawnInfo, actor: struct Actor, spawnData:mut ActorSpawnData);
-//native!(GetActorsComponent, -> struct ActorsComponent);
+native!(GetActorID,actor:struct Actor,-> usize);
+native!(GetActorFromID,actorid:isize,-> struct Actor);
 
 pub fn load_functions() {
     load_function!(CreateActor);
@@ -46,4 +47,6 @@ pub fn load_functions() {
     load_function!(GetActorSkin);
     load_function!(GetActorAnimation);
     load_function!(GetActorSpawnInfo);
+    load_function!(GetActorID);
+    load_function!(GetActorFromID);
 }

@@ -862,7 +862,9 @@ impl Player {
     pub fn get_id(&self) -> usize {
         functions::GetPlayerID(self)
     }
-
+    pub fn from_id(playerid: isize) -> Option<Player> {
+        functions::GetPlayerFromID(playerid)
+    }
     pub fn get_menu(&self) -> Option<Menu> {
         menus::functions::GetPlayerMenu(self)
     }
