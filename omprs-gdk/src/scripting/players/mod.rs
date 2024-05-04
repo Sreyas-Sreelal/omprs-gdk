@@ -565,8 +565,7 @@ impl Player {
     pub fn remove_attached_object(&self, index: isize) {
         functions::RemovePlayerAttachedObject(self, index)
     }
-    //pub fn SetPlayerAttachedObject(&self, index: isize, attachment: ObjectAttachmentSlotData) { todo!() }
-    //pub fn GetPlayerAttachedObject(&self, index: isize) -> ObjectAttachmentSlotData { todo!() }
+
     pub fn set_facing_angle(&self, angle: f32) {
         functions::SetPlayerFacingAngle(self, angle)
     }
