@@ -9,7 +9,7 @@ use omprs::{
     },
     events::Events,
     main,
-    players::{Player, PlayerState, WeaponSlotData, WeaponSlots},
+    players::{Player, PlayerState, PlayerWeapon, WeaponSlotData, WeaponSlots},
     register,
     textdraws::{TextDraw, TextDrawStyle},
     types::{
@@ -265,7 +265,7 @@ impl Events for GrandLarc {
             None => {}
         }
 
-        player.give_weapon(WeaponSlotData::new(22, 100));
+        player.give_weapon(WeaponSlotData::new(PlayerWeapon::Sawedoff, 100));
         player.toggle_clock(false);
     }
 

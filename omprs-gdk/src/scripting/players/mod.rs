@@ -482,7 +482,7 @@ impl Player {
     }
 
     pub fn get_weapon_data(&self, slot: isize) -> WeaponSlotData {
-        let mut weapon: WeaponSlotData = WeaponSlotData { ammo: 0, id: 0 };
+        let mut weapon: WeaponSlotData = WeaponSlotData { ammo: 0, id: PlayerWeapon::Fist };
         functions::GetPlayerWeaponData(self, slot, &mut weapon);
         weapon
     }
@@ -1043,12 +1043,12 @@ pub enum PlayerAnimationSyncType {
 #[repr(C)]
 #[derive(Default, Clone, Copy)]
 pub struct WeaponSlotData {
-    id: u8,
+    id: PlayerWeapon,
     ammo: u32,
 }
 
 impl WeaponSlotData {
-    pub fn new(id: u8, ammo: u32) -> Self {
+    pub fn new(id: PlayerWeapon, ammo: u32) -> Self {
         Self { id, ammo }
     }
 }
@@ -1221,3 +1221,59 @@ pub enum PlayerClickSource {
 }
 
 pub type WeaponSlots = StaticArray<WeaponSlotData, 13>;
+
+#[repr(u8)]
+#[derive(PartialEq, Copy, Clone, Default)]
+pub enum PlayerWeapon {
+    #[default]
+    Fist,
+    BrassKnuckle,
+    GolfClub,
+    NiteStick,
+    Knife,
+    Bat,
+    Shovel,
+    PoolStick,
+    Katana,
+    Chainsaw,
+    Dildo,
+    Dildo2,
+    Vibrator,
+    Vibrator2,
+    Flower,
+    Cane,
+    Grenade,
+    Teargas,
+    Moltov,
+    Colt45 = 22,
+    Silenced,
+    Deagle,
+    Shotgun,
+    Sawedoff,
+    Shotgspa,
+    UZI,
+    MP5,
+    AK47,
+    M4,
+    TEC9,
+    Rifle,
+    Sniper,
+    RocketLauncher,
+    HeatSeeker,
+    FlameThrower,
+    Minigun,
+    Satchel,
+    Bomb,
+    SprayCan,
+    FireExtinguisher,
+    Camera,
+    NightVisGoggles,
+    ThermalGoggles,
+    Parachute,
+    Vehicle = 49,
+    Heliblades,
+    Explosion,
+    Drown = 53,
+    Collision,
+    End,
+}

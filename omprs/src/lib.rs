@@ -59,7 +59,8 @@ pub mod players {
         PlayerAimData, PlayerAnimationData, PlayerAnimationSyncType, PlayerBulletData,
         PlayerBulletHitType, PlayerCameraCutType, PlayerClickSource, PlayerFightingStyle,
         PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
-        PlayerSurfingData, PlayerWeaponSkill, PlayerWeaponState, WeaponSlotData, WeaponSlots,
+        PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState, WeaponSlotData,
+        WeaponSlots,
     };
 }
 
