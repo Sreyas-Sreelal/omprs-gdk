@@ -294,7 +294,7 @@ impl Events for GrandLarc {
             self.setup_char_selection(&player);
             return true;
         } else {
-            if player.get_state() != PlayerState::PlayerStateSpectating {
+            if player.get_state() != PlayerState::Spectating {
                 player.toggle_spectating(true);
                 self.class_selection_helper_td.show_for_player(&player);
                 self.players_data
@@ -312,7 +312,7 @@ impl Events for GrandLarc {
         }
 
         if !self.players_data[&player.get_id()].has_city_selected
-            && player.get_state() == PlayerState::PlayerStateSpectating
+            && player.get_state() == PlayerState::Spectating
         {
             self.handle_city_selection(&player);
             return true;
