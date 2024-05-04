@@ -543,11 +543,12 @@ impl Player {
 
     pub fn get_keys(
         &self,
-        keys: &mut isize,
-        updown: &mut isize,
-        leftright: &mut isize,
     ) -> PlayerKeyData {
-        functions::GetPlayerKeys(self, keys, updown, leftright)
+        let mut keys = 0;
+        let mut updown= 0;
+        let mut leftright= 0;
+        functions::GetPlayerKeys(self, &mut keys, &mut updown, &mut leftright)
+    
     }
 
     pub fn get_surfing_data(&self) -> PlayerSurfingData {
@@ -1144,10 +1145,9 @@ pub struct PlayerSurfingData {
 
 #[repr(C)]
 pub struct PlayerKeyData {
-    // todo fill with union
-    keys: u32,
-    upDown: i16,
-    leftRight: i16,
+    pub keys: u32,
+    pub upDown: i16,
+    pub leftRight: i16,
 }
 
 #[repr(C)]
