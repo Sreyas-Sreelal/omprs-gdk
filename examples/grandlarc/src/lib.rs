@@ -5,8 +5,7 @@ use std::{collections::HashMap, time::Instant};
 use omprs::{
     classes::CreateClass,
     core::{
-        DisableInteriorEnterExits, SetGameModeText, SetNameTagDrawDistance, SetWeather,
-        SetWorldTime, ShowNameTags, ShowPlayerMarkers,
+        DisableInteriorEnterExits, EnableStuntBonusForAll, SetGameModeText, SetNameTagDrawDistance, SetWeather, SetWorldTime, ShowNameTags, ShowPlayerMarkers
     },
     events::Events,
     main,
@@ -332,6 +331,7 @@ pub fn GameEntry() {
     ShowPlayerMarkers(1);
     ShowNameTags(true);
     SetNameTagDrawDistance(40.0);
+    EnableStuntBonusForAll(false);
     DisableInteriorEnterExits();
     SetWeather(2);
     SetWorldTime(11);
