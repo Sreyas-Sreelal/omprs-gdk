@@ -5,7 +5,8 @@ use std::{collections::HashMap, time::Instant};
 use omprs::{
     classes::CreateClass,
     core::{
-        DisableInteriorEnterExits, EnableStuntBonusForAll, SetGameModeText, SetNameTagDrawDistance, SetWeather, SetWorldTime, ShowNameTags, ShowPlayerMarkers
+        DisableInteriorEnterExits, EnableStuntBonusForAll, SetGameModeText, SetNameTagDrawDistance,
+        SetWeather, SetWorldTime, ShowNameTags, ShowPlayerMarkers,
     },
     events::Events,
     main,

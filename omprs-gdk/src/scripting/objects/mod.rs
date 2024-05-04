@@ -421,7 +421,7 @@ pub struct ObjectMoveData {
 }
 
 #[repr(C)]
-#[derive(Default,PartialEq)]
+#[derive(Default, PartialEq)]
 pub enum ObjectAttachmentType {
     #[default]
     None,

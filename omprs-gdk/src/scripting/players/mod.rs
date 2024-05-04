@@ -202,11 +202,11 @@ impl Player {
         functions::SetPlayerTime(self, hour, minute)
     }
 
-    pub fn get_time(&self) -> (isize,isize) {
+    pub fn get_time(&self) -> (isize, isize) {
         let mut hour = 0;
         let mut minute = 0;
         functions::GetPlayerTime(self, &mut hour, &mut minute);
-        (hour,minute)
+        (hour, minute)
     }
 
     pub fn toggle_clock(&self, enable: bool) {
@@ -485,7 +485,10 @@ impl Player {
     }
 
     pub fn get_weapon_data(&self, slot: isize) -> WeaponSlotData {
-        let mut weapon: WeaponSlotData = WeaponSlotData { ammo: 0, id: PlayerWeapon::Fist };
+        let mut weapon: WeaponSlotData = WeaponSlotData {
+            ammo: 0,
+            id: PlayerWeapon::Fist,
+        };
         functions::GetPlayerWeaponData(self, slot, &mut weapon);
         weapon
     }
