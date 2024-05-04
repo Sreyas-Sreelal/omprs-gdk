@@ -202,8 +202,11 @@ impl Player {
         functions::SetPlayerTime(self, hour, minute)
     }
 
-    pub fn get_time(&self, hour: &mut isize, minute: &mut isize) {
-        functions::GetPlayerTime(self, hour, minute)
+    pub fn get_time(&self) -> (isize,isize) {
+        let mut hour = 0;
+        let mut minute = 0;
+        functions::GetPlayerTime(self, &mut hour, &mut minute);
+        (hour,minute)
     }
 
     pub fn toggle_clock(&self, enable: bool) {
