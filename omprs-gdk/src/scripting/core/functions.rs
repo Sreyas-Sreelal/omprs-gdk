@@ -67,6 +67,9 @@ native!(AddServerRule, name: str, value: str);
 native!(SetServerRule, name: str, value: str);
 native!(IsValidServerRule, name: str, -> bool);
 native!(RemoveServerRule, name: str);
+native!(GetAnimationName, index: isize, lib: mut str, name: mut str);
+native!(EnableStuntBonusForAll, enable: bool);
+native!(CreateExplosion, pos: Vector3, explosion_type: isize, radius: f32);
 
 pub fn load_functions() {
     load_function!(Print);
@@ -131,4 +134,7 @@ pub fn load_functions() {
     load_function!(SetServerRule);
     load_function!(IsValidServerRule);
     load_function!(RemoveServerRule);
+    load_function!(GetAnimationName);
+    load_function!(EnableStuntBonusForAll);
+    load_function!(CreateExplosion);
 }

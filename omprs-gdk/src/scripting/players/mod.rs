@@ -46,10 +46,6 @@ impl Player {
         name
     }
 
-    /* pub fn send_client_message_to_all(&self, colour: Colour, message: String) {
-        todo!()
-    } */
-
     pub fn set_camera_pos(&self, pos: Vector3) {
         functions::SetPlayerCameraPos(self, pos);
     }
@@ -97,9 +93,7 @@ impl Player {
     pub fn create_explosion(&self, pos: Vector3, explosion_type: isize, radius: f32) {
         functions::CreateExplosionForPlayer(self, pos, explosion_type, radius);
     }
-    /* pub fn create_explosion_for_all(&self, pos: Vector3, explosion_type: isize, radius: f32) {
-        todo!()
-    } */
+
     pub fn play_audio_stream(&self, url: &str, pos: Vector3, distance: f32, use_pos: bool) {
         functions::PlayAudioStreamForPlayer(self, url, pos, distance, use_pos);
     }
@@ -445,10 +439,6 @@ impl Player {
         )
     }
 
-    /* pub fn get_animation_name(&self, index: isize, lib: &mut String, name: &mut String) {
-        functions::GetAnimationName(lib, name)
-    } */
-
     pub fn edit_attached_object(&self, index: isize) {
         functions::EditAttachedObject(self, index)
     }
@@ -460,10 +450,6 @@ impl Player {
     pub fn enable_stunt_bonus(&self, enable: bool) {
         functions::EnableStuntBonusForPlayer(self, enable)
     }
-
-    /*  pub fn enable_stunt_bonus_for_all(&self, enable: bool) {
-        todo!()
-    } */
 
     pub fn get_ammo(&self) -> isize {
         functions::GetPlayerAmmo(self)
