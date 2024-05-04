@@ -1,15 +1,22 @@
 mod spawns;
 use spawns::SpawnLocations;
-use std::collections::HashMap;
+use std::{collections::HashMap, time::Instant};
 
 use omprs::{
-    classes::CreateClass, core::{
-        DisableInteriorEnterExits, GetTickCount, SetGameModeText, SetNameTagDrawDistance,
-        SetWeather, SetWorldTime, ShowNameTags, ShowPlayerMarkers,
-    }, events::Events, main, players::{Player, PlayerState, WeaponSlotData, WeaponSlots}, register, textdraws::{TextDraw, TextDrawStyle}, types::{
+    classes::CreateClass,
+    core::{
+        DisableInteriorEnterExits, SetGameModeText, SetNameTagDrawDistance, SetWeather,
+        SetWorldTime, ShowNameTags, ShowPlayerMarkers,
+    },
+    events::Events,
+    main,
+    players::{Player, PlayerState, WeaponSlotData, WeaponSlots},
+    register,
+    textdraws::{TextDraw, TextDrawStyle},
+    types::{
         colour::Colour,
         vector::{Vector2, Vector3},
-    }
+    },
 };
 
 enum Cities {
@@ -20,7 +27,7 @@ enum Cities {
 
 struct PlayerData {
     pub selected_city: Option<Cities>,
-    pub last_city_selection_tick: isize,
+    pub last_city_selection_tick: Instant,
     pub has_city_selected: bool,
 }
 
@@ -143,7 +150,7 @@ impl GrandLarc {
         self.players_data
             .get_mut(&player.get_id())
             .unwrap()
-            .last_city_selection_tick = GetTickCount();
+            .last_city_selection_tick = Instant::now();
         self.setup_selected_city(&player);
     }
 
@@ -173,25 +180,27 @@ impl GrandLarc {
         self.players_data
             .get_mut(&player.get_id())
             .unwrap()
-            .last_city_selection_tick = GetTickCount();
+            .last_city_selection_tick = Instant::now();
         self.setup_selected_city(&player);
     }
 
     pub fn handle_city_selection(&mut self, player: &Player) {
-        let mut keys = 0;
-        let mut updown = 0;
-        let mut leftright = 0;
-        player.get_keys(&mut keys, &mut updown, &mut leftright);
+        let keydata = player.get_keys();
         if self.players_data[&player.get_id()].selected_city.is_none() {
             self.switch_to_next_city(&player);
             return;
         }
 
-        if GetTickCount() - self.players_data[&player.get_id()].last_city_selection_tick < 500 {
+        if self.players_data[&player.get_id()]
+            .last_city_selection_tick
+            .elapsed()
+            .as_millis()
+            < 500
+        {
             return;
         }
 
-        if (keys & 4) != 0 {
+        if (keydata.keys & 4) != 0 {
             self.players_data
                 .get_mut(&player.get_id())
                 .unwrap()
@@ -203,9 +212,9 @@ impl GrandLarc {
             return;
         }
 
-        if leftright > 0 {
+        if keydata.leftRight > 0 {
             self.switch_to_next_city(&player);
-        } else if leftright < 0 {
+        } else if keydata.leftRight < 0 {
             self.switch_to_previous_city(&player);
         }
     }
@@ -222,7 +231,7 @@ impl Events for GrandLarc {
             player.get_id(),
             PlayerData {
                 selected_city: None,
-                last_city_selection_tick: GetTickCount(),
+                last_city_selection_tick: Instant::now(),
                 has_city_selected: false,
             },
         );
