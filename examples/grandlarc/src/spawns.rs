@@ -133,12 +133,18 @@ impl SpawnLocations {
     }
 
     pub fn get_random_ls(&self) -> &SpawnLocationCoords {
-        self.los_santos_locations.choose(&mut rand::thread_rng()).unwrap()
+        self.los_santos_locations
+            .choose(&mut rand::thread_rng())
+            .unwrap()
     }
     pub fn get_random_sf(&self) -> &SpawnLocationCoords {
-        self.san_fierro_locations.choose(&mut rand::thread_rng()).unwrap()
+        self.san_fierro_locations
+            .choose(&mut rand::thread_rng())
+            .unwrap()
     }
     pub fn get_random_lv(&self) -> &SpawnLocationCoords {
-        self.las_venturas_locations.choose(&mut rand::thread_rng()).unwrap()
+        self.las_venturas_locations
+            .choose(&mut rand::thread_rng())
+            .unwrap()
     }
 }

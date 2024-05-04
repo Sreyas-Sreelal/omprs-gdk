@@ -541,14 +541,11 @@ impl Player {
         functions::GetPlayerAimData(self)
     }
 
-    pub fn get_keys(
-        &self,
-    ) -> PlayerKeyData {
+    pub fn get_keys(&self) -> PlayerKeyData {
         let mut keys = 0;
-        let mut updown= 0;
-        let mut leftright= 0;
+        let mut updown = 0;
+        let mut leftright = 0;
         functions::GetPlayerKeys(self, &mut keys, &mut updown, &mut leftright)
-    
     }
 
     pub fn get_surfing_data(&self) -> PlayerSurfingData {

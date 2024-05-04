@@ -1,5 +1,5 @@
 #[repr(C)]
-#[derive(Default,Copy,Clone)]
+#[derive(Default, Copy, Clone)]
 struct Rgba {
     r: u8,
     g: u8,
@@ -7,7 +7,7 @@ struct Rgba {
     a: u8,
 }
 #[repr(C)]
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 union ColourData {
     rgba: std::mem::ManuallyDrop<Rgba>,
 }
@@ -21,7 +21,7 @@ impl Default for ColourData {
 }
 
 #[repr(C)]
-#[derive(Default,Clone,Copy)]
+#[derive(Default, Clone, Copy)]
 pub struct Colour {
     data: ColourData,
 }
