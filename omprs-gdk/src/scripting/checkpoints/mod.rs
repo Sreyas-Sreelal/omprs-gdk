@@ -6,17 +6,18 @@ pub mod functions;
 pub use functions::load_functions;
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum RaceCheckpointType {
-    RaceNormal = 0, // Must have nextPosition, else it shows as RACE_FINISH
-    RaceFinish,     // Must have no nextPosition, else it shows as RACE_NORMAL
-    RaceNothing,
-    RaceAirNormal,
-    RaceAirFinish,
-    RaceAirOne,
-    RaceAirTwo,
-    RaceAirThree,
-    RaceAirFour,
-    RaceNone,
+    Normal = 0, // Must have nextPosition, else it shows as RACE_FINISH
+    Finish,     // Must have no nextPosition, else it shows as RACE_NORMAL
+    Nothing,
+    AirNormal,
+    AirFinish,
+    AirOne,
+    AirTwo,
+    AirThree,
+    AirFour,
+    None,
 }
 
 pub struct PlayerRaceCheckPointData {

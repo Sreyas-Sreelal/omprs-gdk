@@ -1015,38 +1015,44 @@ impl Player {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum MapIconStyle {
-    MapIconStyleLocal,
-    MapIconStyleGlobal,
-    MapIconStyleLocalCheckpoint,
-    MapIconStyleGlobalCheckpoint,
+    Local,
+    Global,
+    LocalCheckpoint,
+    GlobalCheckpoint,
 }
 
 #[repr(u8)]
+#[derive(PartialEq)]
 pub enum ClientVersion {
-    ClientVersionSamp037,
-    ClientVersionSamp03dl,
-    ClientVersionOpenmp,
+    Samp037,
+    Samp03dl,
+    Openmp,
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerCameraCutType {
-    PlayerCameraCutTypeCut,
-    PlayerCameraCutTypeMove,
+    Cut,
+    Move,
 }
 
 /// The player's name status returned when updating their name
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum EPlayerNameStatus {
     Updated, // The name has successfully been updated
     Taken,   // The name is already taken by another player
     Invalid, // The name is invalid
 }
 
+#[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerAnimationSyncType {
-    PlayerAnimationSyncTypeNoSync,
-    PlayerAnimationSyncTypeSync,
-    PlayerAnimationSyncTypeSyncOthers,
+    NoSync,
+    Sync,
+    SyncOthers,
 }
 
 #[repr(C)]
@@ -1068,69 +1074,70 @@ pub struct PlayerAnimationData {
     flags: u16,
 }
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PlayerFightingStyle {
-    PlayerFightingStyleNormal = 4,
-    PlayerFightingStyleBoxing = 5,
-    PlayerFightingStyleKungFu = 6,
-    PlayerFightingStyleKneeHead = 7,
-    PlayerFightingStyleGrabKick = 15,
-    PlayerFightingStyleElbow = 16,
+    Normal = 4,
+    Boxing = 5,
+    KungFu = 6,
+    KneeHead = 7,
+    GrabKick = 15,
+    Elbow = 16,
 }
 
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerState {
-    PlayerStateNone = 0,
-    PlayerStateOnFoot = 1,
-    PlayerStateDriver = 2,
-    PlayerStatePassenger = 3,
-    PlayerStateExitVehicle = 4,
-    PlayerStateEnterVehicleDriver = 5,
-    PlayerStateEnterVehiclePassenger = 6,
-    PlayerStateWasted = 7,
-    PlayerStateSpawned = 8,
-    PlayerStateSpectating = 9,
+    None = 0,
+    OnFoot = 1,
+    Driver = 2,
+    Passenger = 3,
+    ExitVehicle = 4,
+    EnterVehicleDriver = 5,
+    EnterVehiclePassenger = 6,
+    Wasted = 7,
+    Spawned = 8,
+    Spectating = 9,
 }
 
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerWeaponSkill {
-    PlayerWeaponSkillPistol,
-    PlayerWeaponSkillSilencedPistol,
-    PlayerWeaponSkillDesertEagle,
-    PlayerWeaponSkillShotgun,
-    PlayerWeaponSkillSawnOff,
-    PlayerWeaponSkillSpas12,
-    PlayerWeaponSkillUzi,
-    PlayerWeaponSkillMp5,
-    PlayerWeaponSkillAk47,
-    PlayerWeaponSkillM4,
-    PlayerWeaponSkillSniper,
+    Pistol,
+    SilencedPistol,
+    DesertEagle,
+    Shotgun,
+    SawnOff,
+    Spas12,
+    Uzi,
+    Mp5,
+    Ak47,
+    M4,
+    Sniper,
 }
 
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerSpecialAction {
-    SpecialActionNone,
-    SpecialActionDuck,
-    SpecialActionJetpack,
-    SpecialActionEnterVehicle,
-    SpecialActionExitVehicle,
-    SpecialActionDance1,
-    SpecialActionDance2,
-    SpecialActionDance3,
-    SpecialActionDance4,
-    SpecialActionHandsUp = 10,
-    SpecialActionCellphone,
-    SpecialActionSitting,
-    SpecialActionStopCellphone,
-    SpecialActionBeer = 20,
-    SpecialactionSmoke,
-    SpecialActionWine,
-    SpecialActionSprunk,
-    SpecialActionCuffed,
-    SpecialActionCarry,
-    SpecialActionPissing = 68,
+    None,
+    Duck,
+    Jetpack,
+    EnterVehicle,
+    ExitVehicle,
+    Dance1,
+    Dance2,
+    Dance3,
+    Dance4,
+    HandsUp = 10,
+    Cellphone,
+    Sitting,
+    StopCellphone,
+    Beer = 20,
+    Smoke,
+    Wine,
+    Sprunk,
+    Cuffed,
+    Carry,
+    Pissing = 68,
 }
 
 #[repr(C)]
@@ -1159,11 +1166,11 @@ pub struct PlayerBulletData {
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerBulletHitType {
-    PlayerBulletHitTypeNone,
-    PlayerBulletHitTypePlayer = 1,
-    PlayerBulletHitTypeVehicle = 2,
-    PlayerBulletHitTypeObject = 3,
-    PlayerBulletHitTypePlayerObject = 4,
+    None,
+    Player = 1,
+    Vehicle = 2,
+    Object = 3,
+    PlayerObject = 4,
 }
 
 #[repr(C)]
@@ -1184,9 +1191,9 @@ pub struct PlayerSpectateData {
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerSpectateMode {
-    PlayerSpectateModeNormal = 1,
-    PlayerSpectateModeFixed,
-    PlayerSpectateModeSide,
+    Normal = 1,
+    Fixed,
+    Side,
 }
 
 #[repr(C)]
@@ -1203,29 +1210,29 @@ pub struct PlayerAimData {
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerWeaponState {
-    PlayerWeaponStateUnknown = -1,
-    PlayerWeaponStateNoBullets,
-    PlayerWeaponStateLastBullet,
-    PlayerWeaponStateMoreBullets,
-    PlayerWeaponStateReloading,
+    Unknown = -1,
+    NoBullets,
+    LastBullet,
+    MoreBullets,
+    Reloading,
 }
 
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum BodyPart {
-    BodyPartTorso = 3,
-    BodyPartGroin,
-    BodyPartLeftArm,
-    BodyPartRightArm,
-    BodyPartLeftLeg,
-    BodyPartRightLeg,
-    BodyPartHead,
+    Torso = 3,
+    Groin,
+    LeftArm,
+    RightArm,
+    LeftLeg,
+    RightLeg,
+    Head,
 }
 
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum PlayerClickSource {
-    PlayerClickSourceScoreboard,
+    Scoreboard,
 }
 
 pub type WeaponSlots = StaticArray<WeaponSlotData, 13>;

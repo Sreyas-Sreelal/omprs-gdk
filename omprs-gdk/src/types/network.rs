@@ -1,4 +1,5 @@
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum PeerDisconnectReason {
     PeerDisconnectReasonTimeout,
     PeerDisconnectReasonQuit,

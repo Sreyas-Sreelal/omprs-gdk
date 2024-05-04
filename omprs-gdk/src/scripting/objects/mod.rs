@@ -421,7 +421,7 @@ pub struct ObjectMoveData {
 }
 
 #[repr(C)]
-#[derive(Default)]
+#[derive(Default,PartialEq)]
 pub enum ObjectAttachmentType {
     #[default]
     None,
@@ -441,6 +441,7 @@ pub struct ObjectAttachmentData {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum ObjectMaterialTextAlign {
     Left,
     Center,
@@ -448,6 +449,7 @@ pub enum ObjectMaterialTextAlign {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum ObjectMaterialSize {
     Size32x32 = 10,
     Size64x32 = 20,
@@ -465,6 +467,8 @@ pub enum ObjectMaterialSize {
     Size512x512 = 140,
 }
 
+#[repr(C)]
+#[derive(PartialEq)]
 pub enum ObjectMaterialType {
     None,
     Default,
@@ -517,7 +521,9 @@ impl ObjectMaterialData {
         }
     }
 }
+
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum ObjectEditResponse {
     Cancel,
     Final,

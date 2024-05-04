@@ -4,6 +4,7 @@ pub mod functions;
 pub use functions::load_functions;
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum DialogStyle {
     MsgBox = 0,
     Input,
@@ -14,6 +15,7 @@ pub enum DialogStyle {
 }
 
 #[repr(C)]
+#[derive(PartialEq)]
 pub enum DialogResponse {
     Right = 0,
     Left,
