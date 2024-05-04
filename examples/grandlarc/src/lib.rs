@@ -1,6 +1,6 @@
 mod spawns;
 use spawns::SpawnLocations;
-use std::{collections::HashMap, time::Instant};
+use std::{cmp::Ordering, collections::HashMap, time::Instant};
 
 use omprs::{
     classes::CreateClass,
@@ -94,26 +94,26 @@ impl GrandLarc {
                 player.set_interior(0);
                 player.set_camera_pos(Vector3::new(1630.6136, -2286.0298, 110.0));
                 player.set_camera_look_at(Vector3::new(1887.6034, -1682.1442, 47.6167), 1);
-                self.los_santos_td.show_for_player(&player);
-                self.san_fierro_td.hide_for_player(&player);
-                self.las_venturas_td.hide_for_player(&player);
+                self.los_santos_td.show_for_player(player);
+                self.san_fierro_td.hide_for_player(player);
+                self.las_venturas_td.hide_for_player(player);
             }
 
             Some(Cities::SanFierro) => {
                 player.set_interior(0);
                 player.set_camera_pos(Vector3::new(-1300.8754, 68.0546, 129.4823));
                 player.set_camera_look_at(Vector3::new(-1817.9412, 769.3878, 132.6589), 1);
-                self.los_santos_td.hide_for_player(&player);
-                self.san_fierro_td.show_for_player(&player);
-                self.las_venturas_td.hide_for_player(&player);
+                self.los_santos_td.hide_for_player(player);
+                self.san_fierro_td.show_for_player(player);
+                self.las_venturas_td.hide_for_player(player);
             }
             Some(Cities::LasVenturas) => {
                 player.set_interior(0);
-                player.set_camera_pos(Vector3::new(1310.6155, 1675.9182, 110.7390));
+                player.set_camera_pos(Vector3::new(1310.6155, 1675.9182, 110.739));
                 player.set_camera_look_at(Vector3::new(2285.2944, 1919.3756, 68.2275), 1);
-                self.los_santos_td.hide_for_player(&player);
-                self.san_fierro_td.hide_for_player(&player);
-                self.las_venturas_td.show_for_player(&player);
+                self.los_santos_td.hide_for_player(player);
+                self.san_fierro_td.hide_for_player(player);
+                self.las_venturas_td.show_for_player(player);
             }
             None => {}
         }
@@ -151,7 +151,7 @@ impl GrandLarc {
             .get_mut(&player.get_id())
             .unwrap()
             .last_city_selection_tick = Instant::now();
-        self.setup_selected_city(&player);
+        self.setup_selected_city(player);
     }
 
     pub fn switch_to_previous_city(&mut self, player: &Player) {
@@ -181,13 +181,13 @@ impl GrandLarc {
             .get_mut(&player.get_id())
             .unwrap()
             .last_city_selection_tick = Instant::now();
-        self.setup_selected_city(&player);
+        self.setup_selected_city(player);
     }
 
     pub fn handle_city_selection(&mut self, player: &Player) {
         let keydata = player.get_keys();
         if self.players_data[&player.get_id()].selected_city.is_none() {
-            self.switch_to_next_city(&player);
+            self.switch_to_next_city(player);
             return;
         }
 
@@ -205,17 +205,17 @@ impl GrandLarc {
                 .get_mut(&player.get_id())
                 .unwrap()
                 .has_city_selected = true;
-            self.los_santos_td.hide_for_player(&player);
-            self.san_fierro_td.hide_for_player(&player);
-            self.las_venturas_td.hide_for_player(&player);
+            self.los_santos_td.hide_for_player(player);
+            self.san_fierro_td.hide_for_player(player);
+            self.las_venturas_td.hide_for_player(player);
             player.toggle_spectating(false);
             return;
         }
 
-        if keydata.leftRight > 0 {
-            self.switch_to_next_city(&player);
-        } else if keydata.leftRight < 0 {
-            self.switch_to_previous_city(&player);
+        match keydata.leftRight.cmp(&0) {
+            Ordering::Greater => self.switch_to_next_city(player),
+            Ordering::Less => self.switch_to_previous_city(player),
+            _ => {}
         }
     }
 }
@@ -293,17 +293,15 @@ impl Events for GrandLarc {
         if self.players_data[&player.get_id()].has_city_selected {
             self.setup_char_selection(&player);
             return true;
-        } else {
-            if player.get_state() != PlayerState::Spectating {
-                player.toggle_spectating(true);
-                self.class_selection_helper_td.show_for_player(&player);
-                self.players_data
-                    .get_mut(&player.get_id())
-                    .unwrap()
-                    .selected_city = None;
-            }
+        } else if player.get_state() != PlayerState::Spectating {
+            player.toggle_spectating(true);
+            self.class_selection_helper_td.show_for_player(&player);
+            self.players_data
+                .get_mut(&player.get_id())
+                .unwrap()
+                .selected_city = None;
         }
-        return false;
+        false
     }
 
     fn on_player_update(&mut self, player: Player, _now: isize) -> bool {
@@ -322,7 +320,7 @@ impl Events for GrandLarc {
             player.kick();
             return false;
         }
-        return true;
+        true
     }
 }
 
@@ -371,231 +369,231 @@ pub fn GameEntry() {
     CreateClass(
         255,
         298,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         299,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         300,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         301,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         302,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         303,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         304,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         305,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         280,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         281,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         282,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         283,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         284,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         285,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         286,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         287,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         288,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         289,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         265,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         266,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         267,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         268,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         269,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         270,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         1,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         2,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         3,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         4,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         5,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         6,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         8,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         42,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         65,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
@@ -603,42 +601,42 @@ pub fn GameEntry() {
     CreateClass(
         255,
         86,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         119,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         149,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         208,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         273,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         289,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
@@ -646,273 +644,273 @@ pub fn GameEntry() {
     CreateClass(
         255,
         47,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         48,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         49,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         50,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         51,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         52,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         53,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         54,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         55,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         56,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         57,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         58,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         68,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         69,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         70,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         71,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         72,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         73,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         75,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         76,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         78,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         79,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         80,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         81,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         82,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         83,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         84,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         85,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         87,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         88,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         89,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         91,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         92,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         93,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         95,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         96,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         97,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         98,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
     CreateClass(
         255,
         99,
-        Vector3::new(1759.0189, -1898.1260, 13.5622),
+        Vector3::new(1759.0189, -1_898.126, 13.5622),
         266.4503,
         WeaponSlots::default(),
     );
