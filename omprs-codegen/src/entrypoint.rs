@@ -8,6 +8,7 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
     let code = quote! {
         #[no_mangle]
         pub extern "C" fn OMPRS_Main() {
+            let _ = std::env::set_current_dir("scriptfiles");
             omprs::init_functions();
             #(#body)*
         }
