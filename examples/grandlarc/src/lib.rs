@@ -1,6 +1,12 @@
 mod spawns;
 use spawns::SpawnLocations;
-use std::{cmp::Ordering, collections::HashMap, time::Instant};
+use std::{
+    cmp::Ordering,
+    collections::HashMap,
+    fs::File,
+    io::{self, BufRead},
+    time::Instant,
+};
 
 use omprs::{
     classes::CreateClass,
@@ -17,6 +23,7 @@ use omprs::{
         colour::Colour,
         vector::{Vector2, Vector3},
     },
+    vehicles,
 };
 
 enum Cities {
@@ -342,6 +349,41 @@ fn create_all_class() {
     }
 }
 
+fn load_static_vehicles_from_file(path: &str) -> isize {
+    let file = File::open(path).unwrap();
+    let lines = io::BufReader::new(file).lines();
+    let mut count = 0;
+    for line in lines.flatten() {
+        let mut seperator = line.split(',');
+        let modelid: isize = seperator.next().unwrap().parse().unwrap();
+        let x: f32 = seperator.next().unwrap().parse().unwrap();
+        let y: f32 = seperator.next().unwrap().parse().unwrap();
+        let z: f32 = seperator.next().unwrap().parse().unwrap();
+        let rotation: f32 = seperator.next().unwrap().parse().unwrap();
+        let colour1: isize = seperator.next().unwrap().parse().unwrap();
+        let colour2: isize = seperator
+            .next()
+            .unwrap()
+            .split(' ')
+            .next()
+            .unwrap()
+            .parse()
+            .unwrap();
+        vehicles::Vehicle::create_static(
+            modelid,
+            Vector3::new(x, y, z),
+            rotation,
+            colour1,
+            colour2,
+            30 * 60,
+            false,
+        );
+        count += 1;
+    }
+
+    count
+}
+
 #[main]
 pub fn GameEntry() {
     SetGameModeText("Grand Larceny");
@@ -362,7 +404,7 @@ pub fn GameEntry() {
         players_data: HashMap::new(),
         colour_white: Colour::from_rgba(0xFFFFFFFF),
     };
-    
+
     game.init_city_name_td(&game.los_santos_td);
     game.init_city_name_td(&game.san_fierro_td);
     game.init_city_name_td(&game.las_venturas_td);
@@ -386,4 +428,33 @@ pub fn GameEntry() {
     register!(game);
 
     create_all_class();
+    let mut total_vehicles_from_files = load_static_vehicles_from_file("vehicles/trains.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/pilots.txt");
+
+    // LAS VENTURAS
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_law.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_airport.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_gen.txt");
+
+    // SAN FIERRO
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_law.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_airport.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_gen.txt");
+
+    // LOS SANTOS
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_law.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_airport.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_inner.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_outer.txt");
+
+    // OTHER AREAS
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/whetstone.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/bone.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/flint.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/tierra.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/red_county.txt");
+
+    omprs::core::Print(&format!(
+        "Total vehicles from files: {total_vehicles_from_files}"
+    ));
 }
