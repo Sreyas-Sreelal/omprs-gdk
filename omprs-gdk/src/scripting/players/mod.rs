@@ -102,8 +102,8 @@ impl Player {
         functions::StopAudioStreamForPlayer(self)
     }
 
-    pub fn send_death_message(&self, killee: Player, weapon: isize) {
-        functions::SendDeathMessage(self, &killee, weapon);
+    pub fn send_death_message(&self, killee: &Player, weapon: PlayerWeapon) {
+        functions::SendDeathMessage(self, killee, weapon);
     }
 
     pub fn toggle_widescreen(&self, enable: bool) {
@@ -194,7 +194,7 @@ impl Player {
         functions::GetPlayerPing(self)
     }
 
-    pub fn get_weapon(&self) -> isize {
+    pub fn get_weapon(&self) -> PlayerWeapon {
         functions::GetPlayerWeapon(self)
     }
 
@@ -287,20 +287,20 @@ impl Player {
         functions::IsPlayerNPC(self)
     }
 
-    pub fn is_streamed_in(&self, other: Player) -> bool {
-        functions::IsPlayerStreamedIn(self, &other)
+    pub fn is_streamed_in(&self, other: &Player) -> bool {
+        functions::IsPlayerStreamedIn(self, other)
     }
 
     pub fn play_sound(&self, sound: usize, pos: Vector3) {
         functions::PlayerPlaySound(self, sound, pos)
     }
 
-    pub fn spectate_player(&self, target: Player, mode: PlayerSpectateMode) {
-        functions::PlayerSpectatePlayer(self, &target, mode)
+    pub fn spectate_player(&self, target: &Player, mode: PlayerSpectateMode) {
+        functions::PlayerSpectatePlayer(self, target, mode)
     }
 
-    pub fn spectate_vehicle(&self, vehicle: Vehicle, mode: PlayerSpectateMode) {
-        functions::PlayerSpectateVehicle(self, &vehicle, mode)
+    pub fn spectate_vehicle(&self, vehicle: &Vehicle, mode: PlayerSpectateMode) {
+        functions::PlayerSpectateVehicle(self, vehicle, mode)
     }
 
     pub fn set_virtual_world(&self, vw: isize) {
@@ -350,8 +350,8 @@ impl Player {
         functions::GetPlayerCameraTargetVehicle(self)
     }
 
-    pub fn put_in_vehicle(&self, vehicle: Vehicle, seat_id: isize) {
-        functions::PutPlayerInVehicle(self, &vehicle, seat_id)
+    pub fn put_in_vehicle(&self, vehicle: &Vehicle, seat_id: isize) {
+        functions::PutPlayerInVehicle(self, vehicle, seat_id)
     }
 
     pub fn remove_building(&self, model: isize, pos: Vector3, radius: f32) {
@@ -389,7 +389,7 @@ impl Player {
         functions::SetPlayerAmmo(self, data)
     }
 
-    pub fn set_armed_weapon(&self, weapon: isize) {
+    pub fn set_armed_weapon(&self, weapon: PlayerWeapon) {
         functions::SetPlayerArmedWeapon(self, weapon)
     }
 
@@ -415,8 +415,8 @@ impl Player {
         functions::SetPlayerSpecialAction(self, action)
     }
 
-    pub fn show_name_tag(&self, other: Player, enable: bool) {
-        functions::ShowPlayerNameTagForPlayer(self, &other, enable)
+    pub fn show_name_tag(&self, other: &Player, enable: bool) {
+        functions::ShowPlayerNameTagForPlayer(self, other, enable)
     }
 
     pub fn toggle_controllable(&self, enable: bool) {
@@ -521,12 +521,12 @@ impl Player {
         functions::IsPlayerAttachedObjectSlotUsed(self, index)
     }
 
-    pub fn attach_camera_to_object(&self, object: Object) {
-        functions::AttachCameraToObject(self, &object)
+    pub fn attach_camera_to_object(&self, object: &Object) {
+        functions::AttachCameraToObject(self, object)
     }
 
-    pub fn attach_camera_to_player_object(&self, object: PlayerObject) {
-        functions::AttachCameraToPlayerObject(self, &object)
+    pub fn attach_camera_to_player_object(&self, object: &PlayerObject) {
+        functions::AttachCameraToPlayerObject(self, object)
     }
 
     pub fn get_aim_data(&self) -> PlayerAimData {
@@ -552,8 +552,8 @@ impl Player {
         functions::GetPlayerTargetActor(self)
     }
 
-    pub fn is_in_vehicle(&self, target_vehicle: Vehicle) -> bool {
-        functions::IsPlayerInVehicle(self, &target_vehicle)
+    pub fn is_in_vehicle(&self, target_vehicle: &Vehicle) -> bool {
+        functions::IsPlayerInVehicle(self, target_vehicle)
     }
 
     pub fn is_in_any_vehicle(&self) -> bool {
@@ -564,8 +564,8 @@ impl Player {
         functions::IsPlayerInRangeOfPoint(self, range, coord)
     }
 
-    pub fn play_crime_report(&self, suspect: Player, crime: isize) -> bool {
-        functions::PlayCrimeReportForPlayer(self, &suspect, crime)
+    pub fn play_crime_report(&self, suspect: &Player, crime: isize) -> bool {
+        functions::PlayCrimeReportForPlayer(self, suspect, crime)
     }
 
     pub fn remove_attached_object(&self, index: isize) {
@@ -576,12 +576,12 @@ impl Player {
         functions::SetPlayerFacingAngle(self, angle)
     }
 
-    pub fn set_marker_for_player(&self, other: Player, colour: Colour) {
-        functions::SetPlayerMarkerForPlayer(self, &other, colour)
+    pub fn set_marker_for_player(&self, other: &Player, colour: Colour) {
+        functions::SetPlayerMarkerForPlayer(self, other, colour)
     }
 
-    pub fn get_marker_for_player(&self, other: Player) -> isize {
-        functions::GetPlayerMarkerForPlayer(self, &other)
+    pub fn get_marker_for_player(&self, other: &Player) -> isize {
+        functions::GetPlayerMarkerForPlayer(self, other)
     }
 
     pub fn allow_teleport(&self, allow: bool) {
@@ -661,12 +661,17 @@ impl Player {
         functions::BanEx(self, msg)
     }
 
-    pub fn send_death_message_to_player(&self, killer: Player, killee: Player, weapon: isize) {
-        functions::SendDeathMessageToPlayer(self, &killer, &killee, weapon)
+    pub fn send_death_message_to_player(
+        &self,
+        killer: &Player,
+        killee: &Player,
+        weapon: PlayerWeapon,
+    ) {
+        functions::SendDeathMessageToPlayer(self, killer, killee, weapon)
     }
 
-    pub fn send_message_to_player(&self, sender: Player, message: &str) {
-        functions::SendPlayerMessageToPlayer(self, &sender, message)
+    pub fn send_message_to_player(&self, sender: &Player, message: &str) {
+        functions::SendPlayerMessageToPlayer(self, sender, message)
     }
 
     pub fn get_version(&self, output: &mut String) {
@@ -1150,7 +1155,7 @@ pub struct PlayerBulletData {
     origin: Vector3,
     hitPos: Vector3,
     offset: Vector3,
-    weapon: u8,
+    weapon: PlayerWeapon,
     hitType: PlayerBulletHitType,
     hitID: u16,
 }
@@ -1282,4 +1287,7 @@ pub enum PlayerWeapon {
     Drown = 53,
     Collision,
     End,
+    Connect = 200,
+    Disconnect,
+    Suicide = 255,
 }

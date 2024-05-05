@@ -2,7 +2,7 @@ use super::{
     EPlayerNameStatus, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
     PlayerAnimationSyncType, PlayerBulletData, PlayerCameraCutType, PlayerFightingStyle,
     PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
-    PlayerSurfingData, PlayerWeaponSkill, WeaponSlotData,
+    PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, WeaponSlotData,
 };
 use omprs_codegen::native;
 use std::ffi::c_void;
@@ -32,7 +32,7 @@ native!(SetCameraBehindPlayer, player: struct Player);
 native!(CreateExplosionForPlayer, player: struct Player, pos: Vector3, explosion_type: isize, radius: f32);
 native!(PlayAudioStreamForPlayer, player: struct Player, url: str,pos: Vector3, distance: f32, usePos: bool);
 native!(StopAudioStreamForPlayer, player: struct Player);
-native!(SendDeathMessage, killer:struct Player, killee:struct Player, weapon: isize);
+native!(SendDeathMessage, killer:struct Player, killee:struct Player, weapon: PlayerWeapon);
 native!(TogglePlayerWidescreen, player: struct Player, enable: bool);
 native!(IsPlayerWidescreenToggled, player: struct Player, -> bool);
 native!(SetPlayerHealth, player: struct Player, health: f32);
@@ -55,7 +55,7 @@ native!(ResetPlayerMoney, player: struct Player);
 native!(SetPlayerName, player: struct Player, name: str, -> EPlayerNameStatus);
 native!(GetPlayerState, player: struct Player, -> PlayerState);
 native!(GetPlayerPing, player: struct Player, -> isize);
-native!(GetPlayerWeapon, player: struct Player, -> isize);
+native!(GetPlayerWeapon, player: struct Player, -> PlayerWeapon);
 native!(SetPlayerTime, player: struct Player, hour: isize, minute: isize);
 native!(GetPlayerTime, player: struct Player, hour: mut isize, minute: mut isize);
 native!(TogglePlayerClock, player: struct Player, enable: bool);
@@ -95,7 +95,7 @@ native!(RemovePlayerMapIcon, player: struct Player, iconID: isize);
 native!(SetPlayerMapIcon, player: struct Player, iconID: isize, pos: Vector3, icon_type: isize, colour: Colour, style: MapIconStyle);
 native!(ResetPlayerWeapons, player: struct Player);
 native!(SetPlayerAmmo, player: struct Player, data: WeaponSlotData);
-native!(SetPlayerArmedWeapon, player: struct Player, weapon: isize);
+native!(SetPlayerArmedWeapon, player: struct Player, weapon: PlayerWeapon);
 native!(SetPlayerChatBubble, player: struct Player, text: str, colour: Colour, drawdistance: f32, expiretime: isize);
 native!(SetPlayerPosFindZ, player: struct Player, pos: Vector3);
 native!(SetPlayerSkillLevel, player: struct Player, weapon: PlayerWeaponSkill, level: isize);
@@ -152,7 +152,7 @@ native!(HasGameText, player: struct Player, style: isize, -> bool);
 native!(GetGameText, player: struct Player, style: isize, message: mut str, time: mut isize, remaining: mut isize, -> bool);
 native!(Ban, player: struct Player);
 native!(BanEx, player: struct Player, msg: str);
-native!(SendDeathMessageToPlayer, player: struct Player, killer:struct Player, killee:struct Player, weapon: isize);
+native!(SendDeathMessageToPlayer, player: struct Player, killer:struct Player, killee:struct Player, weapon: PlayerWeapon);
 native!(SendPlayerMessageToPlayer, player: struct Player, sender:struct Player, message: str);
 native!(GetPlayerVersion, player: struct Player, output: mut str);
 native!(GetPlayerSkillLevel, player: struct Player, skill: isize, -> isize);

@@ -316,7 +316,7 @@ impl Events for GrandLarc {
             return true;
         }
 
-        if player.get_weapon() == 38 {
+        if player.get_weapon() == PlayerWeapon::Minigun {
             player.kick();
             return false;
         }
