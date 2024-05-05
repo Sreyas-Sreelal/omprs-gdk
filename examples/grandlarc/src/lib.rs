@@ -369,6 +369,7 @@ fn load_static_vehicles_from_file(path: &str) -> isize {
             .unwrap()
             .parse()
             .unwrap();
+
         vehicles::Vehicle::create_static(
             modelid,
             Vector3::new(x, y, z),
@@ -378,6 +379,7 @@ fn load_static_vehicles_from_file(path: &str) -> isize {
             30 * 60,
             false,
         );
+
         count += 1;
     }
 
@@ -428,6 +430,7 @@ pub fn GameEntry() {
     register!(game);
 
     create_all_class();
+
     let mut total_vehicles_from_files = load_static_vehicles_from_file("vehicles/trains.txt");
     total_vehicles_from_files += load_static_vehicles_from_file("vehicles/pilots.txt");
 
