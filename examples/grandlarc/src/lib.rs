@@ -273,7 +273,7 @@ impl Events for GrandLarc {
             None => {}
         }
 
-        player.give_weapon(WeaponSlotData::new(PlayerWeapon::Sawedoff, 100));
+        player.give_weapon(WeaponSlotData::new(PlayerWeapon::Colt45, 100));
         player.toggle_clock(false);
     }
 
