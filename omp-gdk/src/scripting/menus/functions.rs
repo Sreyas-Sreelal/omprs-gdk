@@ -14,7 +14,6 @@ native!(HideMenuForPlayer, menu: struct Menu, player: struct Player);
 native!(DisableMenu, menu: struct Menu);
 native!(DisableMenuRow, menu: struct Menu, row: u8);
 native!(GetPlayerMenu, player: struct Player, -> struct Menu);
-native!(IsValidMenu, menu: struct Menu, -> bool);
 native!(IsMenuDisabled, menu: struct Menu, -> bool);
 native!(IsMenuRowDisabled, menu: struct Menu, row: isize, -> bool);
 native!(GetMenuColumns, menu: struct Menu, -> isize);
@@ -35,7 +34,6 @@ pub fn load_functions() {
     load_function!(DisableMenu);
     load_function!(DisableMenuRow);
     load_function!(GetPlayerMenu);
-    load_function!(IsValidMenu);
     load_function!(IsMenuDisabled);
     load_function!(IsMenuRowDisabled);
     load_function!(GetMenuColumns);

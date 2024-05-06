@@ -6,12 +6,18 @@ pub use functions::{
     load_functions, CreateClass, EditClassData, GetAvailableClasses, GetClassData,
 };
 
+/// Player Class Information
 #[repr(C)]
 #[derive(Default)]
 pub struct PlayerClass {
-    team: u8,             // The class's team
-    skin: isize,          // The class's skin ID
-    spawn: Vector3,       // The class's spawn position
-    angle: f32,           // The class's angle
-    weapons: WeaponSlots, // The class's weapons
+    /// The class's team
+    team: u8,
+    /// The class's skin ID            
+    skin: isize,
+    /// The class's spawn position         
+    spawn: Vector3,
+    /// The class's angle       
+    angle: f32,
+    /// The class's weapons          
+    weapons: WeaponSlots,
 }

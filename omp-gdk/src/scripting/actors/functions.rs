@@ -18,7 +18,6 @@ native!(SetActorHealth, actor: struct Actor, health: f32);
 native!(GetActorHealth, actor: struct Actor, -> f32);
 native!(SetActorInvulnerable, actor: struct Actor, invulnerable:bool);
 native!(IsActorInvulnerable, actor: struct Actor, -> bool);
-native!(IsValidActor, actor: struct Actor, -> bool);
 native!(SetActorSkin, actor: struct Actor, skin: isize);
 native!(GetActorSkin, actor: struct Actor, -> isize);
 native!(GetActorAnimation,actor: struct Actor, animationLibrary: mut str, animationName: mut str, delta: mut f32, animloop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut usize,->bool);
@@ -42,7 +41,6 @@ pub fn load_functions() {
     load_function!(GetActorHealth);
     load_function!(SetActorInvulnerable);
     load_function!(IsActorInvulnerable);
-    load_function!(IsValidActor);
     load_function!(SetActorSkin);
     load_function!(GetActorSkin);
     load_function!(GetActorAnimation);

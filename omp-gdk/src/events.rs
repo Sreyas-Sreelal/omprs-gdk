@@ -230,9 +230,11 @@ pub trait Events {
     }
 
     /// This callback is called when a player enters a gangzone
+    /// This callback requires the use of use_check method to be enable
     fn on_player_enter_gang_zone(&mut self, player: Player, zone: GangZone) {}
 
     /// This callback is called when a player exited a gangzone.
+    /// This callback requires the use of use_check method to be enable
     fn on_player_leave_gang_zone(&mut self, player: Player, zone: GangZone) {}
 
     /// This callback is called when a player clicked a gangzone on the pause menu map (by right-clicking).
