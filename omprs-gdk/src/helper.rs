@@ -13,18 +13,6 @@ extern "C" {
     fn dlsym(handle: *mut raw::c_void, symbol: *const raw::c_char) -> *mut raw::c_void;
 }
 
-/* macro_rules! cstr {
-    ($e: expr) => {{
-        std::ffi::CString::new($e).unwrap().into_raw()
-    }};
-} */
-
-/* macro_rules! from_cstr {
-    ($e: expr) => {
-        unsafe { CStr::from_ptr($e.as_ptr()).to_string_lossy().to_string() }
-    };
-} */
-
 macro_rules! load_function {
     ($name: expr) => {
         paste::paste! {
