@@ -1,0 +1,14 @@
+[package]
+name = "omp-gdk"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+omp-codegen = {path="../omp-codegen"}
+paste = "1.0"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.52.0", features = [
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+] }

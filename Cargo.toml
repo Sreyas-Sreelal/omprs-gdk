@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "omprs-gdk",
-    "omprs-codegen",
-    "omprs",
+    "omp-gdk",
+    "omp-codegen",
+    "omp",
     "examples/grandlarc"
 ]
 resolver = "2"

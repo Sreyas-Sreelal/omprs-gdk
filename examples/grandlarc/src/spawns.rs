@@ -1,4 +1,4 @@
-use omprs::types::vector::Vector3;
+use omp::types::vector::Vector3;
 use rand::seq::SliceRandom;
 
 type SpawnLocationCoords = (Vector3, f32);

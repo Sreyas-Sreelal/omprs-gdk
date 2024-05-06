@@ -7,5 +7,5 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-omprs = {path="../../omprs"}
+omp = {path="../../omp"}
 rand = "0.8.5"

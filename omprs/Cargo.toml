@@ -1,7 +1,0 @@
-[package]
-name = "omprs"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-omprs-gdk = {path="../omprs-gdk"}

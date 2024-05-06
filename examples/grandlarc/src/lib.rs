@@ -8,7 +8,7 @@ use std::{
     time::Instant,
 };
 
-use omprs::{
+use omp::{
     classes::CreateClass,
     core::{
         DisableInteriorEnterExits, EnableStuntBonusForAll, SetGameModeText, SetNameTagDrawDistance,
@@ -477,7 +477,7 @@ pub fn game_entry() -> Result<(), Box<dyn std::error::Error>> {
     total_vehicles_from_files += load_static_vehicles_from_file("vehicles/tierra.txt")?;
     total_vehicles_from_files += load_static_vehicles_from_file("vehicles/red_county.txt")?;
 
-    omprs::core::Print(&format!(
+    omp::core::Print(&format!(
         "Total vehicles from files: {total_vehicles_from_files}"
     ));
 
