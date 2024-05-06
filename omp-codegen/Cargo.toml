@@ -1,6 +1,10 @@
 [package]
 name = "omp-codegen"
 version = "0.1.0"
+authors = ["Sreyas <sreyassreelal@gmail.com>"]
+description = "Codegen for omprs"
+license = "Apache"
+repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"
 
 [lib]
