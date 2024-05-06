@@ -1,3 +1,5 @@
+//! GDK crate, that does the core functionality like loading function address, executing, providing necessary types etc
+
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 #![allow(clippy::too_many_arguments)]

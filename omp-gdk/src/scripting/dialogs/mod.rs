@@ -4,7 +4,7 @@ pub mod functions;
 pub use functions::load_functions;
 
 /// Type of Dialog Styles
-/// https://www.open.mp/docs/scripting/resources/dialogstyles
+/// <https://www.open.mp/docs/scripting/resources/dialogstyles>
 #[repr(C)]
 #[derive(PartialEq)]
 pub enum DialogStyle {

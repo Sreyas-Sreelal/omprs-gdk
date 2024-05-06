@@ -1,3 +1,4 @@
+//! main crate the is supposed to be used by the players, neatly exposing all of the functionalities and APIs.
 #[macro_use]
 pub mod runtime;
 
