@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-omp-codegen = {path="../omp-codegen"}
+omp-codegen = {path="../omp-codegen",version="0.1.0"}
 paste = "1.0"
 
 [target.'cfg(windows)'.dependencies]
