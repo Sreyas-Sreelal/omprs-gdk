@@ -349,26 +349,25 @@ fn create_all_class() {
     }
 }
 
-fn load_static_vehicles_from_file(path: &str) -> isize {
-    let file = File::open(path).unwrap();
+fn load_static_vehicles_from_file(path: &str) -> Result<isize, Box<dyn std::error::Error>> {
+    let file = File::open(path)?;
     let lines = io::BufReader::new(file).lines();
     let mut count = 0;
     for line in lines.flatten() {
         let mut seperator = line.split(',');
-        let modelid: isize = seperator.next().unwrap().parse().unwrap();
-        let x: f32 = seperator.next().unwrap().parse().unwrap();
-        let y: f32 = seperator.next().unwrap().parse().unwrap();
-        let z: f32 = seperator.next().unwrap().parse().unwrap();
-        let rotation: f32 = seperator.next().unwrap().parse().unwrap();
-        let colour1: isize = seperator.next().unwrap().parse().unwrap();
+        let modelid: isize = seperator.next().unwrap().parse()?;
+        let x: f32 = seperator.next().unwrap().parse()?;
+        let y: f32 = seperator.next().unwrap().parse()?;
+        let z: f32 = seperator.next().unwrap().parse()?;
+        let rotation: f32 = seperator.next().unwrap().parse()?;
+        let colour1: isize = seperator.next().unwrap().parse()?;
         let colour2: isize = seperator
             .next()
             .unwrap()
             .split(' ')
             .next()
             .unwrap()
-            .parse()
-            .unwrap();
+            .parse()?;
 
         vehicles::Vehicle::create_static(
             modelid,
@@ -383,11 +382,11 @@ fn load_static_vehicles_from_file(path: &str) -> isize {
         count += 1;
     }
 
-    count
+    Ok(count)
 }
 
 #[main]
-pub fn GameEntry() {
+pub fn game_entry() -> Result<(), Box<dyn std::error::Error>> {
     SetGameModeText("Grand Larceny");
     ShowPlayerMarkers(1);
     ShowNameTags(true);
@@ -431,33 +430,35 @@ pub fn GameEntry() {
 
     create_all_class();
 
-    let mut total_vehicles_from_files = load_static_vehicles_from_file("vehicles/trains.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/pilots.txt");
+    let mut total_vehicles_from_files = load_static_vehicles_from_file("vehicles/trains.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/pilots.txt")?;
 
     // LAS VENTURAS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_law.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_airport.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_gen.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_law.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_airport.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_gen.txt")?;
 
     // SAN FIERRO
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_law.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_airport.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_gen.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_law.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_airport.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_gen.txt")?;
 
     // LOS SANTOS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_law.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_airport.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_inner.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_outer.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_law.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_airport.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_inner.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_outer.txt")?;
 
     // OTHER AREAS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/whetstone.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/bone.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/flint.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/tierra.txt");
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/red_county.txt");
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/whetstone.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/bone.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/flint.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/tierra.txt")?;
+    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/red_county.txt")?;
 
     omprs::core::Print(&format!(
         "Total vehicles from files: {total_vehicles_from_files}"
     ));
+
+    Ok(())
 }
