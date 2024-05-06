@@ -58,9 +58,9 @@ pub mod players {
         BodyPart, ClientVersion, EPlayerNameStatus, ESpectateType, MapIconStyle, Player,
         PlayerAimData, PlayerAnimationData, PlayerAnimationSyncType, PlayerBulletData,
         PlayerBulletHitType, PlayerCameraCutType, PlayerClickSource, PlayerFightingStyle,
-        PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
-        PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState, WeaponSlotData,
-        WeaponSlots,
+        PlayerKeyData, PlayerKeys, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode,
+        PlayerState, PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState,
+        WeaponSlotData, WeaponSlots,
     };
 }
 

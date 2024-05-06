@@ -16,7 +16,7 @@ use omprs::{
     },
     events::Events,
     main,
-    players::{Player, PlayerState, PlayerWeapon, WeaponSlotData, WeaponSlots},
+    players::{Player, PlayerKeys, PlayerState, PlayerWeapon, WeaponSlotData, WeaponSlots},
     register,
     textdraws::{TextDraw, TextDrawStyle},
     types::{
@@ -207,7 +207,7 @@ impl GrandLarc {
             return;
         }
 
-        if (keydata.keys & 4) != 0 {
+        if (keydata.keys & PlayerKeys::FIRE) != 0 {
             self.players_data
                 .get_mut(&player.get_id())
                 .unwrap()

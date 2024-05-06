@@ -1291,3 +1291,30 @@ pub enum PlayerWeapon {
     Disconnect,
     Suicide = 255,
 }
+
+// Player Keys
+pub mod PlayerKeys {
+    pub const ACTION: u32 = 1;
+    pub const CROUCH: u32 = 2;
+    pub const FIRE: u32 = 4;
+    pub const SPRINT: u32 = 8;
+    pub const SECONDARY_ATTACK: u32 = 16;
+    pub const JUMP: u32 = 32;
+    pub const LOOK_RIGHT: u32 = 64;
+    pub const HANDBRAKE: u32 = 128;
+    pub const LOOK_LEFT: u32 = 256;
+    pub const SUBMISSION: u32 = 512;
+    pub const LOOK_BEHIND: u32 = 512;
+    pub const WALK: u32 = 1024;
+    pub const ANALOG_UP: u32 = 2048;
+    pub const ANALOG_DOWN: u32 = 4096;
+    pub const ANALOG_LEFT: u32 = 8192;
+    pub const ANALOG_RIGHT: u32 = 16384;
+    pub const YES: u32 = 65536;
+    pub const NO: u32 = 131072;
+    pub const CTRL_BACK: u32 = 262144;
+    pub const UP: isize = -128;
+    pub const DOWN: isize = 128;
+    pub const LEFT: isize = -128;
+    pub const RIGHT: isize = 128;
+}
