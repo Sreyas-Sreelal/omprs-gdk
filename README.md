@@ -24,34 +24,39 @@ omprs is a tool to develop open.mp gamemodes in Rust.
    `cargo new mygm --lib`
 4. Add `omp` to dependecies
     `cargo add omp`
-5. Write a basic code like this
-  ```Rust
-  use omp::{events::Events, main, register, types::colour::Colour};
+5. Add this to your `Cargo.toml`
+    ```toml
+    [lib]
+    crate-type = ["cdylib"]
+    ```
+6. Write a basic code like this
+    ```Rust
+    use omp::{events::Events, main, register, types::colour::Colour};
 
-struct MyGM;
+    struct MyGM;
 
-impl Events for MyGM {
-    fn on_player_connect(&mut self, player: omp::players::Player) {
-        player.send_client_message(Colour::from_rgba(0xFFFFFFFF), "Welcome to my server!");
+    impl Events for MyGM {
+        fn on_player_connect(&mut self, player: omp::players::Player) {
+            player.send_client_message(Colour::from_rgba(0xFFFFFFFF), "Welcome to my server!");
+        }
     }
-}
 
-#[main]
-pub fn game_main() {
-    register!(MyGM);
-}
-  ```
-6. Build the gamemode
+    #[main]
+    pub fn game_main() {
+        register!(MyGM);
+    }
+    ```
+7. Build the gamemode
 
    `cargo +stable-i686 build`
-7. Put the compile `mygm.dll` or `mygm.so` to `gamemodes` folder
-8. Goto config.json add following to it
-  ```json
-  "rust":{
-          "gamemode":"grandlarc"
-      }
-  ```
-9. Run your server
+8. Put the compile `mygm.dll` or `mygm.so` to `gamemodes` folder
+9. Goto `config.json` add following to it
+    ```json
+    "rust":{
+        gamemode":"mygm",
+    }
+    ```
+10. Run your server
 
 
 
