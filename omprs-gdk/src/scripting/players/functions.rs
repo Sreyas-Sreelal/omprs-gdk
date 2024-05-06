@@ -27,7 +27,7 @@ native!(GetPlayerWeather, player: struct Player, -> isize);
 native!(SetPlayerSkin, player: struct Player, skinid: isize);
 native!(SetPlayerShopName, player: struct Player, shopname: str);
 native!(GivePlayerMoney, player: struct Player, amount: isize);
-native!(SetPlayerCameraLookAt, player: struct Player,pos:Vector3, cut: isize);
+native!(SetPlayerCameraLookAt, player: struct Player,pos:Vector3, cut: PlayerCameraCutType);
 native!(SetCameraBehindPlayer, player: struct Player);
 native!(CreateExplosionForPlayer, player: struct Player, pos: Vector3, explosion_type: isize, radius: f32);
 native!(PlayAudioStreamForPlayer, player: struct Player, url: str,pos: Vector3, distance: f32, usePos: bool);

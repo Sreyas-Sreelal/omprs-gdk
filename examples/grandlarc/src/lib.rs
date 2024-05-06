@@ -16,7 +16,10 @@ use omprs::{
     },
     events::Events,
     main,
-    players::{Player, PlayerKeys, PlayerState, PlayerWeapon, WeaponSlotData, WeaponSlots},
+    players::{
+        Player, PlayerCameraCutType, PlayerKeys, PlayerState, PlayerWeapon, WeaponSlotData,
+        WeaponSlots,
+    },
     register,
     textdraws::{TextDraw, TextDrawStyle},
     types::{
@@ -56,21 +59,30 @@ impl GrandLarc {
                 player.set_pos(Vector3::new(508.7362, -87.4335, 998.9609));
                 player.set_facing_angle(0.0);
                 player.set_camera_pos(Vector3::new(508.7362, -83.4335, 998.9609));
-                player.set_camera_look_at(Vector3::new(508.7362, -87.4335, 998.9609), 1);
+                player.set_camera_look_at(
+                    Vector3::new(508.7362, -87.4335, 998.9609),
+                    PlayerCameraCutType::Move,
+                );
             }
             Some(Cities::SanFierro) => {
                 player.set_interior(3);
                 player.set_pos(Vector3::new(-2673.8381, 1399.7424, 918.3516));
                 player.set_facing_angle(181.0);
                 player.set_camera_pos(Vector3::new(-2673.2776, 1394.3859, 918.3516));
-                player.set_camera_look_at(Vector3::new(-2673.8381, 1399.7424, 918.3516), 1);
+                player.set_camera_look_at(
+                    Vector3::new(-2673.8381, 1399.7424, 918.3516),
+                    PlayerCameraCutType::Move,
+                );
             }
             Some(Cities::LasVenturas) => {
                 player.set_interior(3);
                 player.set_pos(Vector3::new(349.0453, 193.2271, 1014.1797));
                 player.set_facing_angle(286.25);
                 player.set_camera_pos(Vector3::new(352.9164, 194.5702, 1014.1875));
-                player.set_camera_look_at(Vector3::new(349.0453, 193.2271, 1014.1797), 1);
+                player.set_camera_look_at(
+                    Vector3::new(349.0453, 193.2271, 1014.1797),
+                    PlayerCameraCutType::Move,
+                );
             }
             None => {}
         }
@@ -100,7 +112,10 @@ impl GrandLarc {
             Some(Cities::LosSantos) => {
                 player.set_interior(0);
                 player.set_camera_pos(Vector3::new(1630.6136, -2286.0298, 110.0));
-                player.set_camera_look_at(Vector3::new(1887.6034, -1682.1442, 47.6167), 1);
+                player.set_camera_look_at(
+                    Vector3::new(1887.6034, -1682.1442, 47.6167),
+                    PlayerCameraCutType::Move,
+                );
                 self.los_santos_td.show_for_player(player);
                 self.san_fierro_td.hide_for_player(player);
                 self.las_venturas_td.hide_for_player(player);
@@ -109,7 +124,10 @@ impl GrandLarc {
             Some(Cities::SanFierro) => {
                 player.set_interior(0);
                 player.set_camera_pos(Vector3::new(-1300.8754, 68.0546, 129.4823));
-                player.set_camera_look_at(Vector3::new(-1817.9412, 769.3878, 132.6589), 1);
+                player.set_camera_look_at(
+                    Vector3::new(-1817.9412, 769.3878, 132.6589),
+                    PlayerCameraCutType::Move,
+                );
                 self.los_santos_td.hide_for_player(player);
                 self.san_fierro_td.show_for_player(player);
                 self.las_venturas_td.hide_for_player(player);
@@ -117,7 +135,10 @@ impl GrandLarc {
             Some(Cities::LasVenturas) => {
                 player.set_interior(0);
                 player.set_camera_pos(Vector3::new(1310.6155, 1675.9182, 110.739));
-                player.set_camera_look_at(Vector3::new(2285.2944, 1919.3756, 68.2275), 1);
+                player.set_camera_look_at(
+                    Vector3::new(2285.2944, 1919.3756, 68.2275),
+                    PlayerCameraCutType::Move,
+                );
                 self.los_santos_td.hide_for_player(player);
                 self.san_fierro_td.hide_for_player(player);
                 self.las_venturas_td.show_for_player(player);

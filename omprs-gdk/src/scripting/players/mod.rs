@@ -82,7 +82,7 @@ impl Player {
         functions::GivePlayerMoney(self, amount)
     }
 
-    pub fn set_camera_look_at(&self, pos: Vector3, cut: isize) {
+    pub fn set_camera_look_at(&self, pos: Vector3, cut: PlayerCameraCutType) {
         functions::SetPlayerCameraLookAt(self, pos, cut)
     }
 
