@@ -11,7 +11,7 @@ use crate::{players::Player, types::colour::Colour, types::vector::Vector2};
 #[repr(C)]
 #[derive(Default)]
 pub struct GangZonePos {
-    /// west (x) and south (y) side of a gangzone 
+    /// west (x) and south (y) side of a gangzone
     pub min: Vector2,
     /// east (x) and north (y) side of a gangzone
     pub max: Vector2,
@@ -23,7 +23,7 @@ impl GangZonePos {
     }
 }
 
-/// Main handler pointing to open.mp's GangZone object 
+/// Main handler pointing to open.mp's GangZone object
 pub struct GangZone {
     handle: *const c_void,
 }
@@ -47,7 +47,7 @@ impl GangZone {
         functions::GangZoneDestroy(self)
     }
 
-    /// Show a gangzone for a player. 
+    /// Show a gangzone for a player.
     pub fn show_for_player(&self, player: &Player, colour: Colour) {
         functions::GangZoneShowForPlayer(self, player, colour)
     }
@@ -111,7 +111,7 @@ impl GangZone {
     pub fn get_flash_color_for_player(&self, player: &Player) -> isize {
         functions::GangZoneGetFlashColorForPlayer(self, player)
     }
-    
+
     // Checks if a gangzone is flashing for player
     pub fn is_flashing_for_player(&self, player: &Player) -> bool {
         functions::IsGangZoneFlashingForPlayer(self, player)

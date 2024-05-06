@@ -10,7 +10,7 @@ pub use functions::load_functions;
 #[derive(PartialEq)]
 pub enum RaceCheckpointType {
     /// Normal, must have nextPosition, else it shows as RACE_FINISH
-    Normal = 0, 
+    Normal = 0,
     /// Finish checkpoint, must have no nextPosition, else it shows as RACE_NORMAL
     Finish,
     /// Nothing (Only the checkpoint without anything on it)     

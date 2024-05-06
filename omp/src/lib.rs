@@ -66,9 +66,7 @@ pub mod players {
 }
 
 pub mod textdraws {
-    pub use omp_gdk::textdraws::{
-        PlayerTextDraw, TextDraw, TextDrawAlignmentTypes, TextDrawStyle,
-    };
+    pub use omp_gdk::textdraws::{PlayerTextDraw, TextDraw, TextDrawAlignmentTypes, TextDrawStyle};
 }
 
 pub mod textlabels {

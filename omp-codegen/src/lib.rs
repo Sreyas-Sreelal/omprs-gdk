@@ -19,7 +19,7 @@ pub fn main(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// Creates a userfunction that calls the native function in component
-/// str - for string data 
+/// str - for string data
 /// struct - for open.mp object pointers
 #[proc_macro]
 pub fn native(args: TokenStream) -> TokenStream {

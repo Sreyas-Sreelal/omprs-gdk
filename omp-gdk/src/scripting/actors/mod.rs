@@ -9,7 +9,7 @@ use crate::types::vector::Vector3;
 
 use std::ffi::c_void;
 
-/// Main handler pointing to open.mp's Actor object 
+/// Main handler pointing to open.mp's Actor object
 pub struct Actor {
     handle: *const c_void,
 }
@@ -23,8 +23,8 @@ impl Actor {
         Self { handle }
     }
 
-    /// Create a static 'actor' in the world. 
-    /// These 'actors' are like NPCs, however they have limited functionality. 
+    /// Create a static 'actor' in the world.
+    /// These 'actors' are like NPCs, however they have limited functionality.
     /// They do not take up server player slots.
     pub fn create_actor(skin: isize, pos: Vector3, angle: f32) -> Option<Actor> {
         functions::CreateActor(skin, pos, angle)
