@@ -65,7 +65,7 @@ impl Actor {
         functions::SetActorPos(self, pos)
     }
 
-    pub fn getpos(&self) -> Vector3 {
+    pub fn get_pos(&self) -> Vector3 {
         let mut position = Vector3 {
             x: 0.0,
             y: 0.0,
@@ -75,27 +75,27 @@ impl Actor {
         position
     }
 
-    pub fn setfacing_angle(&self, angle: f32) {
+    pub fn set_facing_angle(&self, angle: f32) {
         functions::SetActorFacingAngle(self, angle)
     }
 
-    pub fn getfacing_angle(&self) -> f32 {
+    pub fn get_facing_angle(&self) -> f32 {
         functions::GetActorFacingAngle(self)
     }
 
-    pub fn sethealth(&self, health: f32) {
+    pub fn set_health(&self, health: f32) {
         functions::SetActorHealth(self, health)
     }
 
-    pub fn gethealth(&self) -> f32 {
+    pub fn get_health(&self) -> f32 {
         functions::GetActorHealth(self)
     }
 
-    pub fn setinvulnerable(&self, invulnerable: bool) {
+    pub fn set_invulnerable(&self, invulnerable: bool) {
         functions::SetActorInvulnerable(self, invulnerable)
     }
 
-    pub fn isinvulnerable(&self) -> bool {
+    pub fn is_invulnerable(&self) -> bool {
         functions::IsActorInvulnerable(self)
     }
 
