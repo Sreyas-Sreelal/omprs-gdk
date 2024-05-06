@@ -1,4 +1,4 @@
-///! codgen crate that gives proc macros to generate exported functions and FFI related code automatically
+//! codgen crate that gives proc macros to generate exported functions and FFI related code automatically
 use proc_macro::TokenStream;
 
 mod callbacks;
