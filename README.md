@@ -1,6 +1,6 @@
 # omprs
 
-[<img alt="crates.io" src="https://img.shields.io/crates/v/omp.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/omprs)
+[<img alt="crates.io" src="https://img.shields.io/crates/v/omp.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/omp)
 [<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-omp-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/omp)
 [<img alt="build status" src="https://img.shields.io/github/actions/workflow/status/sreyas-sreelal/omprs-gdk/build.yml?branch=master&style=for-the-badge" height="20">](https://github.com/sreyas-sreelal/omprs-gdk/actions?query=branch%3Amaster)
 [<img alt="patreon" src="https://img.shields.io/badge/patreon-sreyas_sreelal-pink?style=for-the-badge&logo=patreon" height="20">](https://www.patreon.com/sreyas_sreelal)
