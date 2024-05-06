@@ -48,9 +48,9 @@ jobs:
           sudo dpkg --add-architecture i386
           sudo apt update
           sudo apt install gcc-multilib libssl-dev:i386 -y
-    - name: Install Rust
-      run: rustup update stable && rustup default stable && rustup component add rustfmt
-    - run: cargo fmt -- --check
+      - name: Install Rust
+        run: rustup update stable && rustup default stable && rustup component add rustfmt
+      - run: cargo fmt -- --check
 
   clippy_check:
     name: Clippy
