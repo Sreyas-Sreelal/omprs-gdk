@@ -2,6 +2,7 @@
 members = [
     "omp-gdk",
     "omp-codegen",
-    "omp"
+    "omp",
+    "examples/grandlarc"
 ]
 resolver = "2"
