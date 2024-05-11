@@ -36,7 +36,7 @@ jobs:
           sudo apt update
           sudo apt install gcc-multilib libssl-dev:i386 -y
         if: matrix.os == 'ubuntu-latest'
-      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - run: rustup update ${{ matrix.toolchain }}  --no-self-update && rustup default ${{ matrix.toolchain }}
       - run: cargo build --verbose
 
   rustfmt:
