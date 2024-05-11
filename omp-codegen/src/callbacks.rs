@@ -69,8 +69,8 @@ pub fn create_callback(input: TokenStream) -> TokenStream {
 
     for (param_name, param_type, is_option) in callback.params {
         if param_type == "String" {
-            orig_callback_params.push(quote!(#param_name:*const std::ffi::c_char,));
-            user_func_args.push(quote!(unsafe { std::ffi::CStr::from_ptr(#param_name).to_string_lossy().to_string() },));
+            orig_callback_params.push(quote!(#param_name:crate::types::stringview::StringView,));
+            user_func_args.push(quote!(#param_name.get_data(),));
         } else if param_type == "Player"
             || param_type == "Actor"
             || param_type == "Vehicle"
