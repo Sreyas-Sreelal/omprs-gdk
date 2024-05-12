@@ -88,17 +88,6 @@ impl GrandLarc {
         }
     }
 
-    pub fn init_city_name_td(&self, td: &TextDraw) {
-        td.use_box(false);
-        td.set_letter_size(Vector2::new(1.25, 3.0));
-        td.set_style(TextDrawStyle::FontBeckettRegular);
-        td.set_shadow(0);
-        td.set_outline(1);
-        td.set_color(Colour::from_rgba(0xEEEEEEFF));
-        self.class_selection_helper_td
-            .set_background_color(Colour::from_rgba(0x000000FF));
-    }
-
     pub fn setup_selected_city(&mut self, player: &Player) {
         let playerid = player.get_id();
         if self.players_data[&playerid].selected_city.is_none() {
@@ -374,7 +363,7 @@ fn load_static_vehicles_from_file(path: &str) -> Result<isize, Box<dyn std::erro
     let file = File::open(path)?;
     let lines = io::BufReader::new(file).lines();
     let mut count = 0;
-    for line in lines.flatten() {
+    for line in lines.map_while(Result::ok) {
         let mut seperator = line.split(',');
         let modelid: isize = seperator.next().unwrap().parse()?;
         let x: f32 = seperator.next().unwrap().parse()?;
@@ -406,6 +395,31 @@ fn load_static_vehicles_from_file(path: &str) -> Result<isize, Box<dyn std::erro
     Ok(count)
 }
 
+fn create_city_name_td(city_name: &str) -> TextDraw {
+    let td = TextDraw::create(Vector2::new(10.0, 380.0), city_name).unwrap();
+    td.use_box(false);
+    td.set_letter_size(Vector2::new(1.25, 3.0));
+    td.set_style(TextDrawStyle::FontBeckettRegular);
+    td.set_shadow(0);
+    td.set_outline(1);
+    td.set_color(Colour::from_rgba(0xEEEEEEFF));
+    td
+}
+
+fn create_helper_td() -> TextDraw {
+    let td = TextDraw::create(Vector2::new(10.0, 415.0), " Press ~b~~k~~GO_LEFT~ ~w~or ~b~~k~~GO_RIGHT~ ~w~to switch cities.~n~ Press ~r~~k~~PED_FIREWEAPON~ ~w~to select.").unwrap();
+    td.use_box(true);
+    td.set_box_color(Colour::from_rgba(0x222222BB));
+    td.set_letter_size(Vector2::new(0.3, 1.0));
+    td.set_text_size(Vector2::new(400.0, 40.0));
+    td.set_style(TextDrawStyle::FontBankGothic);
+    td.set_shadow(0);
+    td.set_outline(1);
+    td.set_background_color(Colour::from_rgba(0x000000FF));
+    td.set_color(Colour::from_rgba(0xFFFFFFFF));
+    td
+}
+
 #[main]
 pub fn game_entry() -> Result<(), Box<dyn std::error::Error>> {
     SetGameModeText("Grand Larceny");
@@ -417,69 +431,46 @@ pub fn game_entry() -> Result<(), Box<dyn std::error::Error>> {
     SetWeather(2);
     SetWorldTime(11);
 
-    let game = GrandLarc{
-        class_selection_helper_td: TextDraw::create(Vector2::new(10.0, 415.0), " Press ~b~~k~~GO_LEFT~ ~w~or ~b~~k~~GO_RIGHT~ ~w~to switch cities.~n~ Press ~r~~k~~PED_FIREWEAPON~ ~w~to select.").unwrap(),
-        los_santos_td: TextDraw::create(Vector2::new(10.0, 380.0), "Los Santos").unwrap(),
-        san_fierro_td: TextDraw::create(Vector2::new(10.0, 380.0), "San Fierro").unwrap(),
-        las_venturas_td: TextDraw::create(Vector2::new(10.0, 380.0), "Las Venturas").unwrap(),
+    let game = GrandLarc {
+        class_selection_helper_td: create_helper_td(),
+        los_santos_td: create_city_name_td("Los Santos"),
+        san_fierro_td: create_city_name_td("San Fierro"),
+        las_venturas_td: create_city_name_td("Las Venturas"),
         spawn_locations: SpawnLocations::new(),
         players_data: HashMap::new(),
         colour_white: Colour::from_rgba(0xFFFFFFFF),
     };
 
-    game.init_city_name_td(&game.los_santos_td);
-    game.init_city_name_td(&game.san_fierro_td);
-    game.init_city_name_td(&game.las_venturas_td);
-
-    game.class_selection_helper_td.use_box(true);
-    game.class_selection_helper_td
-        .set_box_color(Colour::from_rgba(0x222222BB));
-    game.class_selection_helper_td
-        .set_letter_size(Vector2::new(0.3, 1.0));
-    game.class_selection_helper_td
-        .set_text_size(Vector2::new(400.0, 40.0));
-    game.class_selection_helper_td
-        .set_style(TextDrawStyle::FontBankGothic);
-    game.class_selection_helper_td.set_shadow(0);
-    game.class_selection_helper_td.set_outline(1);
-    game.class_selection_helper_td
-        .set_background_color(Colour::from_rgba(0x000000FF));
-    game.class_selection_helper_td
-        .set_color(Colour::from_rgba(0xFFFFFFFF));
-
     register!(game);
 
     create_all_class();
 
-    let mut total_vehicles_from_files = load_static_vehicles_from_file("vehicles/trains.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/pilots.txt")?;
+    let vehicle_file_list = [
+        "trains",
+        "pilots",
+        "lv_law",
+        "lv_airport",
+        "lv_gen",
+        "sf_law",
+        "sf_airport",
+        "sf_gen",
+        "ls_law",
+        "ls_airport",
+        "ls_gen_inner",
+        "ls_gen_outer",
+        "whetstone",
+        "bone",
+        "flint",
+        "tierra",
+        "red_county",
+    ];
 
-    // LAS VENTURAS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_law.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_airport.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/lv_gen.txt")?;
+    let mut total_vehicles = 0;
+    for file in vehicle_file_list {
+        total_vehicles += load_static_vehicles_from_file(&format!("vehicles/{file}.txt"))?;
+    }
 
-    // SAN FIERRO
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_law.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_airport.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/sf_gen.txt")?;
-
-    // LOS SANTOS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_law.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_airport.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_inner.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/ls_gen_outer.txt")?;
-
-    // OTHER AREAS
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/whetstone.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/bone.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/flint.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/tierra.txt")?;
-    total_vehicles_from_files += load_static_vehicles_from_file("vehicles/red_county.txt")?;
-
-    omp::core::Print(&format!(
-        "Total vehicles from files: {total_vehicles_from_files}"
-    ));
+    omp::core::Print(&format!("Total vehicles from files: {total_vehicles}"));
 
     Ok(())
 }
