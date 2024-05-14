@@ -8,6 +8,7 @@ native!(ShowPlayerDialog, player: struct Player, dialog:i16, style: DialogStyle,
 native!(GetPlayerDialogID, player: struct Player, -> i16);
 native!(HidePlayerDialog, player: struct Player, -> bool);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(ShowPlayerDialog);
     load_function!(GetPlayerDialogID);

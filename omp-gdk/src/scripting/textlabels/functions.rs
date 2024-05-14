@@ -43,6 +43,7 @@ native!(GetPlayer3DTextLabelAttachedData, textlabel: struct PlayerTextLabel, dat
 native!(GetPlayer3DTextLabelID, textlabel: struct PlayerTextLabel, -> isize);
 native!(GetPlayer3DTextLabelFromID, player: struct Player,id: isize, -> struct PlayerTextLabel);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(Create3DTextLabel);
     load_function!(Delete3DTextLabel);

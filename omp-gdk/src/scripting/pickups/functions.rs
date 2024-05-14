@@ -23,6 +23,7 @@ native!(IsPickupHiddenForPlayer, pickup: struct Pickup, player: struct Player, -
 native!(GetPickupID, pickup: struct Pickup, -> isize);
 native!(GetPickupFromID, pickupid: isize, -> struct Pickup);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreatePickup);
     load_function!(AddStaticPickup);

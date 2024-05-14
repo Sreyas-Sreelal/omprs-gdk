@@ -24,6 +24,7 @@ native!(IsGangZoneFlashingForPlayer, gangzone: struct GangZone, player: struct P
 native!(GangZoneGetPos, gangzone: struct GangZone, pos: mut GangZonePos);
 native!(UseGangZoneCheck, gangzone: struct GangZone, enable:bool);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(GangZoneCreate);
     load_function!(GangZoneDestroy);

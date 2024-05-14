@@ -31,6 +31,7 @@ pub use scripting::textdraws;
 pub use scripting::textlabels;
 pub use scripting::vehicles;
 
+#[doc(hidden)]
 pub fn init_functions() {
     core::load_functions();
     models::load_functions();

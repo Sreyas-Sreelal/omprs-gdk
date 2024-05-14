@@ -98,6 +98,7 @@ native!(PlayerTextDrawGetPreviewVehColour, textdraw: struct PlayerTextDraw, colo
 native!(PlayerTextDrawGetID, textdraw: struct PlayerTextDraw, -> isize);
 native!(PlayerTextDrawFromID, textdrawid: isize,player: struct Player, -> struct PlayerTextDraw);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(TextDrawCreate);
     load_function!(TextDrawDestroy);

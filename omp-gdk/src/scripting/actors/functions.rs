@@ -25,6 +25,7 @@ native!(GetActorSpawnInfo, actor: struct Actor, spawnData:mut ActorSpawnData);
 native!(GetActorID,actor:struct Actor,-> usize);
 native!(GetActorFromID,actorid:isize,-> struct Actor);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreateActor);
     load_function!(DestroyActor);

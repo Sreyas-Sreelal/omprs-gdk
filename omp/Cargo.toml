@@ -2,7 +2,7 @@
 name = "omp"
 version = "0.1.0"
 authors = ["Sreyas <sreyassreelal@gmail.com>"]
-description = "Rust SDK for developing  open.mp gamemodes"
+description = "Rust SDK for developing open.mp gamemodes"
 license = "Apache-2.0"
 repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"

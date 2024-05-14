@@ -71,6 +71,7 @@ native!(GetAnimationName, index: isize, lib: mut str, name: mut str);
 native!(EnableStuntBonusForAll, enable: bool);
 native!(CreateExplosion, pos: Vector3, explosion_type: isize, radius: f32);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(Print);
     load_function!(GetTickCount);

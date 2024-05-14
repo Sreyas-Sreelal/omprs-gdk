@@ -14,6 +14,7 @@ native!(GetPlayerCheckpoint, player: struct Player, centrePosition: mut Vector3,
 native!(IsPlayerRaceCheckpointActive, player: struct Player, -> bool);
 native!(GetPlayerRaceCheckpoint, player: struct Player,centrePosition: mut Vector3, nextPosition: mut Vector3, radius: mut f32);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(SetPlayerCheckpoint);
     load_function!(DisablePlayerCheckpoint);

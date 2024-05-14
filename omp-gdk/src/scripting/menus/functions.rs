@@ -24,6 +24,7 @@ native!(GetMenuColumnHeader, menu: struct Menu, column: isize, header: mut str);
 native!(GetMenuItem, menu: struct Menu, column: isize, row: isize, item: mut str);
 native!(GetMenuID, menu: struct Menu, -> isize);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreateMenu);
     load_function!(DestroyMenu);

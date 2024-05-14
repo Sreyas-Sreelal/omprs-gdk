@@ -182,7 +182,7 @@ impl Player {
         functions::ResetPlayerMoney(self)
     }
 
-    pub fn set_name(&self, name: &str) -> EPlayerNameStatus {
+    pub fn set_name(&self, name: &str) -> PlayerNameStatus {
         functions::SetPlayerName(self, name)
     }
 
@@ -1037,10 +1037,13 @@ pub enum PlayerCameraCutType {
 /// The player's name status returned when updating their name
 #[repr(C)]
 #[derive(PartialEq)]
-pub enum EPlayerNameStatus {
-    Updated, // The name has successfully been updated
-    Taken,   // The name is already taken by another player
-    Invalid, // The name is invalid
+pub enum PlayerNameStatus {
+    /// The name has successfully been updated
+    Updated,
+    /// The name is already taken by another player
+    Taken,
+    /// The name is invalid
+    Invalid,
 }
 
 #[repr(C)]
@@ -1171,7 +1174,7 @@ pub enum PlayerBulletHitType {
 
 #[repr(C)]
 #[derive(PartialEq)]
-pub enum ESpectateType {
+pub enum SpectateType {
     None,
     Vehicle,
     Player,
@@ -1181,7 +1184,7 @@ pub enum ESpectateType {
 pub struct PlayerSpectateData {
     spectating: bool,
     spectateID: isize,
-    spectate_type: ESpectateType,
+    spectate_type: SpectateType,
 }
 
 #[repr(C)]

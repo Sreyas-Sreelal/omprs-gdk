@@ -32,6 +32,7 @@ native!(
     -> bool
 );
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(AddCharModel);
     load_function!(AddSimpleModel);

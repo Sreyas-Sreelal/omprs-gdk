@@ -12,6 +12,7 @@ native!(GetAvailableClasses, ->isize);
 native!(GetClassData,classid: isize, data: mut PlayerClass, ->bool);
 native!(EditClassData,classid: isize, data: PlayerClass);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreateClass);
     load_function!(SetSpawnInfo);

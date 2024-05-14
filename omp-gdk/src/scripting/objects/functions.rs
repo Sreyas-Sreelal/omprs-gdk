@@ -66,6 +66,7 @@ native!(GetPlayerObjectMaterialData, object: struct PlayerObject, materialIndex:
 native!(IsPlayerObjectNoCameraCol, object: struct PlayerObject, -> bool);
 native!(GetPlayerObjectID, object: struct PlayerObject, -> isize);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreateObject);
     load_function!(DestroyObject);

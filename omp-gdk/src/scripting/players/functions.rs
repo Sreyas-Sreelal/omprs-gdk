@@ -1,8 +1,8 @@
 use super::{
-    EPlayerNameStatus, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
-    PlayerAnimationSyncType, PlayerBulletData, PlayerCameraCutType, PlayerFightingStyle,
-    PlayerKeyData, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
-    PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, WeaponSlotData,
+    MapIconStyle, Player, PlayerAimData, PlayerAnimationData, PlayerAnimationSyncType,
+    PlayerBulletData, PlayerCameraCutType, PlayerFightingStyle, PlayerKeyData, PlayerNameStatus,
+    PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState, PlayerSurfingData,
+    PlayerWeapon, PlayerWeaponSkill, WeaponSlotData,
 };
 use omp_codegen::native;
 use std::ffi::c_void;
@@ -52,7 +52,7 @@ native!(GivePlayerWeapon, player: struct Player, data: WeaponSlotData);
 native!(RemovePlayerWeapon, player: struct Player, weaponid:u8);
 native!(GetPlayerMoney, player: struct Player, -> isize);
 native!(ResetPlayerMoney, player: struct Player);
-native!(SetPlayerName, player: struct Player, name: str, -> EPlayerNameStatus);
+native!(SetPlayerName, player: struct Player, name: str, -> PlayerNameStatus);
 native!(GetPlayerState, player: struct Player, -> PlayerState);
 native!(GetPlayerPing, player: struct Player, -> isize);
 native!(GetPlayerWeapon, player: struct Player, -> PlayerWeapon);
@@ -188,6 +188,7 @@ native!(NetStats_PacketLossPercent, player: struct Player, -> f32);
 native!(SendPlayerMessageToAll, player: struct Player, message: str);
 native!(GetPlayerFromID,playerid:isize, -> struct Player);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(SendClientMessage);
     load_function!(GetPlayerName);

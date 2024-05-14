@@ -89,6 +89,7 @@ native!(CountVehicleOccupants, vehicle: struct Vehicle,-> isize);
 native!(GetVehicleFromID, id: isize, -> struct Vehicle);
 native!(GetVehicleID, vehicle: struct Vehicle,-> isize);
 
+#[doc(hidden)]
 pub fn load_functions() {
     load_function!(CreateVehicle);
     load_function!(GetVehicleSeats);

@@ -1,4 +1,4 @@
-//! main crate the is supposed to be used by the players, neatly exposing all of the functionalities and APIs.
+//! Rust SDK for developing open.mp gamemodes
 #[macro_use]
 pub mod runtime;
 
@@ -56,11 +56,11 @@ pub mod pickups {
 
 pub mod players {
     pub use omp_gdk::players::{
-        BodyPart, ClientVersion, EPlayerNameStatus, ESpectateType, MapIconStyle, Player,
-        PlayerAimData, PlayerAnimationData, PlayerAnimationSyncType, PlayerBulletData,
-        PlayerBulletHitType, PlayerCameraCutType, PlayerClickSource, PlayerFightingStyle,
-        PlayerKeyData, PlayerKeys, PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode,
-        PlayerState, PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState,
+        BodyPart, ClientVersion, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
+        PlayerAnimationSyncType, PlayerBulletData, PlayerBulletHitType, PlayerCameraCutType,
+        PlayerClickSource, PlayerFightingStyle, PlayerKeyData, PlayerKeys, PlayerNameStatus,
+        PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
+        PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState, SpectateType,
         WeaponSlotData, WeaponSlots,
     };
 }

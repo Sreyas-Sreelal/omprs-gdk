@@ -107,17 +107,20 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     let decl_address_var = if let Some((ref return_type, is_struct)) = return_type {
         if is_struct {
             quote!(
+                #[doc(hidden)]
                 pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> *const c_void> =
                 None;
             )
         } else {
             quote!(
+                #[doc(hidden)]
                 pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*) -> #return_type> =
                 None;
             )
         }
     } else {
         quote!(
+            #[doc(hidden)]
             pub static mut #orig_name: Option<unsafe extern "C" fn(#(#orig_param_list)*)> =
             None;
         )
