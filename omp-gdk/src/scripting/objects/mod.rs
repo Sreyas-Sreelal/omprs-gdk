@@ -277,6 +277,7 @@ impl PlayerObject {
         Self { handle }
     }
 
+    /// Attach a player object to a vehicle.
     pub fn attach_player_object_to_vehicle(
         &self,
         vehicle: &Vehicle,
@@ -285,6 +286,7 @@ impl PlayerObject {
     ) {
         functions::AttachPlayerObjectToVehicle(self, vehicle, offset, rotation)
     }
+    /// Attach PlayerObject to another player
     pub fn attach_player_object_to_player(
         &self,
         player_attached_to: &Player,
@@ -293,6 +295,7 @@ impl PlayerObject {
     ) {
         functions::AttachPlayerObjectToPlayer(self, player_attached_to, offset, rotation)
     }
+    /// You can use this function to attach player-objects to other player-objects.
     pub fn attach_player_object_to_object(
         &self,
         attached_to: &PlayerObject,
@@ -301,38 +304,48 @@ impl PlayerObject {
     ) {
         functions::AttachPlayerObjectToObject(self, attached_to, offset, rotation)
     }
+    /// Sets the position of a player-object to the specified coordinates.
     pub fn set_player_object_pos(&self, position: Vector3) {
         functions::SetPlayerObjectPos(self, position)
     }
+    /// Get the position of a player object (CreatePlayerObject).
     pub fn get_player_object_pos(&self) -> Vector3 {
         let mut position = Vector3::default();
         functions::GetPlayerObjectPos(self, &mut position);
         position
     }
+    /// Set the rotation of an object on the X, Y and Z axis.
     pub fn set_player_object_rotation(&self, rotation: Vector3) {
         functions::SetPlayerObjectRot(self, rotation)
     }
+    /// Use this function to get the object's current rotation.
     pub fn get_player_object_rotation(&self) -> Vector3 {
         let mut rotation = Vector3::default();
         functions::GetPlayerObjectRot(self, &mut rotation);
         rotation
     }
+    /// Retrieve the model ID of a player-object.
     pub fn get_player_object_model(&self) -> isize {
         functions::GetPlayerObjectModel(self)
     }
+    /// Toggles a player object camera collision.
     pub fn set_player_object_no_camera_collision(&self) {
         functions::SetPlayerObjectNoCameraCol(self)
     }
+    /// Move a player object with a set speed.
     pub fn move_player_object(&self, data: ObjectMoveData) -> isize {
         functions::MovePlayerObject(self, data)
     }
+    /// Stop a moving player-object after MovePlayerObject has been used.
     pub fn stop_player_object(&self) {
         functions::StopPlayerObject(self)
     }
+    /// Checks if the given player objectid is moving.
     pub fn is_player_object_moving(&self) -> bool {
         functions::IsPlayerObjectMoving(self)
     }
 
+    /// Replace the texture of a player-object with the texture from another model in the game.
     pub fn set_player_object_material(
         &self,
         material_index: isize,
@@ -350,6 +363,7 @@ impl PlayerObject {
             material_colour,
         )
     }
+    /// Replace the texture of a player object with text.
     pub fn set_player_object_material_text(
         &self,
         text: &str,
@@ -375,9 +389,11 @@ impl PlayerObject {
             textalignment,
         )
     }
+    /// Get the draw distance of a player-object.
     pub fn get_player_object_draw_distance(&self) -> f32 {
         functions::GetPlayerObjectDrawDistance(self)
     }
+    /// Get the move speed of a player-object.
     pub fn get_player_object_move_speed(&self) -> f32 {
         functions::GetPlayerObjectMoveSpeed(self)
     }
@@ -386,11 +402,13 @@ impl PlayerObject {
         functions::GetPlayerObjectMovingData(self, &mut data);
         data
     }
+    /// Get the attachment data of a player-object.
     pub fn get_player_object_attached_data(&self) -> ObjectAttachmentData {
         let mut data = ObjectAttachmentData::default();
         functions::GetPlayerObjectAttachedData(self, &mut data);
         data
     }
+    /// Checks if a slot of player-object material is used.
     pub fn is_player_object_material_slot_used(&self, material_index: isize) -> bool {
         functions::IsPlayerObjectMaterialSlotUsed(self, material_index)
     }
@@ -455,9 +473,12 @@ impl PlayerObject {
             text_alignment,
         )
     }
+    /// Check if collisions between players' cameras and the specified player object is disabled.
     pub fn is_player_object_no_camera_collision(&self) -> bool {
         functions::IsPlayerObjectNoCameraCol(self)
     }
+
+    /// Get PlayerObject from an id
     pub fn get_player_object_id(&self) -> isize {
         functions::GetPlayerObjectID(self)
     }
