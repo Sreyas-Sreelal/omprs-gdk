@@ -1,6 +1,6 @@
 [package]
 name = "omp-gdk"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Sreyas <sreyassreelal@gmail.com>"]
 description = "Rust SDK for developing open.mp gamemodes"
 license = "Apache-2.0"
@@ -8,7 +8,7 @@ repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"
 
 [dependencies]
-omp-codegen = {path="../omp-codegen",version="0.1.0"}
+omp-codegen = {path="../omp-codegen",version="0.2.0"}
 paste = "1.0"
 
 [target.'cfg(windows)'.dependencies]
