@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 #[repr(C)]
-#[derive(Default, Copy, Clone, Debug)]
+#[derive(Default, Copy, Clone, Debug, PartialEq)]
 struct Rgba {
     r: u8,
     g: u8,
@@ -33,8 +33,14 @@ impl Debug for ColourData {
     }
 }
 
+impl PartialEq for ColourData {
+    fn eq(&self, other: &Self) -> bool {
+        unsafe { self.rgba == other.rgba }
+    }
+}
+
 #[repr(C)]
-#[derive(Default, Clone, Copy, Debug)]
+#[derive(Default, Clone, Copy, Debug, PartialEq)]
 pub struct Colour {
     data: ColourData,
 }

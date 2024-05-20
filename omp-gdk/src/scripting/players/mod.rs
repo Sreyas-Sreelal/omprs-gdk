@@ -1211,6 +1211,7 @@ impl Player {
     }
 }
 
+/// Map Icon Styles
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum MapIconStyle {
@@ -1220,6 +1221,7 @@ pub enum MapIconStyle {
     GlobalCheckpoint,
 }
 
+/// Client Versions
 #[repr(u8)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ClientVersion {
@@ -1228,6 +1230,7 @@ pub enum ClientVersion {
     Openmp,
 }
 
+/// Camera Cut Types
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerCameraCutType {
@@ -1247,18 +1250,25 @@ pub enum PlayerNameStatus {
     Invalid,
 }
 
+/// Animation sync type
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerAnimationSyncType {
+    /// No sync
     NoSync,
+    // Make server sync the animation with all other players in streaming radius
     Sync,
+    /// works same as Sync, but will ONLY apply the animation to streamed-in players, but NOT the actual player being animated (useful for npc animations and persistent animations when players are being streamed)
     SyncOthers,
 }
 
+/// Weapon Information
 #[repr(C)]
 #[derive(Default, Clone, Copy, Debug)]
 pub struct WeaponSlotData {
+    /// weapon id
     id: PlayerWeapon,
+    /// amount of ammunition
     ammo: u32,
 }
 
@@ -1268,12 +1278,20 @@ impl WeaponSlotData {
     }
 }
 
+/// Animation Data Of Player
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerAnimationData {
-    ID: u16,
+    id: u16,
+    /// Animation flags
+    /// FREEZE_FLAG -> 0b0000000000000100
+    /// LOCK_X_FLAG -> 0b0010000000000
+    /// LOCK_Y_FLAG -> 0b0001000000000
+    /// LOOP_FLAG -> 0b0000100000000
     flags: u16,
 }
+
+/// Player's Fighting Style
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerFightingStyle {
@@ -1285,6 +1303,7 @@ pub enum PlayerFightingStyle {
     Elbow = 16,
 }
 
+/// State of the player
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerState {
@@ -1300,6 +1319,7 @@ pub enum PlayerState {
     Spectating = 9,
 }
 
+/// a list of valid weapon skill types used by set_skill_level and get_skill_level methods
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerWeaponSkill {
@@ -1316,36 +1336,58 @@ pub enum PlayerWeaponSkill {
     Sniper,
 }
 
+/// list of all the player special actions
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerSpecialAction {
+    /// Clears player of special actions
     None,
+    /// Detect if the player is crouching.
     Duck,
+    /// Will make the player using jetpack
     Jetpack,
+    /// Detect if the player is entering a vehicle via an animation.
     EnterVehicle,
+    /// Detect if the player is exiting a vehicle via an animation.
     ExitVehicle,
+    /// Applies dancing animation for player
     Dance1,
+    /// Applies dancing animation for player
     Dance2,
+    /// Applies dancing animation for player
     Dance3,
+    /// Applies dancing animation for player
     Dance4,
+    /// Will make the player put hands up
     HandsUp = 10,
+    /// Will make the player speaking on cellphone
     Cellphone,
+    /// Detects if the player is sitting
     Sitting,
+    /// Makes players stop using cellphone
     StopCellphone,
+    /// Will increase the player's drunk level when used
     Beer = 20,
+    /// Will give the player a cigar.
     Smoke,
+    /// Will give the player a wine bottle to get drunk from
     Wine,
+    /// Will give the player a sprunk bottle to drink from
     Sprunk,
+    /// Will force the player in to cuffs (hands are behind their back) (does not work on CJ skin).
     Cuffed,
+    /// Will apply a 'carrying' animation to the player and make them unable to sprint, jump or punch (does not work on CJ skin).
     Carry,
+    /// Will make the player perform the pissing animation with visible pee
     Pissing = 68,
 }
 
+/// Player surfing information
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerSurfingData {
     surftype: isize,
-    ID: isize,
+    id: isize,
     offset: Vector3,
 }
 
@@ -1502,7 +1544,7 @@ pub enum PlayerWeapon {
     Suicide = 255,
 }
 
-// Player Keys
+/// Player Keys
 pub mod PlayerKeys {
     pub const ACTION: u32 = 1;
     pub const CROUCH: u32 = 2;

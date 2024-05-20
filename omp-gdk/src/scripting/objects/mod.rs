@@ -484,14 +484,19 @@ impl PlayerObject {
     }
 }
 
+/// Object moving information
 #[repr(C)]
 #[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectMoveData {
+    /// The position the object moving to.
     targetPos: Vector3,
+    /// The final rotation of the object.
     targetRot: Vector3,
+    /// The speed at which to move the object (units per second).
     speed: f32,
 }
 
+/// The type of attachment attached to Object
 #[repr(C)]
 #[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub enum ObjectAttachmentType {
@@ -502,16 +507,23 @@ pub enum ObjectAttachmentType {
     Player,
 }
 
+/// Data information of attachment
 #[repr(C)]
 #[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectAttachmentData {
+    /// Type of attachement
     attachment_type: ObjectAttachmentType,
+    /// the sync rotation of the object
     syncRotation: bool,
+    /// ID of the object (use from_id methods to create an instance of these)
     ID: isize,
+    /// Attachement offset
     offset: Vector3,
+    /// Attachement rotation
     rotation: Vector3,
 }
 
+/// Alignment of Object material text
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialTextAlign {
@@ -520,6 +532,7 @@ pub enum ObjectMaterialTextAlign {
     Right,
 }
 
+/// Size of Object material
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialSize {
@@ -539,6 +552,7 @@ pub enum ObjectMaterialSize {
     Size512x512 = 140,
 }
 
+/// Kind of Object Material
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialType {
@@ -547,6 +561,8 @@ pub enum ObjectMaterialType {
     Text,
 }
 
+/// Object Material Data
+#[derive(PartialEq, Clone, Debug)]
 pub struct ObjectMaterialData {
     pub modelid: isize,
     pub textureLibrary: String,
