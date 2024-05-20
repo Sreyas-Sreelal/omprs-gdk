@@ -1,5 +1,7 @@
+use std::fmt::Debug;
+
 #[repr(C)]
-#[derive(Default, Copy, Clone)]
+#[derive(Default, Copy, Clone, Debug)]
 struct Rgba {
     r: u8,
     g: u8,
@@ -20,8 +22,19 @@ impl Default for ColourData {
     }
 }
 
+impl Debug for ColourData {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Rgba")
+            .field("red", unsafe { &self.rgba.r })
+            .field("blue", unsafe { &self.rgba.g })
+            .field("green", unsafe { &self.rgba.b })
+            .field("alpha", unsafe { &self.rgba.a })
+            .finish()
+    }
+}
+
 #[repr(C)]
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct Colour {
     data: ColourData,
 }

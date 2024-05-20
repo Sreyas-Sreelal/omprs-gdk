@@ -8,7 +8,7 @@ pub use functions::{
 
 /// Player Class Information
 #[repr(C)]
-#[derive(Default)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct PlayerClass {
     /// The class's team
     team: u8,

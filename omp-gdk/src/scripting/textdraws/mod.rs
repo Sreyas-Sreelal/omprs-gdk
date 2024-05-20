@@ -384,8 +384,9 @@ impl PlayerTextDraw {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug, Default)]
 pub enum TextDrawAlignmentTypes {
+    #[default]
     Default,
     Left,
     Center,
@@ -393,7 +394,7 @@ pub enum TextDrawAlignmentTypes {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum TextDrawStyle {
     FontBeckettRegular = 0,
     FontAharoniBold,

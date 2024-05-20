@@ -485,7 +485,7 @@ impl PlayerObject {
 }
 
 #[repr(C)]
-#[derive(Default)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectMoveData {
     targetPos: Vector3,
     targetRot: Vector3,
@@ -493,7 +493,7 @@ pub struct ObjectMoveData {
 }
 
 #[repr(C)]
-#[derive(Default, PartialEq)]
+#[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub enum ObjectAttachmentType {
     #[default]
     None,
@@ -503,7 +503,7 @@ pub enum ObjectAttachmentType {
 }
 
 #[repr(C)]
-#[derive(Default)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectAttachmentData {
     attachment_type: ObjectAttachmentType,
     syncRotation: bool,
@@ -513,7 +513,7 @@ pub struct ObjectAttachmentData {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialTextAlign {
     Left,
     Center,
@@ -521,7 +521,7 @@ pub enum ObjectMaterialTextAlign {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialSize {
     Size32x32 = 10,
     Size64x32 = 20,
@@ -540,7 +540,7 @@ pub enum ObjectMaterialSize {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectMaterialType {
     None,
     Default,
@@ -595,7 +595,7 @@ impl ObjectMaterialData {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ObjectEditResponse {
     Cancel,
     Final,
@@ -603,6 +603,7 @@ pub enum ObjectEditResponse {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug)]
 pub struct ObjectAttachmentSlotData {
     model: isize,
     bone: isize,

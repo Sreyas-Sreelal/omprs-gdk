@@ -5,7 +5,7 @@ pub use functions::load_functions;
 
 /// Model Download Type
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ModelDownloadType {
     /// None
     NONE = 0,

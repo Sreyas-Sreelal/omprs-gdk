@@ -1212,7 +1212,7 @@ impl Player {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum MapIconStyle {
     Local,
     Global,
@@ -1221,7 +1221,7 @@ pub enum MapIconStyle {
 }
 
 #[repr(u8)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum ClientVersion {
     Samp037,
     Samp03dl,
@@ -1229,7 +1229,7 @@ pub enum ClientVersion {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerCameraCutType {
     Cut,
     Move,
@@ -1237,7 +1237,7 @@ pub enum PlayerCameraCutType {
 
 /// The player's name status returned when updating their name
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerNameStatus {
     /// The name has successfully been updated
     Updated,
@@ -1248,7 +1248,7 @@ pub enum PlayerNameStatus {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerAnimationSyncType {
     NoSync,
     Sync,
@@ -1256,7 +1256,7 @@ pub enum PlayerAnimationSyncType {
 }
 
 #[repr(C)]
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct WeaponSlotData {
     id: PlayerWeapon,
     ammo: u32,
@@ -1269,12 +1269,13 @@ impl WeaponSlotData {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerAnimationData {
     ID: u16,
     flags: u16,
 }
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerFightingStyle {
     Normal = 4,
     Boxing = 5,
@@ -1285,7 +1286,7 @@ pub enum PlayerFightingStyle {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerState {
     None = 0,
     OnFoot = 1,
@@ -1300,7 +1301,7 @@ pub enum PlayerState {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerWeaponSkill {
     Pistol,
     SilencedPistol,
@@ -1316,7 +1317,7 @@ pub enum PlayerWeaponSkill {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerSpecialAction {
     None,
     Duck,
@@ -1341,6 +1342,7 @@ pub enum PlayerSpecialAction {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerSurfingData {
     surftype: isize,
     ID: isize,
@@ -1348,6 +1350,7 @@ pub struct PlayerSurfingData {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerKeyData {
     pub keys: u32,
     pub upDown: i16,
@@ -1355,6 +1358,7 @@ pub struct PlayerKeyData {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerBulletData {
     origin: Vector3,
     hitPos: Vector3,
@@ -1364,7 +1368,7 @@ pub struct PlayerBulletData {
     hitID: u16,
 }
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerBulletHitType {
     None,
     Player = 1,
@@ -1374,7 +1378,7 @@ pub enum PlayerBulletHitType {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum SpectateType {
     None,
     Vehicle,
@@ -1382,6 +1386,7 @@ pub enum SpectateType {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerSpectateData {
     spectating: bool,
     spectateID: isize,
@@ -1389,7 +1394,7 @@ pub struct PlayerSpectateData {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerSpectateMode {
     Normal = 1,
     Fixed,
@@ -1397,6 +1402,7 @@ pub enum PlayerSpectateMode {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerAimData {
     camFrontVector: Vector3,
     camPos: Vector3,
@@ -1408,7 +1414,7 @@ pub struct PlayerAimData {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerWeaponState {
     Unknown = -1,
     NoBullets,
@@ -1418,7 +1424,7 @@ pub enum PlayerWeaponState {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum BodyPart {
     Torso = 3,
     Groin,
@@ -1430,7 +1436,7 @@ pub enum BodyPart {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum PlayerClickSource {
     Scoreboard,
 }
@@ -1438,7 +1444,7 @@ pub enum PlayerClickSource {
 pub type WeaponSlots = StaticArray<WeaponSlotData, 13>;
 
 #[repr(u8)]
-#[derive(PartialEq, Copy, Clone, Default)]
+#[derive(PartialEq, Copy, Clone, Default, Debug)]
 pub enum PlayerWeapon {
     #[default]
     Fist,

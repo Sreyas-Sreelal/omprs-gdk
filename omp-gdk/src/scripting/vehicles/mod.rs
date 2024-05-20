@@ -461,13 +461,14 @@ impl Default for VehicleParams {
 }
 
 #[repr(C)]
+#[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct UnoccupiedVehicleUpdate {
     seat: u8,
     position: Vector3,
     velocity: Vector3,
 }
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct VehicleDamageStatusData {
     pub panels: isize,
     pub doors: isize,
@@ -475,7 +476,7 @@ pub struct VehicleDamageStatusData {
     pub tires: isize,
 }
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct VehicleSpawnData {
     pub respawnDelay: isize,
     pub modelID: isize,
@@ -487,7 +488,7 @@ pub struct VehicleSpawnData {
     pub interior: isize,
 }
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct VehicleMatrix {
     pub right: Vector3,
     pub up: Vector3,

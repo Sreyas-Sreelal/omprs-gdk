@@ -7,7 +7,7 @@ pub use functions::load_functions;
 
 /// Types Of Race Checkpoints
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum RaceCheckpointType {
     /// Normal, must have nextPosition, else it shows as RACE_FINISH
     Normal = 0,
@@ -52,6 +52,7 @@ impl PlayerRaceCheckPointData {
 }
 
 /// Player checkpoint information
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerCheckPointData {
     /// position of checkpoint
     pub center_pos: Vector3,

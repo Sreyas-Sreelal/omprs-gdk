@@ -9,7 +9,7 @@ use crate::{players::Player, types::colour::Colour, types::vector::Vector2};
 
 /// GangZone dimensions
 #[repr(C)]
-#[derive(Default)]
+#[derive(Default, Clone, Copy, Debug, PartialEq)]
 pub struct GangZonePos {
     /// west (x) and south (y) side of a gangzone
     pub min: Vector2,
