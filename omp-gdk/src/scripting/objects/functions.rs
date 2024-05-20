@@ -19,7 +19,6 @@ native!(SetObjectRot, object: struct Object, rotation: Vector3);
 native!(GetObjectRot, object: struct Object, rotation: mut Vector3);
 native!(GetObjectModel, object: struct Object, -> isize);
 native!(SetObjectNoCameraCol, object: struct Object);
-native!(IsValidObject, object: struct Object, -> bool);
 native!(MoveObject, object: struct Object, data: ObjectMoveData, -> isize);
 native!(StopObject, object: struct Object);
 native!(IsObjectMoving, object: struct Object, -> bool);
@@ -37,6 +36,7 @@ native!(IsObjectMaterialSlotUsed, object: struct Object, materialIndex: isize, -
 native!(GetObjectMaterialData, object: struct Object, materialIndex: isize, modelid: mut isize, textureLibrary: mut str, textureName: mut str, materialColour: mut Colour, text: mut str, materialSize: mut isize, fontFace: mut str, fontSize: mut isize, bold: mut bool, fontColour: mut Colour, backgroundColour: mut Colour, textAlignment: mut isize);
 native!(IsObjectNoCameraCol, object: struct Object, -> bool);
 native!(GetObjectID, object: struct Object, -> isize);
+native!(GetObjectFromID, id: isize, -> struct Object);
 
 // player object functions
 
@@ -65,6 +65,7 @@ native!(IsPlayerObjectMaterialSlotUsed, object: struct PlayerObject, materialInd
 native!(GetPlayerObjectMaterialData, object: struct PlayerObject, materialIndex: isize, modelid: mut isize, textureLibrary: mut str, textureName: mut str, materialColour: mut Colour , text: mut str, materialSize: mut isize, fontFace: mut str, fontSize: mut isize, bold:mut bool, fontColour: mut Colour , backgroundColour: mut Colour , textAlignment: mut isize);
 native!(IsPlayerObjectNoCameraCol, object: struct PlayerObject, -> bool);
 native!(GetPlayerObjectID, object: struct PlayerObject, -> isize);
+native!(GetPlayerObjectFromID, player: struct Player, id: isize, -> struct PlayerObject);
 
 #[doc(hidden)]
 pub fn load_functions() {
@@ -79,7 +80,6 @@ pub fn load_functions() {
     load_function!(GetObjectRot);
     load_function!(GetObjectModel);
     load_function!(SetObjectNoCameraCol);
-    load_function!(IsValidObject);
     load_function!(MoveObject);
     load_function!(StopObject);
     load_function!(IsObjectMoving);
@@ -97,6 +97,7 @@ pub fn load_functions() {
     load_function!(GetObjectMaterialData);
     load_function!(IsObjectNoCameraCol);
     load_function!(GetObjectID);
+    load_function!(GetObjectFromID);
 
     // player object functions
 
@@ -125,4 +126,5 @@ pub fn load_functions() {
     load_function!(GetPlayerObjectMaterialData);
     load_function!(IsPlayerObjectNoCameraCol);
     load_function!(GetPlayerObjectID);
+    load_function!(GetPlayerObjectFromID);
 }

@@ -257,6 +257,11 @@ impl Object {
     pub fn get_id(&self) -> isize {
         functions::GetObjectID(self)
     }
+
+    /// Get Object from an id
+    pub fn from_id(id: isize) -> Option<Object> {
+        functions::GetObjectFromID(id)
+    }
 }
 
 pub struct PlayerObject {

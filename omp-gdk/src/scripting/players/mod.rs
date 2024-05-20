@@ -887,6 +887,12 @@ impl Player {
     pub fn edit_player_object(&self, object: &PlayerObject) {
         objects::functions::EditPlayerObject(self, object)
     }
+
+    /// Get PlayerObject from an id
+    pub fn get_player_object_from_id(&self, id: isize) -> Option<PlayerObject> {
+        objects::functions::GetPlayerObjectFromID(self, id)
+    }
+
     pub fn create_player_text_draw(&self, position: Vector2, text: &str) -> Option<PlayerTextDraw> {
         textdraws::functions::CreatePlayerTextDraw(self, position, text)
     }
