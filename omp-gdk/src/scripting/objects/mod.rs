@@ -20,6 +20,7 @@ impl Object {
         Self { handle }
     }
 
+    /// Creates an object at specified coordinates in the game world.
     pub fn create(
         modelid: isize,
         position: Vector3,
@@ -28,12 +29,18 @@ impl Object {
     ) -> Option<Object> {
         functions::CreateObject(modelid, position, rotation, draw_distance)
     }
+
+    /// Destroys (removes) an object that was created using create method.
     pub fn destroy(&self) -> bool {
         functions::DestroyObject(self)
     }
+
+    /// Attach an object to a vehicle.
     pub fn attach_to_vehicle(&self, vehicle: &Vehicle, offset: Vector3, rotation: Vector3) {
         functions::AttachObjectToVehicle(self, vehicle, offset, rotation)
     }
+
+    /// Attach an object to an object.
     pub fn attach_to_object(
         &self,
         obj_attached_to: &Object,
@@ -43,43 +50,62 @@ impl Object {
     ) {
         functions::AttachObjectToObject(self, obj_attached_to, offset, rotation, sync_rotation)
     }
+
+    /// Attach a player object to a player.
     pub fn attach_to_player(&self, player: &Player, offset: Vector3, rotation: Vector3) {
         functions::AttachObjectToPlayer(self, player, offset, rotation)
     }
+
+    ///  Set the position of an object.
     pub fn set_pos(&self, position: Vector3) {
         functions::SetObjectPos(self, position)
     }
+
+    ///  Locate an object.
     pub fn get_pos(&self) -> Vector3 {
         let mut pos = Vector3::default();
         functions::GetObjectPos(self, &mut pos);
         pos
     }
+
+    /// Set the rotation of an object.
     pub fn set_rotation(&self, rotation: Vector3) {
         functions::SetObjectRot(self, rotation)
     }
+
+    /// Get the rotation of an object.
     pub fn get_rotation(&self) -> Vector3 {
         let mut rotation = Vector3::default();
         functions::GetObjectRot(self, &mut rotation);
         rotation
     }
+
+    /// Get the model ID of an object
     pub fn get_model(&self) -> isize {
         functions::GetObjectModel(self)
     }
+
+    /// Disable collisions between players' cameras and the specified object.
     pub fn set_no_camera_collision(&self) {
         functions::SetObjectNoCameraCol(self)
     }
-    pub fn is_valid(&self) -> bool {
-        functions::IsValidObject(self)
-    }
+
+    /// Move an object to a new position with a set speed. Players/vehicles will 'surf' the object as it moves.
     pub fn move_object(&self, data: ObjectMoveData) -> isize {
         functions::MoveObject(self, data)
     }
+
+    /// Stop an object from moving.
     pub fn stop(&self) {
         functions::StopObject(self)
     }
+
+    /// Check if the object is moving.
     pub fn is_moving(&self) -> bool {
         functions::IsObjectMoving(self)
     }
+
+    /// Replace the texture of an object with the texture from another model in the game.
     pub fn set_material(
         &self,
         material_index: isize,
@@ -97,6 +123,8 @@ impl Object {
             material_colour,
         )
     }
+
+    /// Replace the texture of an object with text.
     pub fn set_material_text(
         &self,
         text: &str,
@@ -122,28 +150,42 @@ impl Object {
             textalignment,
         )
     }
+
+    /// Allows camera collisions with newly created objects to be disabled by default.
     pub fn set_objects_default_camera_collision(disable: bool) {
         functions::SetObjectsDefaultCameraCol(disable)
     }
+
+    /// Get the draw distance of an object.
     pub fn get_draw_distance(&self) -> f32 {
         functions::GetObjectDrawDistance(self)
     }
+
+    /// Get the move speed of an object.
     pub fn get_move_speed(&self) -> f32 {
         functions::GetObjectMoveSpeed(self)
     }
+
+    /// Get the move data of an object.
     pub fn get_move_data(&self) -> ObjectMoveData {
         let mut data = ObjectMoveData::default();
         functions::GetObjectMoveData(self, &mut data);
         data
     }
+
+    /// Get the attachment data of an object.
     pub fn get_attached_data(&self) -> ObjectAttachmentData {
         let mut data = ObjectAttachmentData::default();
         functions::GetObjectAttachedData(self, &mut data);
         data
     }
+
+    /// Checks if a slot of object material is used.
     pub fn is_material_slot_used(&self, material_index: isize) -> bool {
         functions::IsObjectMaterialSlotUsed(self, material_index)
     }
+
+    /// Get object's material data
     pub fn get_material_data(&self, material_index: isize) -> ObjectMaterialData {
         let (
             mut modelid,
@@ -205,9 +247,13 @@ impl Object {
             text_alignment,
         )
     }
+
+    /// Check if collisions between players' cameras and the specified object is disabled.
     pub fn is_no_camera_collision(&self) -> bool {
         functions::IsObjectNoCameraCol(self)
     }
+
+    /// Get object's id
     pub fn get_id(&self) -> isize {
         functions::GetObjectID(self)
     }
