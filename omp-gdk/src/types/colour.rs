@@ -58,4 +58,35 @@ impl Colour {
             },
         }
     }
+
+    pub fn from_argb(from: u32) -> Colour {
+        Colour {
+            data: ColourData {
+                rgba: std::mem::ManuallyDrop::new(Rgba {
+                    a: ((from & 0xFF000000) >> 24) as u8,
+                    r: ((from & 0x00FF0000) >> 16) as u8,
+                    g: ((from & 0x0000FF00) >> 8) as u8,
+                    b: (from & 0x000000FF) as u8,
+                }),
+            },
+        }
+    }
+
+    pub fn rgba(&self) -> u32 {
+        unsafe {
+            (((self.data.rgba.r as u32) << 24) & 0xFF000000)
+                | (((self.data.rgba.g as u32) << 16) & 0x00FF0000)
+                | (((self.data.rgba.b as u32) << 8) & 0x0000FF00)
+                | ((self.data.rgba.a as u32) & 0x000000FF)
+        }
+    }
+
+    pub fn argb(&self) -> u32 {
+        unsafe {
+            (((self.data.rgba.a as u32) << 24) & 0xFF000000)
+                | (((self.data.rgba.r as u32) << 16) & 0x00FF0000)
+                | (((self.data.rgba.g as u32) << 8) & 0x0000FF00)
+                | ((self.data.rgba.b as u32) & 0x000000FF)
+        }
+    }
 }
