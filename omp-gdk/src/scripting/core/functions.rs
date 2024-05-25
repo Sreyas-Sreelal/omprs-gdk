@@ -1,8 +1,6 @@
-use std::ffi::c_void;
-
 use omp_codegen::native;
 
-use crate::players::Player;
+use crate::types::network::NetworkStats;
 use crate::types::vector::Vector3;
 
 native!(Print,message: str);
@@ -32,8 +30,7 @@ native!(GetConsoleVarAsBool, cvar: str, -> bool);
 native!(GetConsoleVarAsInt, cvar: str, -> isize);
 native!(GetConsoleVarAsFloat, cvar: str, -> f32);
 native!(GetConsoleVarAsString, cvar: str, buffer: mut str, -> isize);
-native!(GetNetworkStats, output: mut str);
-native!(GetPlayerNetworkStats, player: struct Player, output: mut str);
+native!(GetNetworkStats, -> NetworkStats);
 native!(GetServerTickRate, -> isize);
 native!(GetServerVarAsBool, cvar: str, -> bool);
 native!(GetServerVarAsInt, cvar: str, -> isize);
@@ -101,7 +98,6 @@ pub fn load_functions() {
     load_function!(GetConsoleVarAsFloat);
     load_function!(GetConsoleVarAsString);
     load_function!(GetNetworkStats);
-    load_function!(GetPlayerNetworkStats);
     load_function!(GetServerTickRate);
     load_function!(GetServerVarAsBool);
     load_function!(GetServerVarAsInt);

@@ -10,8 +10,11 @@ use std::ffi::c_void;
 use crate::{
     actors::Actor,
     objects::{Object, ObjectAttachmentSlotData, PlayerObject},
-    types::colour::Colour,
-    types::vector::{Vector3, Vector4},
+    types::{
+        colour::Colour,
+        network::{NetworkID, NetworkStats},
+        vector::{Vector3, Vector4},
+    },
     vehicles::Vehicle,
 };
 
@@ -176,17 +179,10 @@ native!(IsPlayerCuffed, player: struct Player, -> bool);
 native!(GetPlayerCustomSkin,player: struct Player,-> isize);
 native!(RedirectDownload,player: struct Player, url: str, -> bool);
 native!(GetPlayerID,player:struct Player, -> usize);
-native!(NetStats_BytesReceived, player: struct Player, -> isize);
-native!(NetStats_BytesSent, player: struct Player, -> isize);
-native!(NetStats_ConnectionStatus, player: struct Player, -> isize);
-native!(NetStats_GetConnectedTime, player: struct Player, -> isize);
-native!(NetStats_GetIpPort, player: struct Player, output: mut str);
-native!(NetStats_MessagesReceived, player: struct Player, -> isize);
-native!(NetStats_MessagesRecvPerSecond, player: struct Player, -> isize);
-native!(NetStats_MessagesSent, player: struct Player, -> isize);
-native!(NetStats_PacketLossPercent, player: struct Player, -> f32);
+native!(NetStats_GetIpPort, player: struct Player, -> NetworkID);
 native!(SendPlayerMessageToAll, player: struct Player, message: str);
 native!(GetPlayerFromID,playerid:isize, -> struct Player);
+native!(GetPlayerNetworkStats, player: struct Player,-> NetworkStats);
 
 #[doc(hidden)]
 pub fn load_functions() {
@@ -352,15 +348,8 @@ pub fn load_functions() {
     load_function!(RedirectDownload);
     //load_function!(IsValidPlayer);
     load_function!(GetPlayerID);
-    load_function!(NetStats_BytesReceived);
-    load_function!(NetStats_BytesSent);
-    load_function!(NetStats_ConnectionStatus);
-    load_function!(NetStats_GetConnectedTime);
     load_function!(NetStats_GetIpPort);
-    load_function!(NetStats_MessagesReceived);
-    load_function!(NetStats_MessagesRecvPerSecond);
-    load_function!(NetStats_MessagesSent);
-    load_function!(NetStats_PacketLossPercent);
     load_function!(SendPlayerMessageToAll);
     load_function!(GetPlayerFromID);
+    load_function!(GetPlayerNetworkStats);
 }

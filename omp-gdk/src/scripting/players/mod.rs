@@ -9,10 +9,13 @@ use crate::{
     dialogs::{self, DialogStyle},
     objects::{self, Object, ObjectAttachmentSlotData, PlayerObject},
     textdraws::{self, PlayerTextDraw},
-    types::animationdata::AnimationData,
-    types::colour::Colour,
-    types::staticarray::StaticArray,
-    types::vector::{Vector2, Vector3, Vector4},
+    types::{
+        animationdata::AnimationData,
+        colour::Colour,
+        network::{NetworkID, NetworkStats},
+        staticarray::StaticArray,
+        vector::{Vector2, Vector3, Vector4},
+    },
     vehicles::{self, Vehicle},
 };
 use std::os::raw::c_void;
@@ -1158,44 +1161,16 @@ impl Player {
         vehicles::functions::GetPlayerTrainSpeed(self)
     }
 
-    /// Gets the amount of data (in bytes) that the server has received from the player.
-    pub fn net_stats__bytes_received(&self) -> isize {
-        functions::NetStats_BytesReceived(self)
+    /// Get a player's network stats.
+    pub fn get_net_stats(&self) -> NetworkStats {
+        functions::GetPlayerNetworkStats(self)
     }
-    /// Gets the amount of data (in bytes) that the server has sent to the player.
-    pub fn net_stats__bytes_sent(&self) -> isize {
-        functions::NetStats_BytesSent(self)
-    }
-    /// Gets the player's current connection status.
-    pub fn net_stats__connection_status(&self) -> isize {
-        functions::NetStats_ConnectionStatus(self)
-    }
-    /// Gets the amount of time (in milliseconds) that a player has been connected to the server for.
-    pub fn net_stats__get_connected_time(&self) -> isize {
-        functions::NetStats_GetConnectedTime(self)
-    }
+
     /// Get a player's IP and port.
-    pub fn net_stats__get_ip_port(&self) -> String {
-        let mut output = String::new();
-        functions::NetStats_GetIpPort(self, &mut output);
-        output
+    pub fn net_stats_get_ip_port(&self) -> NetworkID {
+        functions::NetStats_GetIpPort(self)
     }
-    /// Gets the number of messages the server has received from the player.
-    pub fn net_stats__messages_received(&self) -> isize {
-        functions::NetStats_MessagesReceived(self)
-    }
-    /// Gets the number of messages the player has received in the last second.
-    pub fn net_stats__messages_recv_per_second(&self) -> isize {
-        functions::NetStats_MessagesRecvPerSecond(self)
-    }
-    /// Gets the number of messages the server has sent to the player.
-    pub fn net_stats__messages_sent(&self) -> isize {
-        functions::NetStats_MessagesSent(self)
-    }
-    /// Gets the packet loss percentage of a player.
-    pub fn net_stats__packet_loss_percent(&self) -> f32 {
-        functions::NetStats_PacketLossPercent(self)
-    }
+
     /// Sends a message in the name of a player to all other players on the server.
     pub fn send_message_to_all(&self, message: &str) {
         functions::SendPlayerMessageToAll(self, message)
