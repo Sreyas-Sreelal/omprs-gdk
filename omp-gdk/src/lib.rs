@@ -15,7 +15,7 @@ mod runtime;
 
 pub use events::Events;
 pub use omp_codegen::main;
-pub use runtime::Runtime;
+pub use runtime::{Runtime, __terminate_event_chain};
 pub use scripting::actors;
 pub use scripting::checkpoints;
 pub use scripting::classes;

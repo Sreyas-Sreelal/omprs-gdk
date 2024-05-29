@@ -104,14 +104,27 @@ pub fn create_callback(input: TokenStream) -> TokenStream {
         quote!(
             #[no_mangle]
             pub unsafe extern "C" fn #orig_callback_name(#(#orig_callback_params)*) -> #return_type {
-                crate::runtime::Runtime.as_mut().unwrap().#user_func_name(#(#user_func_args)*)
+                let scripts = crate::runtime::Runtime.as_mut().unwrap();
+                let mut ret = false;
+                for script in scripts.iter_mut() {
+                    ret = script.#user_func_name(#(#user_func_args)*);
+                    if crate::runtime::__terminate_event_chain {
+                        crate::runtime::__terminate_event_chain = false;
+                        return ret;
+                    }
+                }
+                ret
+
             }
         )
     } else {
         quote!(
             #[no_mangle]
             pub unsafe extern "C" fn #orig_callback_name(#(#orig_callback_params)*) {
-                crate::runtime::Runtime.as_mut().unwrap().#user_func_name(#(#user_func_args)*);
+                let scripts = crate::runtime::Runtime.as_mut().unwrap();
+                for script in scripts.iter_mut() {
+                    script.#user_func_name(#(#user_func_args)*);
+                }
             }
         )
     };
