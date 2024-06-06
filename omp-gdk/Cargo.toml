@@ -1,6 +1,6 @@
 [package]
 name = "omp-gdk"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Sreyas <sreyassreelal@gmail.com>"]
 description = "Rust SDK for developing open.mp gamemodes"
 license = "Apache-2.0"
