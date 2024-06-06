@@ -463,9 +463,9 @@ impl Default for VehicleParams {
 #[repr(C)]
 #[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct UnoccupiedVehicleUpdate {
-    seat: u8,
-    position: Vector3,
-    velocity: Vector3,
+    pub seat: u8,
+    pub position: Vector3,
+    pub velocity: Vector3,
 }
 
 #[derive(Default, PartialEq, Clone, Copy, Debug)]

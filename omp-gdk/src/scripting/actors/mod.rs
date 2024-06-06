@@ -185,7 +185,7 @@ impl Actor {
 #[derive(Copy, Clone, Debug, Default)]
 #[repr(C)]
 pub struct ActorSpawnData {
-    position: Vector3,
-    facingAngle: f32,
-    skin: isize,
+    pub position: Vector3,
+    pub facingAngle: f32,
+    pub skin: isize,
 }

@@ -489,11 +489,11 @@ impl PlayerObject {
 #[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectMoveData {
     /// The position the object moving to.
-    targetPos: Vector3,
+    pub targetPos: Vector3,
     /// The final rotation of the object.
-    targetRot: Vector3,
+    pub targetRot: Vector3,
     /// The speed at which to move the object (units per second).
-    speed: f32,
+    pub speed: f32,
 }
 
 /// The type of attachment attached to Object
@@ -512,15 +512,15 @@ pub enum ObjectAttachmentType {
 #[derive(Default, Clone, Copy, Debug)]
 pub struct ObjectAttachmentData {
     /// Type of attachement
-    attachment_type: ObjectAttachmentType,
+    pub attachment_type: ObjectAttachmentType,
     /// the sync rotation of the object
-    syncRotation: bool,
+    pub syncRotation: bool,
     /// ID of the object (use from_id methods to create an instance of these)
-    ID: isize,
+    pub ID: isize,
     /// Attachement offset
-    offset: Vector3,
+    pub offset: Vector3,
     /// Attachement rotation
-    rotation: Vector3,
+    pub rotation: Vector3,
 }
 
 /// Alignment of Object material text
@@ -621,11 +621,11 @@ pub enum ObjectEditResponse {
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct ObjectAttachmentSlotData {
-    model: isize,
-    bone: isize,
-    offset: Vector3,
-    rotation: Vector3,
-    scale: Vector3,
-    colour1: Colour,
-    colour2: Colour,
+    pub model: isize,
+    pub bone: isize,
+    pub offset: Vector3,
+    pub rotation: Vector3,
+    pub scale: Vector3,
+    pub colour1: Colour,
+    pub colour2: Colour,
 }

@@ -11,13 +11,13 @@ pub use functions::{
 #[derive(Clone, Copy, Debug, Default)]
 pub struct PlayerClass {
     /// The class's team
-    team: u8,
+    pub team: u8,
     /// The class's skin ID            
-    skin: isize,
+    pub skin: isize,
     /// The class's spawn position         
-    spawn: Vector3,
+    pub spawn: Vector3,
     /// The class's angle       
-    angle: f32,
+    pub angle: f32,
     /// The class's weapons          
-    weapons: WeaponSlots,
+    pub weapons: WeaponSlots,
 }

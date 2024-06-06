@@ -169,6 +169,6 @@ impl PlayerTextLabel {
 #[repr(C)]
 #[derive(Default, PartialEq, Clone, Copy, Debug)]
 pub struct TextLabelAttachmentData {
-    playerID: isize,
-    vehicleID: isize,
+    pub playerID: isize,
+    pub vehicleID: isize,
 }

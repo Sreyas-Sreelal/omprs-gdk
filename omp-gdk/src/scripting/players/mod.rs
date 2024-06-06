@@ -1242,9 +1242,9 @@ pub enum PlayerAnimationSyncType {
 #[derive(Default, Clone, Copy, Debug)]
 pub struct WeaponSlotData {
     /// weapon id
-    id: PlayerWeapon,
+    pub id: PlayerWeapon,
     /// amount of ammunition
-    ammo: u32,
+    pub ammo: u32,
 }
 
 impl WeaponSlotData {
@@ -1257,13 +1257,13 @@ impl WeaponSlotData {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerAnimationData {
-    id: u16,
+    pub id: u16,
     /// Animation flags
     /// FREEZE_FLAG -> 0b0000000000000100
     /// LOCK_X_FLAG -> 0b0010000000000
     /// LOCK_Y_FLAG -> 0b0001000000000
     /// LOOP_FLAG -> 0b0000100000000
-    flags: u16,
+    pub flags: u16,
 }
 
 /// Player's Fighting Style
@@ -1361,9 +1361,9 @@ pub enum PlayerSpecialAction {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerSurfingData {
-    surftype: isize,
-    id: isize,
-    offset: Vector3,
+    pub surftype: isize,
+    pub id: isize,
+    pub offset: Vector3,
 }
 
 #[repr(C)]
@@ -1377,12 +1377,12 @@ pub struct PlayerKeyData {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerBulletData {
-    origin: Vector3,
-    hitPos: Vector3,
-    offset: Vector3,
-    weapon: PlayerWeapon,
-    hitType: PlayerBulletHitType,
-    hitID: u16,
+    pub origin: Vector3,
+    pub hitPos: Vector3,
+    pub offset: Vector3,
+    pub weapon: PlayerWeapon,
+    pub hitType: PlayerBulletHitType,
+    pub hitID: u16,
 }
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
@@ -1405,9 +1405,9 @@ pub enum SpectateType {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerSpectateData {
-    spectating: bool,
-    spectateID: isize,
-    spectate_type: SpectateType,
+    pub spectating: bool,
+    pub spectateID: isize,
+    pub spectate_type: SpectateType,
 }
 
 #[repr(C)]
@@ -1421,13 +1421,13 @@ pub enum PlayerSpectateMode {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct PlayerAimData {
-    camFrontVector: Vector3,
-    camPos: Vector3,
-    aimZ: f32,
-    camZoom: f32,
-    aspectRatio: f32,
-    weaponState: PlayerWeaponState,
-    camMode: u8,
+    pub camFrontVector: Vector3,
+    pub camPos: Vector3,
+    pub aimZ: f32,
+    pub camZoom: f32,
+    pub aspectRatio: f32,
+    pub weaponState: PlayerWeaponState,
+    pub camMode: u8,
 }
 
 #[repr(C)]
