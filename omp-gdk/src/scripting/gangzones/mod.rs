@@ -135,8 +135,7 @@ impl GangZone {
     }
 
     /// Get a gangzone object from an id
-    pub fn get_from_id(&self,gangzoneid: isize) -> Option<GangZone>{
+    pub fn get_from_id(&self, gangzoneid: isize) -> Option<GangZone> {
         functions::GetGangZoneFromID(gangzoneid)
     }
-
 }
