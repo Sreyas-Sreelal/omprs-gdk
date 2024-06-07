@@ -128,4 +128,15 @@ impl GangZone {
     pub fn use_check(&self, enable: bool) {
         functions::UseGangZoneCheck(self, enable)
     }
+
+    /// Gets id of a gangzone
+    pub fn get_id(&self) -> isize {
+        functions::GetGangZoneID(self)
+    }
+
+    /// Get a gangzone object from an id
+    pub fn get_from_id(&self,gangzoneid: isize) -> Option<GangZone>{
+        functions::GetGangZoneFromID(gangzoneid)
+    }
+
 }

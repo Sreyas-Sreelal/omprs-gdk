@@ -23,6 +23,8 @@ native!(GangZoneGetFlashColorForPlayer, gangzone: struct GangZone, player: struc
 native!(IsGangZoneFlashingForPlayer, gangzone: struct GangZone, player: struct Player, -> bool);
 native!(GangZoneGetPos, gangzone: struct GangZone, pos: mut GangZonePos);
 native!(UseGangZoneCheck, gangzone: struct GangZone, enable:bool);
+native!(GetGangZoneID,gangzone: struct GangZone,-> isize);
+native!(GetGangZoneFromID,gangzoneid: isize,-> struct GangZone);
 
 #[doc(hidden)]
 pub fn load_functions() {
@@ -44,4 +46,6 @@ pub fn load_functions() {
     load_function!(IsGangZoneFlashingForPlayer);
     load_function!(GangZoneGetPos);
     load_function!(UseGangZoneCheck);
+    load_function!(GetGangZoneID);
+    load_function!(GetGangZoneFromID);
 }
