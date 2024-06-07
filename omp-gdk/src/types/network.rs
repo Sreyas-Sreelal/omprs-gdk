@@ -18,29 +18,29 @@ pub enum PeerDisconnectReason {
 #[repr(C)]
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NetworkStats {
-    pub connectionStartTime: usize,
-    pub messageSendBuffer: usize,
-    pub messagesSent: usize,
-    pub totalBytesSent: usize,
-    pub acknowlegementsSent: usize,
-    pub acknowlegementsPending: usize,
-    pub messagesOnResendQueue: usize,
-    pub messageResends: usize,
-    pub messagesTotalBytesResent: usize,
+    pub connectionStartTime: u32,
+    pub messageSendBuffer: u32,
+    pub messagesSent: u32,
+    pub totalBytesSent: u32,
+    pub acknowlegementsSent: u32,
+    pub acknowlegementsPending: u32,
+    pub messagesOnResendQueue: u32,
+    pub messageResends: u32,
+    pub messagesTotalBytesResent: u32,
     pub packetloss: f32,
-    pub messagesReceived: usize,
-    pub messagesReceivedPerSecond: usize,
-    pub bytesReceived: usize,
-    pub acknowlegementsReceived: usize,
-    pub duplicateAcknowlegementsReceived: usize,
-    pub bitsPerSecond: f32,
-    pub bpsSent: f32,
-    pub bpsReceived: f32,
+    pub messagesReceived: u32,
+    pub messagesReceivedPerSecond: u32,
+    pub bytesReceived: u32,
+    pub acknowlegementsReceived: u32,
+    pub duplicateAcknowlegementsReceived: u32,
+    pub bitsPerSecond: f64,
+    pub bpsSent: f64,
+    pub bpsReceived: f64,
+    /// only for player network statistics
     pub isActive: bool,
     /// only for player network statistics
-    pub connectMode: isize,
-    /// only for player network statistics
-    pub connectionElapsedTime: usize,
+    pub connectMode: i32,
+    pub connectionElapsedTime: u32,
 }
 
 #[repr(C)]
