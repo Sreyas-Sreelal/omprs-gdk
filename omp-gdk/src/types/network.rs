@@ -40,7 +40,7 @@ pub struct NetworkStats {
     pub isActive: bool,
     /// only for player network statistics
     pub connectMode: i32,
-    pub ElapsedTime: u32,
+    pub connectionElapsedTime: u32,
 }
 
 #[repr(C)]
