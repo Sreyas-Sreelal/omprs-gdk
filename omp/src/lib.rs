@@ -17,13 +17,44 @@ pub mod checkpoint {
 }
 
 pub mod classes {
-    pub use omp_gdk::classes::{
-        CreateClass, EditClassData, GetAvailableClasses, GetClassData, PlayerClass,
-    };
+    pub use omp_gdk::classes::Class;
 }
 
 pub mod core {
-    pub use omp_gdk::core::functions::*;
+    pub use omp_gdk::core::functions::{
+        All_CreateExplosion as CreateExplosionForAll,
+        All_EnableStuntBonus as EnableStuntBonusForAll,
+        All_SendClientMessage as SendClientMessageToAll, All_SendDeathMessage as SendDeathMessage,
+        Core_AddRule as AddRule, Core_AllowAdminTeleport as AllowAdminTeleport,
+        Core_AllowInteriorWeapons as AllowInteriorWeapons,
+        Core_AllowNickNameCharacter as AllowNickNameCharacter,
+        Core_AreAllAnimationsEnabled as AreAllAnimationsEnabled,
+        Core_AreInteriorWeaponsAllowed as AreInteriorWeaponsAllowed,
+        Core_BlockIpAddress as BlockIpAddress, Core_ClearBanList as ClearBanList,
+        Core_DisableEntryExitMarkers as DisableInteriorEnterExits,
+        Core_DisableNameTagsLOS as DisableNameTagsLOS,
+        Core_EnableAllAnimations as EnableAllAnimations, Core_EnableZoneNames as EnableZoneNames,
+        Core_GameMode_SetText as SetGameModeText, Core_GetGravity as GetGravity,
+        Core_GetWeaponName as GetWeaponName, Core_GetWeaponSlot as GetWeaponSlot,
+        Core_GetWeather as GetWeather, Core_GetWorldTime as GetWorldTime,
+        Core_HideGameTextForAll as HideGameTextForAll,
+        Core_IsAdminTeleportAllowed as IsAdminTeleportAllowed,
+        Core_IsAnimationLibraryValid as IsAnimationLibraryValid,
+        Core_IsChatTextReplacementToggled as IsChatTextReplacementToggled,
+        Core_IsIpAddressBanned as IsIpAddressBanned,
+        Core_IsNickNameCharacterAllowed as IsNickNameCharacterAllowed,
+        Core_IsNickNameValid as IsNickNameValid, Core_IsValidRule as IsValidRule, Core_Log as Log,
+        Core_MaxPlayers as MaxPlayers, Core_NetworkStats as NetworkStats,
+        Core_RemoveRule as RemoveRule, Core_SendRconCommand as SendRconCommand,
+        Core_ServerTickRate as ServerTickRate, Core_SetChatRadius as SetChatRadius,
+        Core_SetDeathDropAmount as SetDeathDropAmount, Core_SetGravity as SetGravity,
+        Core_SetMarkerRadius as SetMarkerRadius,
+        Core_SetNameTagsDrawDistance as SetNameTagsDrawDistance, Core_SetWeather as SetWeather,
+        Core_SetWorldTime as SetWorldTime, Core_ShowGameTextForAll as GameTextForAll,
+        Core_ShowNameTags as ShowNameTags, Core_ShowPlayerMarkers as ShowPlayerMarkers,
+        Core_TickCount as TickCount, Core_ToggleChatTextReplacement as ToggleChatTextReplacement,
+        Core_UnBlockIpAddress as UnBlockIpAddress, Core_UsePedAnims as UsePedAnims,
+    };
 }
 
 pub mod dialogs {

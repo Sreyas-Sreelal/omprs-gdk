@@ -26,33 +26,34 @@ impl Actor {
     /// Create a static 'actor' in the world.
     /// These 'actors' are like NPCs, however they have limited functionality.
     /// They do not take up server player slots.
-    pub fn create_actor(skin: isize, pos: Vector3, angle: f32) -> Option<Actor> {
-        functions::CreateActor(skin, pos, angle)
+    pub fn create_actor(skin: i32, pos: Vector3, angle: f32) -> Option<Actor> {
+        let mut _id: i32 = 0;
+        functions::Actor_Create(skin, pos.x, pos.y, pos.z, angle, &mut _id)
     }
 
     /// Destroys an Actor
-    pub fn destroy(&self) {
-        functions::DestroyActor(self)
+    pub fn destroy(&self) -> bool {
+        functions::Actor_Destroy(self)
     }
 
     /// Checks if an actor is streamed in for a player.
     pub fn is_streamed_in(&self, player: &Player) -> bool {
-        functions::IsActorStreamedIn(self, player)
+        functions::Actor_IsStreamedInFor(self, player)
     }
 
     /// Sets an actor's virtual world
-    pub fn set_virtual_world(&self, virtual_world: isize) {
-        functions::SetActorVirtualWorld(self, virtual_world)
+    pub fn set_virtual_world(&self, virtual_world: i32) -> bool {
+        functions::Actor_SetVirtualWorld(self, virtual_world)
     }
 
     /// Get the virtual world of an actor.
-    pub fn get_virtual_world(&self) -> isize {
-        functions::GetActorVirtualWorld(self)
+    pub fn get_virtual_world(&self) -> i32 {
+        functions::Actor_GetVirtualWorld(self)
     }
 
     /// Apply an animation to an actor.
-    pub fn apply_animation(&self, animation_data: AnimationData) {
-        functions::ApplyActorAnimation(
+    pub fn apply_animation(&self, animation_data: AnimationData) -> bool {
+        functions::Actor_ApplyAnimation(
             self,
             &animation_data.get_animation_library(),
             &animation_data.get_name(),
@@ -67,12 +68,12 @@ impl Actor {
 
     /// Clear any animations that are applied to an actor.
     pub fn clear_animations(&self) -> bool {
-        functions::ClearActorAnimations(self)
+        functions::Actor_ClearAnimations(self)
     }
 
     /// Set the position of an actor.
-    pub fn set_pos(&self, pos: Vector3) {
-        functions::SetActorPos(self, pos)
+    pub fn set_pos(&self, pos: Vector3) -> bool {
+        functions::Actor_SetPos(self, pos.x, pos.y, pos.z)
     }
 
     /// Get the position of an actor.
@@ -82,48 +83,48 @@ impl Actor {
             y: 0.0,
             z: 0.0,
         };
-        functions::GetActorPos(self, &mut position);
+        functions::Actor_GetPos(self, &mut position.x, &mut position.y, &mut position.z);
         position
     }
 
     /// Set the facing angle of an actor.
-    pub fn set_facing_angle(&self, angle: f32) {
-        functions::SetActorFacingAngle(self, angle)
+    pub fn set_facing_angle(&self, angle: f32) -> bool {
+        functions::Actor_SetFacingAngle(self, angle)
     }
 
     /// Get the facing angle of an actor.
     pub fn get_facing_angle(&self) -> f32 {
-        functions::GetActorFacingAngle(self)
+        functions::Actor_GetFacingAngle(self)
     }
 
     /// Set the health of an actor.
-    pub fn set_health(&self, health: f32) {
-        functions::SetActorHealth(self, health)
+    pub fn set_health(&self, health: f32) -> bool {
+        functions::Actor_SetHealth(self, health)
     }
 
     /// Get the health of an actor
     pub fn get_health(&self) -> f32 {
-        functions::GetActorHealth(self)
+        functions::Actor_GetHealth(self)
     }
 
     /// Set actor invulnerability
-    pub fn set_invulnerable(&self, invulnerable: bool) {
-        functions::SetActorInvulnerable(self, invulnerable)
+    pub fn set_invulnerable(&self, invulnerable: bool) -> bool {
+        functions::Actor_SetInvulnerable(self, invulnerable)
     }
 
     /// Check if actor is invulnerable.
     pub fn is_invulnerable(&self) -> bool {
-        functions::IsActorInvulnerable(self)
+        functions::Actor_IsInvulnerable(self)
     }
 
     /// Set the skin of the actor.
-    pub fn set_skin(&self, skin: isize) {
-        functions::SetActorSkin(self, skin)
+    pub fn set_skin(&self, skin: i32) -> bool {
+        functions::Actor_SetSkin(self, skin)
     }
 
     /// Get the skin of the actor.
-    pub fn get_skin(&self) -> isize {
-        functions::GetActorSkin(self)
+    pub fn get_skin(&self) -> i32 {
+        functions::Actor_GetSkin(self)
     }
 
     /// Get the animation the actor is currently performing.
@@ -139,7 +140,7 @@ impl Actor {
             mut time,
         ) = Default::default();
 
-        functions::GetActorAnimation(
+        functions::Actor_GetAnimation(
             self,
             &mut animation_library,
             &mut animation_name,
@@ -166,18 +167,25 @@ impl Actor {
     /// Get the initial spawn point of the actor.
     pub fn get_spawn_info(&self) -> ActorSpawnData {
         let mut spawn_data = ActorSpawnData::default();
-        functions::GetActorSpawnInfo(self, &mut spawn_data);
+        functions::Actor_GetSpawnInfo(
+            self,
+            &mut spawn_data.position.x,
+            &mut spawn_data.position.y,
+            &mut spawn_data.position.z,
+            &mut spawn_data.facingAngle,
+            &mut spawn_data.skin,
+        );
         spawn_data
     }
 
     /// Get id of the Actor object
-    pub fn get_id(&self) -> usize {
-        functions::GetActorID(self)
+    pub fn get_id(&self) -> i32 {
+        functions::Actor_GetID(self)
     }
 
     /// Get the Actor object from an id
-    pub fn from_id(actorid: isize) -> Option<Actor> {
-        functions::GetActorFromID(actorid)
+    pub fn from_id(actorid: i32) -> Option<Actor> {
+        functions::Actor_FromID(actorid)
     }
 }
 
@@ -187,5 +195,5 @@ impl Actor {
 pub struct ActorSpawnData {
     pub position: Vector3,
     pub facingAngle: f32,
-    pub skin: isize,
+    pub skin: i32,
 }

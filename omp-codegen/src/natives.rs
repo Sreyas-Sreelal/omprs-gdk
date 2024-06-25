@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::{
     parse::{Parse, ParseStream},
     parse_macro_input, token, Ident, Token, Type,
@@ -142,11 +142,19 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
     if let Some((ref return_type, is_struct)) = return_type {
         if is_struct {
+            let return_stmt = if return_type.to_token_stream().to_string() == "PlayerObject"
+                || return_type.to_token_stream().to_string() == "PlayerTextDraw"
+                || return_type.to_token_stream().to_string() == "PlayerTextLabel"
+            {
+                quote!(Some(#return_type::new(ret_val,*player)))
+            } else {
+                quote!(Some(#return_type::new(ret_val)))
+            };
             body.push(quote!(
                 if ret_val.is_null() {
                     None
                 } else {
-                    Some(#return_type::new(ret_val))
+                    #return_stmt
                 }
             ))
         } else {

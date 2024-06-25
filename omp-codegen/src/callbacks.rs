@@ -83,16 +83,31 @@ pub fn create_callback(input: TokenStream) -> TokenStream {
         {
             if is_option {
                 orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
+                let struct_param = if param_type == "PlayerObject"
+                    || param_type == "PlayerTextDraw"
+                    || param_type == "PlayerTextLabel"
+                {
+                    quote!(Some(#param_type::new(#param_name,Player::new(player))))
+                } else {
+                    quote!(Some(#param_type::new(#param_name)))
+                };
                 user_func_args.push(quote!(
                     if #param_name.is_null(){
                         None
                     } else {
-                        Some(#param_type::new(#param_name))
+                        #struct_param
                     },
                 ));
             } else {
                 orig_callback_params.push(quote!(#param_name:*const std::ffi::c_void,));
-                user_func_args.push(quote!(#param_type::new(#param_name),));
+                if param_type == "PlayerObject"
+                    || param_type == "PlayerTextDraw"
+                    || param_type == "PlayerTextLabel"
+                {
+                    user_func_args.push(quote!(#param_type::new(#param_name,Player::new(player)),));
+                } else {
+                    user_func_args.push(quote!(#param_type::new(#param_name),));
+                }
             }
         } else {
             orig_callback_params.push(quote!(#param_name:#param_type,));
