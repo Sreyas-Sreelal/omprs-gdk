@@ -6,7 +6,7 @@ use crate::players::Player;
 use super::Pickup;
 
 native!(Pickup_Create, model: i32, pickup_type: i32, x: f32, y: f32, z: f32, virtualWorld: i32, id: mut i32, -> struct Pickup);
-native!(Pickup_AddStatic, model: i32, pickup_type: i32, x: f32, y: f32, z: f32, virtualWorld: i32, -> struct Pickup);
+native!(Pickup_AddStatic, model: i32, pickup_type: i32, x: f32, y: f32, z: f32, virtualWorld: i32, -> bool);
 native!(Pickup_Destroy, pickup: struct Pickup, -> bool);
 native!(Pickup_FromID, pickupid: i32, -> struct Pickup);
 native!(Pickup_GetID, pickup: struct Pickup, -> i32);

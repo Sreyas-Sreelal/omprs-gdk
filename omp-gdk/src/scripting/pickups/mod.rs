@@ -46,7 +46,7 @@ impl Pickup {
         pickup_type: i32,
         position: Vector3,
         virtual_world: i32,
-    ) -> Option<Pickup> {
+    ) -> bool {
         functions::Pickup_AddStatic(
             model,
             pickup_type,
