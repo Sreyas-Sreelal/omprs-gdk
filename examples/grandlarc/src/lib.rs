@@ -287,7 +287,7 @@ impl Events for GrandLarc {
         player.toggle_clock(false);
     }
 
-    fn on_player_death(&mut self, player: Player, killer: Option<Player>, _reason: isize) {
+    fn on_player_death(&mut self, player: Player, killer: Option<Player>, _reason: i32) {
         self.players_data
             .get_mut(&player.get_id())
             .unwrap()
@@ -303,7 +303,7 @@ impl Events for GrandLarc {
         }
     }
 
-    fn on_player_request_class(&mut self, player: Player, _class_id: usize) -> bool {
+    fn on_player_request_class(&mut self, player: Player, _class_id: i32) -> bool {
         if player.is_npc() {
             return true;
         }
@@ -321,7 +321,7 @@ impl Events for GrandLarc {
         false
     }
 
-    fn on_player_update(&mut self, player: Player, _now: isize) -> bool {
+    fn on_player_update(&mut self, player: Player) -> bool {
         if player.is_npc() {
             return true;
         }

@@ -1,7 +1,22 @@
-use omp_codegen::callback;
-
-use crate::players::Player;
+use crate::{events::EventArgs, players::Player};
 
 use super::Pickup;
 
-callback!(onPlayerPickUpPickup, player: Player, pickup: Pickup);
+#[repr(C)]
+pub struct OnPlayerPickUpPickupArgs {
+    player: *const *const std::ffi::c_void,
+    pickup: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerPickUpPickup(
+    args: *const EventArgs<OnPlayerPickUpPickupArgs>,
+) {
+    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    for script in scripts.iter_mut() {
+        script.on_player_pick_up_pickup(
+            Player::new(*(*(*args).list).player),
+            Pickup::new(*(*(*args).list).pickup),
+        );
+    }
+}

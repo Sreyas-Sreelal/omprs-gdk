@@ -13,6 +13,9 @@ mod scripting;
 
 mod runtime;
 
+use std::ffi::c_char;
+use std::os::raw::c_void;
+
 pub use events::Events;
 pub use omp_codegen::main;
 pub use runtime::{Runtime, __terminate_event_chain};
@@ -33,6 +36,7 @@ pub use scripting::vehicles;
 
 #[doc(hidden)]
 pub fn init_functions() {
+    load_function!(Component_Create);
     core::load_functions();
     models::load_functions();
     players::load_functions();
@@ -47,4 +51,26 @@ pub fn init_functions() {
     textdraws::load_functions();
     textlabels::load_functions();
     vehicles::load_functions();
+    events::load_event_functions();
 }
+
+#[repr(C)]
+pub struct ComponentVersion {
+    pub major: u8,   //< MAJOR version when you make incompatible API changes
+    pub minor: u8,   //< MINOR version when you add functionality in a backwards compatible manner
+    pub patch: u8,   //< PATCH version when you make backwards compatible bug fixes
+    pub prerel: u16, //< PRE-RELEASE version
+}
+
+pub static mut OMPRS_Component_Create: Option<
+    unsafe extern "C" fn(
+        uid: u64,
+        name: *const c_char,
+        version: ComponentVersion,
+        onLoadCB: *const c_void,
+        onInitCB: *const c_void,
+        onReadyCB: *const c_void,
+        onResetCB: *const c_void,
+        onFreeCB: *const c_void,
+    ) -> *const c_void,
+> = None;

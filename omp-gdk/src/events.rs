@@ -1,15 +1,486 @@
+use std::ffi::{c_char, c_void};
+
 use crate::{
-    actors::Actor,
-    gangzones::GangZone,
-    models::ModelDownloadType,
-    objects::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject},
-    pickups::Pickup,
-    players::{BodyPart, Player, PlayerBulletData, PlayerClickSource, PlayerState},
-    scripting::dialogs::DialogResponse,
-    textdraws::{PlayerTextDraw, TextDraw},
+    actors::{events::*, Actor},
+    checkpoints::events::*,
+    classes::events::*,
+    core::events::*,
+    gangzones::{events::*, GangZone},
+    menus::events::*,
+    models::{events::*, ModelDownloadType},
+    objects::{events::*, Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject},
+    pickups::{events::*, Pickup},
+    players::{events::*, BodyPart, Player, PlayerClickSource, PlayerState, PlayerWeapon},
+    scripting::dialogs::{events::*, DialogResponse},
+    textdraws::{events::*, PlayerTextDraw, TextDraw},
     types::{network::PeerDisconnectReason, vector::Vector3},
-    vehicles::{UnoccupiedVehicleUpdate, Vehicle},
+    vehicles::{events::*, UnoccupiedVehicleUpdate, Vehicle},
 };
+
+pub static mut OMPRS_Event_AddHandler: Option<
+    unsafe extern "C" fn(name: *const c_char, priority: i32, callback: *const c_void) -> bool,
+> = None;
+
+#[repr(C)]
+pub struct EventArgs<T> {
+    pub size: u8,
+    pub list: *const T,
+}
+
+pub fn load_event_functions() {
+    load_function!(Event_AddHandler);
+    unsafe {
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerGiveDamageActor")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerGiveDamageActor as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onActorStreamIn")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnActorStreamIn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onActorStreamOut")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnActorStreamOut as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEnterCheckpoint")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEnterCheckpoint as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerLeaveCheckpoint")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerLeaveCheckpoint as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEnterRaceCheckpoint")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEnterRaceCheckpoint as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerLeaveRaceCheckpoint")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerLeaveRaceCheckpoint as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerRequestClass")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerRequestClass as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onConsoleText").unwrap().into_raw(),
+            0,
+            OMPRS_OnConsoleText as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onRconLoginAttempt")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnRconLoginAttempt as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onTick").unwrap().into_raw(),
+            0,
+            OMPRS_OnTick as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerFinishedDownloading")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerFinishedDownloading as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerRequestDownload")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerRequestDownload as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onDialogResponse")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnDialogResponse as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEnterGangZone")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEnterGangZone as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerLeaveGangZone")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerLeaveGangZone as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerClickGangZone")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerClickGangZone as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerSelectedMenuRow")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerSelectedMenuRow as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerExitedMenu")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerExitedMenu as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onObjectMove").unwrap().into_raw(),
+            0,
+            OMPRS_OnObjectMove as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerObjectMove")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerObjectMove as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEditObject")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEditObject as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEditAttachedObject")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEditAttachedObject as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerSelectObject")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerSelectObject as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerPickUpPickup")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerPickUpPickup as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerCancelTextDrawSelection")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerCancelTextDrawSelection as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerCancelPlayerTextDrawSelection")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerCancelPlayerTextDrawSelection as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerClickTextDraw")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerClickTextDraw as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerClickPlayerTextDraw")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerClickPlayerTextDraw as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerConnect")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerConnect as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerSpawn").unwrap().into_raw(),
+            0,
+            OMPRS_OnPlayerSpawn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerCommandText")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerCommandText as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerKeyStateChange")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerKeyStateChange as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onIncomingConnection")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnIncomingConnection as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerDisconnect")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerDisconnect as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerRequestSpawn")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerRequestSpawn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerStreamIn")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerStreamIn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerStreamOut")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerStreamOut as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerText").unwrap().into_raw(),
+            0,
+            OMPRS_OnPlayerText as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerShotMissed")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerShotMissed as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerShotPlayer")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerShotPlayer as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerShotVehicle")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerShotVehicle as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerShotObject")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerShotObject as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerShotPlayerObject")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerShotPlayerObject as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerDeath").unwrap().into_raw(),
+            0,
+            OMPRS_OnPlayerDeath as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerTakeDamage")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerTakeDamage as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerGiveDamage")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerGiveDamage as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerInteriorChange")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerInteriorChange as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerStateChange")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerStateChange as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerClickMap")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerClickMap as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerClickPlayer")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerClickPlayer as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onClientCheckResponse")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnClientCheckResponse as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerUpdate").unwrap().into_raw(),
+            0,
+            OMPRS_OnPlayerUpdate as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleStreamIn")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehicleStreamIn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleStreamOut")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehicleStreamOut as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleDeath").unwrap().into_raw(),
+            0,
+            OMPRS_OnVehicleDeath as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerEnterVehicle")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerEnterVehicle as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onPlayerExitVehicle")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnPlayerExitVehicle as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleDamageStatusUpdate")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehicleDamageStatusUpdate as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehiclePaintJob")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehiclePaintJob as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleMod").unwrap().into_raw(),
+            0,
+            OMPRS_OnVehicleMod as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleRespray")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehicleRespray as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onEnterExitModShop")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnEnterExitModShop as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleSpawn").unwrap().into_raw(),
+            0,
+            OMPRS_OnVehicleSpawn as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onUnoccupiedVehicleUpdate")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnUnoccupiedVehicleUpdate as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onTrailerUpdate")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnTrailerUpdate as *const std::ffi::c_void,
+        );
+        OMPRS_Event_AddHandler.unwrap()(
+            std::ffi::CString::new("onVehicleSirenStateChange")
+                .unwrap()
+                .into_raw(),
+            0,
+            OMPRS_OnVehicleSirenStateChange as *const std::ffi::c_void,
+        );
+    }
+}
 
 #[allow(unused_variables)]
 pub trait Events {
@@ -22,7 +493,7 @@ pub trait Events {
     fn on_player_spawn(&mut self, player: Player) {}
 
     /// This callback is called when an IP address attempts a connection to the server.     
-    fn on_incoming_connection(&mut self, player: Player, ip_address: String, port: u16) {}
+    fn on_incoming_connection(&mut self, player: Player, ip_address: String, port: i32) {}
 
     /// This callback is called when a player connects to the server.
     fn on_player_connect(&mut self, player: Player) {}
@@ -46,7 +517,12 @@ pub trait Events {
         false
     }
 
-    fn on_player_shot_missed(&mut self, player: Player, bullet_data: PlayerBulletData) -> bool {
+    fn on_player_shot_missed(
+        &mut self,
+        player: Player,
+        weapon: PlayerWeapon,
+        origin: Vector3,
+    ) -> bool {
         true
     }
 
@@ -55,7 +531,8 @@ pub trait Events {
         &mut self,
         player: Player,
         target: Player,
-        bullet_data: PlayerBulletData,
+        weapon: PlayerWeapon,
+        origin: Vector3,
     ) -> bool {
         true
     }
@@ -65,7 +542,8 @@ pub trait Events {
         &mut self,
         player: Player,
         target: Vehicle,
-        bullet_data: PlayerBulletData,
+        weapon: PlayerWeapon,
+        origin: Vector3,
     ) -> bool {
         true
     }
@@ -75,7 +553,8 @@ pub trait Events {
         &mut self,
         player: Player,
         target: Object,
-        bullet_data: PlayerBulletData,
+        weapon: PlayerWeapon,
+        origin: Vector3,
     ) -> bool {
         true
     }
@@ -85,25 +564,20 @@ pub trait Events {
         &mut self,
         player: Player,
         target: PlayerObject,
-        bullet_data: PlayerBulletData,
+        weapon: PlayerWeapon,
+        origin: Vector3,
     ) -> bool {
         true
     }
 
     /// This callback is called when a player's score changes
-    fn on_player_score_change(&mut self, player: Player, score: isize) {}
+    fn on_player_score_change(&mut self, player: Player, score: i32) {}
 
     /// This callback is called when a player's name is changed
     fn on_player_name_change(&mut self, player: Player, old_name: String) {}
 
     /// This callback is called when a player changes interior
-    fn on_player_interior_change(
-        &mut self,
-        player: Player,
-        new_interior: usize,
-        old_interior: usize,
-    ) {
-    }
+    fn on_player_interior_change(&mut self, player: Player, new_interior: i32, old_interior: i32) {}
 
     /// This callback is called when a player changes state. For example, when a player changes from being the driver of a vehicle to being on-foot.
     fn on_player_state_change(
@@ -116,10 +590,10 @@ pub trait Events {
 
     /// This callback is called when the state of any supported key is changed (pressed/released).
     /// Directional keys do not trigger on_player_key_state_change (up/down/left/right).
-    fn on_player_key_state_change(&mut self, player: Player, new_keys: u32, old_keys: u32) {}
+    fn on_player_key_state_change(&mut self, player: Player, new_keys: i32, old_keys: i32) {}
 
     /// This callback is called when a player dies, either by suicide or by being killed by another player.
-    fn on_player_death(&mut self, player: Player, killer: Option<Player>, reason: isize) {}
+    fn on_player_death(&mut self, player: Player, killer: Option<Player>, reason: i32) {}
 
     /// This callback is called when a player takes damage.
     fn on_player_take_damage(
@@ -127,7 +601,7 @@ pub trait Events {
         player: Player,
         from: Option<Player>,
         amount: f32,
-        weapon: usize,
+        weapon: i32,
         part: BodyPart,
     ) {
     }
@@ -138,7 +612,7 @@ pub trait Events {
         player: Player,
         to: Player,
         amount: f32,
-        weapon: usize,
+        weapon: i32,
         part: BodyPart,
     ) {
     }
@@ -159,15 +633,15 @@ pub trait Events {
     fn on_client_check_response(
         &mut self,
         player: Player,
-        action_type: isize,
-        address: isize,
-        results: isize,
+        action_type: i32,
+        address: i32,
+        results: i32,
     ) {
     }
 
     /// This callback is called every time a client/player updates the server with their status.
     /// It can be used to monitor client updates that aren't actively tracked by the server, such as health or armor updates or players switching weapons.
-    fn on_player_update(&mut self, player: Player, now: isize) -> bool {
+    fn on_player_update(&mut self, player: Player) -> bool {
         true
     }
 
@@ -179,7 +653,7 @@ pub trait Events {
         &mut self,
         player: Player,
         model_type: ModelDownloadType,
-        checksum: u32,
+        checksum: i32,
     ) -> bool {
         true
     }
@@ -190,7 +664,7 @@ pub trait Events {
         player: Player,
         actor: Actor,
         amount: f32,
-        weapon: usize,
+        weapon: i32,
         part: BodyPart,
     ) {
     }
@@ -214,7 +688,7 @@ pub trait Events {
     fn on_player_leave_race_checkpoint(&mut self, player: Player) {}
 
     /// This callback is called when a player changes class at class selection (and when class selection first appears).
-    fn on_player_request_class(&mut self, player: Player, class_id: usize) -> bool {
+    fn on_player_request_class(&mut self, player: Player, class_id: i32) -> bool {
         true
     }
 
@@ -222,9 +696,9 @@ pub trait Events {
     fn on_dialog_response(
         &mut self,
         player: Player,
-        dialog_id: i16,
+        dialog_id: i32,
         response: DialogResponse,
-        list_item: isize,
+        list_item: i32,
         input_text: String,
     ) {
     }
@@ -241,7 +715,7 @@ pub trait Events {
     fn on_player_click_gang_zone(&mut self, player: Player, zone: GangZone) {}
 
     /// This callback is called when a player selects an item from a menu
-    fn on_player_selected_menu_row(&mut self, player: Player, row: isize) {}
+    fn on_player_selected_menu_row(&mut self, player: Player, row: i32) {}
 
     /// This callback is called when a player exits a menu.
     fn on_player_exited_menu(&mut self, player: Player) {}
@@ -278,7 +752,7 @@ pub trait Events {
     fn on_player_edit_attached_object(
         &mut self,
         player: Player,
-        index: isize,
+        index: i32,
         saved: bool,
         data: ObjectAttachmentSlotData,
     ) {
@@ -289,7 +763,7 @@ pub trait Events {
         &mut self,
         player: Player,
         object: Object,
-        model: isize,
+        model: i32,
         position: Vector3,
     ) {
     }
@@ -299,7 +773,7 @@ pub trait Events {
         &mut self,
         player: Player,
         object: PlayerObject,
-        model: isize,
+        model: i32,
         position: Vector3,
     ) {
     }
@@ -342,12 +816,12 @@ pub trait Events {
     fn on_vehicle_damage_status_update(&mut self, vehicle: Vehicle, player: Player) {}
 
     /// This callback is called when a player previews a vehicle paintjob inside a mod shop. Watch out, this callback is not called when the player buys the paintjob.
-    fn on_vehicle_paint_job(&mut self, player: Player, vehicle: Vehicle, paintjob: isize) -> bool {
+    fn on_vehicle_paint_job(&mut self, player: Player, vehicle: Vehicle, paintjob: i32) -> bool {
         true
     }
 
     /// This callback is called when a vehicle is modded.
-    fn on_vehicle_mod(&mut self, player: Player, vehicle: Vehicle, component: isize) -> bool {
+    fn on_vehicle_mod(&mut self, player: Player, vehicle: Vehicle, component: i32) -> bool {
         true
     }
 
@@ -356,14 +830,14 @@ pub trait Events {
         &mut self,
         player: Player,
         vehicle: Vehicle,
-        colour1: isize,
-        colour2: isize,
+        colour1: i32,
+        colour2: i32,
     ) -> bool {
         true
     }
 
     /// This callback is called when a vehicle enters or exits a mod shop.
-    fn on_enter_exit_mod_shop(&mut self, player: Player, enterexit: bool, interior_id: isize) {}
+    fn on_enter_exit_mod_shop(&mut self, player: Player, enterexit: bool, interior_id: i32) {}
 
     /// This callback is called when a vehicle respawns.
     fn on_vehicle_spawn(&mut self, vehicle: Vehicle) {}
@@ -388,7 +862,7 @@ pub trait Events {
         &mut self,
         player: Player,
         vehicle: Vehicle,
-        sirenstate: u8,
+        sirenstate: i32,
     ) -> bool {
         true
     }
@@ -399,12 +873,13 @@ pub trait Events {
     }
 
     /// This callback is called when an attempt to login to RCON is made.
-    fn on_rcon_login_attempt(
-        &mut self,
-        player: Option<Player>,
-        ip: String,
-        password: String,
-        success: bool,
-    ) {
+    fn on_rcon_login_attempt(&mut self, ip: String, password: String, success: bool) -> bool {
+        true
     }
+
+    fn on_console_text(&mut self, command: String, params: String) -> bool {
+        true
+    }
+
+    fn on_tick(&mut self, elapsed: i32) {}
 }

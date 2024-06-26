@@ -17,7 +17,7 @@ macro_rules! load_function {
     ($name: expr) => {
         paste::paste! {
             let prefixed =  stringify!($name);
-            let address = crate::helper::get_module_symbol_address("CAPI", &prefixed)
+            let address = crate::helper::get_module_symbol_address("$CAPI", &prefixed)
                 .expect(&format!("could not find '{prefixed}' address"));
             unsafe {
                 [<OMPRS_ $name>] = Some(std::mem::transmute(address));

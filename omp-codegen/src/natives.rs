@@ -94,9 +94,9 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name:*const c_void,))
         } else if param_type == "str" {
-            orig_arg_list.push(quote!(crate::types::stringview::StringView::from(#param_name),));
+            orig_arg_list.push(quote!(std::ffi::CString::new(#param_name).unwrap().as_ptr(),));
             param_list.push(quote!(#param_name: &#param_type,));
-            orig_param_list.push(quote!(#param_name: crate::types::stringview::StringView,))
+            orig_param_list.push(quote!(#param_name: *const std::ffi::c_char,))
         } else {
             orig_arg_list.push(quote!(#param_name,));
             param_list.push(quote!(#param_name: #param_type,));
