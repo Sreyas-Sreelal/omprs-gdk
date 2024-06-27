@@ -49,3 +49,18 @@ pub fn get_module_symbol_address(_module: &str, symbol: &str) -> Option<usize> {
 
     unsafe { Some(dlsym(std::ptr::null_mut(), symbol.as_ptr()) as usize) }
 }
+
+
+macro_rules! add_handler {
+    ($name:expr) => {
+        paste::paste! {
+            let cstring = std::ffi::CString::new(stringify!($name)).unwrap();
+
+            OMPRS_Event_AddHandler.unwrap()(
+                cstring.as_ptr(),
+                0,
+                [<OMPRS_ $name:camel>] as *const std::ffi::c_void,
+            );
+        }
+    };
+}

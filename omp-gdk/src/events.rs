@@ -30,455 +30,73 @@ pub struct EventArgs<T> {
 pub fn load_event_functions() {
     load_function!(Event_AddHandler);
     unsafe {
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerGiveDamageActor")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerGiveDamageActor as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onActorStreamIn")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnActorStreamIn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onActorStreamOut")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnActorStreamOut as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEnterCheckpoint")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEnterCheckpoint as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerLeaveCheckpoint")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerLeaveCheckpoint as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEnterRaceCheckpoint")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEnterRaceCheckpoint as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerLeaveRaceCheckpoint")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerLeaveRaceCheckpoint as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerRequestClass")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerRequestClass as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onConsoleText").unwrap().into_raw(),
-            0,
-            OMPRS_OnConsoleText as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onRconLoginAttempt")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnRconLoginAttempt as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onTick").unwrap().into_raw(),
-            0,
-            OMPRS_OnTick as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerFinishedDownloading")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerFinishedDownloading as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerRequestDownload")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerRequestDownload as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onDialogResponse")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnDialogResponse as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEnterGangZone")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEnterGangZone as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerLeaveGangZone")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerLeaveGangZone as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerClickGangZone")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerClickGangZone as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerSelectedMenuRow")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerSelectedMenuRow as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerExitedMenu")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerExitedMenu as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onObjectMove").unwrap().into_raw(),
-            0,
-            OMPRS_OnObjectMove as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerObjectMove")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerObjectMove as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEditObject")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEditObject as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEditAttachedObject")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEditAttachedObject as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerSelectObject")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerSelectObject as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerPickUpPickup")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerPickUpPickup as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerCancelTextDrawSelection")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerCancelTextDrawSelection as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerCancelPlayerTextDrawSelection")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerCancelPlayerTextDrawSelection as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerClickTextDraw")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerClickTextDraw as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerClickPlayerTextDraw")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerClickPlayerTextDraw as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerConnect")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerConnect as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerSpawn").unwrap().into_raw(),
-            0,
-            OMPRS_OnPlayerSpawn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerCommandText")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerCommandText as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerKeyStateChange")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerKeyStateChange as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onIncomingConnection")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnIncomingConnection as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerDisconnect")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerDisconnect as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerRequestSpawn")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerRequestSpawn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerStreamIn")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerStreamIn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerStreamOut")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerStreamOut as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerText").unwrap().into_raw(),
-            0,
-            OMPRS_OnPlayerText as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerShotMissed")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerShotMissed as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerShotPlayer")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerShotPlayer as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerShotVehicle")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerShotVehicle as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerShotObject")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerShotObject as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerShotPlayerObject")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerShotPlayerObject as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerDeath").unwrap().into_raw(),
-            0,
-            OMPRS_OnPlayerDeath as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerTakeDamage")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerTakeDamage as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerGiveDamage")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerGiveDamage as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerInteriorChange")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerInteriorChange as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerStateChange")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerStateChange as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerClickMap")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerClickMap as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerClickPlayer")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerClickPlayer as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onClientCheckResponse")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnClientCheckResponse as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerUpdate").unwrap().into_raw(),
-            0,
-            OMPRS_OnPlayerUpdate as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleStreamIn")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehicleStreamIn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleStreamOut")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehicleStreamOut as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleDeath").unwrap().into_raw(),
-            0,
-            OMPRS_OnVehicleDeath as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerEnterVehicle")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerEnterVehicle as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onPlayerExitVehicle")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnPlayerExitVehicle as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleDamageStatusUpdate")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehicleDamageStatusUpdate as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehiclePaintJob")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehiclePaintJob as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleMod").unwrap().into_raw(),
-            0,
-            OMPRS_OnVehicleMod as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleRespray")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehicleRespray as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onEnterExitModShop")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnEnterExitModShop as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleSpawn").unwrap().into_raw(),
-            0,
-            OMPRS_OnVehicleSpawn as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onUnoccupiedVehicleUpdate")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnUnoccupiedVehicleUpdate as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onTrailerUpdate")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnTrailerUpdate as *const std::ffi::c_void,
-        );
-        OMPRS_Event_AddHandler.unwrap()(
-            std::ffi::CString::new("onVehicleSirenStateChange")
-                .unwrap()
-                .into_raw(),
-            0,
-            OMPRS_OnVehicleSirenStateChange as *const std::ffi::c_void,
-        );
+        add_handler!(onPlayerGiveDamageActor);
+        add_handler!(onActorStreamIn);
+        add_handler!(onActorStreamOut);
+        add_handler!(onPlayerEnterCheckpoint);
+        add_handler!(onPlayerLeaveCheckpoint);
+        add_handler!(onPlayerEnterRaceCheckpoint);
+        add_handler!(onPlayerLeaveRaceCheckpoint);
+        add_handler!(onPlayerRequestClass);
+        add_handler!(onConsoleText);
+        add_handler!(onRconLoginAttempt);
+        add_handler!(onTick);
+        add_handler!(onPlayerFinishedDownloading);
+        add_handler!(onPlayerRequestDownload);
+        add_handler!(onDialogResponse);
+        add_handler!(onPlayerEnterGangZone);
+        add_handler!(onPlayerLeaveGangZone);
+        add_handler!(onPlayerClickGangZone);
+        add_handler!(onPlayerSelectedMenuRow);
+        add_handler!(onPlayerExitedMenu);
+        add_handler!(onObjectMove);
+        add_handler!(onPlayerObjectMove);
+        add_handler!(onPlayerEditObject);
+        add_handler!(onPlayerEditAttachedObject);
+        add_handler!(onPlayerSelectObject);
+        add_handler!(onPlayerPickUpPickup);
+        add_handler!(onPlayerCancelTextDrawSelection);
+        add_handler!(onPlayerCancelPlayerTextDrawSelection);
+        add_handler!(onPlayerClickTextDraw);
+        add_handler!(onPlayerClickPlayerTextDraw);
+        add_handler!(onPlayerConnect);
+        add_handler!(onPlayerSpawn);
+        add_handler!(onPlayerCommandText);
+        add_handler!(onPlayerKeyStateChange);
+        add_handler!(onIncomingConnection);
+        add_handler!(onPlayerDisconnect);
+        add_handler!(onPlayerRequestSpawn);
+        add_handler!(onPlayerStreamIn);
+        add_handler!(onPlayerStreamOut);
+        add_handler!(onPlayerText);
+        add_handler!(onPlayerShotMissed);
+        add_handler!(onPlayerShotPlayer);
+        add_handler!(onPlayerShotVehicle);
+        add_handler!(onPlayerShotObject);
+        add_handler!(onPlayerShotPlayerObject);
+        add_handler!(onPlayerDeath);
+        add_handler!(onPlayerTakeDamage);
+        add_handler!(onPlayerGiveDamage);
+        add_handler!(onPlayerInteriorChange);
+        add_handler!(onPlayerStateChange);
+        add_handler!(onPlayerClickMap);
+        add_handler!(onPlayerClickPlayer);
+        add_handler!(onClientCheckResponse);
+        add_handler!(onPlayerUpdate);
+        add_handler!(onVehicleStreamIn);
+        add_handler!(onVehicleStreamOut);
+        add_handler!(onVehicleDeath);
+        add_handler!(onPlayerEnterVehicle);
+        add_handler!(onPlayerExitVehicle);
+        add_handler!(onVehicleDamageStatusUpdate);
+        add_handler!(onVehiclePaintJob);
+        add_handler!(onVehicleMod);
+        add_handler!(onVehicleRespray);
+        add_handler!(onEnterExitModShop);
+        add_handler!(onVehicleSpawn);
+        add_handler!(onUnoccupiedVehicleUpdate);
+        add_handler!(onTrailerUpdate);
+        add_handler!(onVehicleSirenStateChange);
     }
 }
 
