@@ -67,7 +67,7 @@ native!(Vehicle_GetModelsUsed, -> i32);
 native!(Vehicle_GetPaintjob, vehicle: struct Vehicle, -> i32);
 native!(Vehicle_GetColor, vehicle: struct Vehicle, color1: mut i32, color2: mut i32, -> bool);
 native!(Vehicle_GetInterior, vehicle: struct Vehicle, -> i32);
-native!(Vehicle_GetNumberPlate, vehicle: struct Vehicle, numberPlate: mut str, -> bool);
+native!(Vehicle_GetNumberPlate, vehicle: struct Vehicle, numberPlate: mut str, numberPlate_len: usize, -> bool);
 native!(Vehicle_SetRespawnDelay, vehicle: struct Vehicle, respawn_delay: i32, -> bool);
 native!(Vehicle_GetRespawnDelay, vehicle: struct Vehicle, -> i32);
 native!(Vehicle_GetCab, vehicle: struct Vehicle, -> struct Vehicle);

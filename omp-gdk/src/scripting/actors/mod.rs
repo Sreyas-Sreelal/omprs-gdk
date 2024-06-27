@@ -143,7 +143,9 @@ impl Actor {
         functions::Actor_GetAnimation(
             self,
             &mut animation_library,
+            16,
             &mut animation_name,
+            24,
             &mut delta,
             &mut animloop,
             &mut lock_x,

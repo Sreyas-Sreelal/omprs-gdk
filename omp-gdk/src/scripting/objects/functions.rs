@@ -36,8 +36,8 @@ native!(Object_GetAttachedData, object: struct Object, parentVehicle: mut i32, p
 native!(Object_GetAttachedOffset, object: struct Object, offsetX: mut f32, offsetY: mut f32, offsetZ: mut f32, rotationX: mut f32, rotationY: mut f32, rotationZ: mut f32, -> bool);
 native!(Object_GetSyncRotation, object: struct Object, -> bool);
 native!(Object_IsMaterialSlotUsed, object: struct Object, materialIndex: i32, -> bool);
-native!(Object_GetMaterial, object: struct Object, materialIndex: i32, modelid: mut i32, textureLibrary: mut str, textureName: mut str, materialColor: mut i32, -> bool);
-native!(Object_GetMaterialText, object: struct Object, materialIndex: i32, text: mut str, materialSize: mut i32, fontFace: mut str, fontSize: mut i32, bold: mut bool, fontColor: mut i32, backgroundColor: mut i32, textAlignment: mut i32, -> bool);
+native!(Object_GetMaterial, object: struct Object, materialIndex: i32, modelid: mut i32, textureLibrary: mut str, textureLibrary_len: usize, textureName: mut str, textureName_len: usize, materialColor: mut i32, -> bool);
+native!(Object_GetMaterialText, object: struct Object, materialIndex: i32, text: mut str, text_len: usize, materialSize: mut i32, fontFace: mut str, fontFace_len: usize, fontSize: mut i32, bold: mut bool, fontColor: mut i32, backgroundColor: mut i32, textAlignment: mut i32, -> bool);
 native!(Object_IsObjectNoCameraCollision, object: struct Object, -> bool);
 native!(Object_GetType, player: struct Player, objectid: i32, -> u8);
 
@@ -69,8 +69,8 @@ native!(PlayerObject_GetAttachedData, player: struct Player, object: struct Play
 native!(PlayerObject_GetAttachedOffset, player: struct Player, object: struct PlayerObject, offsetX: mut f32, offsetY: mut f32, offsetZ: mut f32, rotationX: mut f32, rotationY: mut f32, rotationZ: mut f32, -> bool);
 native!(PlayerObject_GetSyncRotation, player: struct Player, object: struct PlayerObject, -> bool);
 native!(PlayerObject_IsMaterialSlotUsed, player: struct Player, object: struct PlayerObject, materialIndex: i32, -> bool);
-native!(PlayerObject_GetMaterial, player: struct Player, object: struct PlayerObject, materialIndex: i32, modelid: mut i32, textureLibrary: mut str, textureName: mut str, materialColor: mut i32, -> bool);
-native!(PlayerObject_GetMaterialText, player: struct Player, object: struct PlayerObject, materialIndex: i32, text: mut str, materialSize: mut i32, fontFace: mut str, fontSize: mut i32, bold: mut bool, fontColor: mut i32, backgroundColor: mut i32, textAlignment: mut i32, -> bool);
+native!(PlayerObject_GetMaterial, player: struct Player, object: struct PlayerObject, materialIndex: i32, modelid: mut i32, textureLibrary: mut str,textureLibrary_len: usize, textureName: mut str, textureName_len: usize, materialColor: mut i32, -> bool);
+native!(PlayerObject_GetMaterialText, player: struct Player, object: struct PlayerObject, materialIndex: i32, text: mut str, text_len: usize, materialSize: mut i32, fontFace: mut str, fontFace_len: usize, fontSize: mut i32, bold: mut bool, fontColor: mut i32, backgroundColor: mut i32, textAlignment: mut i32, -> bool);
 native!(PlayerObject_IsNoCameraCollision, player: struct Player, object: struct PlayerObject, -> bool);
 
 #[doc(hidden)]

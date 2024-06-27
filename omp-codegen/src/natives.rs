@@ -76,8 +76,13 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             if param_type == "str" {
                 param_list.push(quote!(#param_name:&mut String,));
                 let addr_var_name = Ident::new(&format!("addr_{}", param_name), param_name.span());
+                let addr_len = Ident::new(&format!("{}_len", param_name), param_name.span());
+                let addr_buf = Ident::new(&format!("{}_buf", param_name), param_name.span());
                 address_decl_stmts.push(
-                    quote!(let mut #addr_var_name = crate::types::stringview::StringView::new();),
+                    quote!(
+                        let mut #addr_buf = vec![0 as std::ffi::c_char; #addr_len + 1];
+                        let mut #addr_var_name = crate::types::stringview::StringView::new(#addr_buf.as_mut_ptr(), #addr_len + 1);
+                    ),
                 );
                 orig_arg_list.push(quote!(&mut #addr_var_name,));
                 mutate_stmts.push(quote!(

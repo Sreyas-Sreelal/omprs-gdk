@@ -48,7 +48,7 @@ impl Player {
     /// Get a player's name.
     pub fn get_name(&self) -> String {
         let mut name = String::new();
-        functions::Player_GetName(self, &mut name);
+        functions::Player_GetName(self, &mut name, 24);
         name
     }
 
@@ -596,7 +596,7 @@ impl Player {
     /// Get the specified player's IP address and store it in a string.
     pub fn get_ip(&self) -> String {
         let mut ip = String::new();
-        functions::Player_GetIp(self, &mut ip);
+        functions::Player_GetIp(self, &mut ip, 15);
         ip
     }
 
@@ -790,7 +790,7 @@ impl Player {
     /// Fetch the CI (computer/client identification) of a user, this is linked to their SAMP/GTA on their computer.
     pub fn gpci(&self) -> String {
         let mut output = String::new();
-        functions::Player_GPCI(self, &mut output);
+        functions::Player_GPCI(self, &mut output, 41);
         output
     }
 
@@ -826,7 +826,7 @@ impl Player {
         time: &mut i32,
         remaining: &mut i32,
     ) -> bool {
-        functions::Player_GetGameText(self, style, message, time, remaining)
+        functions::Player_GetGameText(self, style, message, 32, time, remaining)
     }
 
     /// Ban a player who is currently in the server.
@@ -847,7 +847,7 @@ impl Player {
     /// Returns the SA-MP client version, as reported by the player.
     pub fn get_version(&self) -> String {
         let mut output = String::new();
-        functions::Player_GetVersion(self, &mut output);
+        functions::Player_GetVersion(self, &mut output, 24);
         output
     }
 
@@ -1302,14 +1302,14 @@ impl Player {
     /// Get a player's network stats.
     pub fn get_net_stats(&self) -> String {
         let mut output = String::new();
-        functions::Player_GetNetworkStats(self, &mut output);
+        functions::Player_GetNetworkStats(self, &mut output, 400);
         output
     }
 
     /// Get a player's IP and port.
     pub fn net_stats_get_ip_port(&self) -> String {
         let mut output = String::new();
-        functions::Player_NetStatsGetIpPort(self, &mut output);
+        functions::Player_NetStatsGetIpPort(self, &mut output, 22);
         output
     }
 

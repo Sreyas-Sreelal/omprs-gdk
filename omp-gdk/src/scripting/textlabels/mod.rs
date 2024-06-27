@@ -62,7 +62,7 @@ impl TextLabel {
     /// Gets the 3D text label text.
     pub fn get_text(&self) -> String {
         let mut output = String::new();
-        functions::TextLabel_GetText(self, &mut output);
+        functions::TextLabel_GetText(self, &mut output, 64);
         output
     }
     /// Gets the 3D text label color.
@@ -134,7 +134,7 @@ impl PlayerTextLabel {
     /// Gets the player's 3D text label text.
     pub fn get_text(&self) -> String {
         let mut output = String::new();
-        functions::PlayerTextLabel_GetText(&self.player, self, &mut output);
+        functions::PlayerTextLabel_GetText(&self.player, self, &mut output, 64);
         output
     }
     /// Gets the player's 3D text label color.

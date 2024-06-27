@@ -22,8 +22,8 @@ native!(Menu_GetColumns, menu: struct Menu, -> i32);
 native!(Menu_GetItems, menu: struct Menu, column: i32, -> i32);
 native!(Menu_GetPos, menu: struct Menu, x: mut f32, y: mut f32, -> bool);
 native!(Menu_GetColumnWidth, menu: struct Menu, column1Width: mut f32, column2Width: mut f32, -> bool);
-native!(Menu_GetColumnHeader, menu: struct Menu, column: i32, header: mut str, -> bool);
-native!(Menu_GetItem, menu: struct Menu, column: i32, row: i32, item: mut str, -> bool);
+native!(Menu_GetColumnHeader, menu: struct Menu, column: i32, header: mut str, header_len: usize, -> bool);
+native!(Menu_GetItem, menu: struct Menu, column: i32, row: i32, item: mut str, item_len: usize, -> bool);
 
 #[doc(hidden)]
 pub fn load_functions() {

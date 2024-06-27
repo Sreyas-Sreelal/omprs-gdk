@@ -114,7 +114,7 @@ impl TextDraw {
     /// Gets the text of a textdraw.
     pub fn get_string(&self) -> String {
         let mut text = String::new();
-        functions::TextDraw_GetString(self, &mut text);
+        functions::TextDraw_GetString(self, &mut text, 16);
         text
     }
     /// Gets the width and height of the letters.
@@ -303,7 +303,7 @@ impl PlayerTextDraw {
     /// Gets the text of a player-textdraw.
     pub fn get_string(&self) -> String {
         let mut text = String::new();
-        functions::PlayerTextDraw_GetString(&self.player, self, &mut text);
+        functions::PlayerTextDraw_GetString(&self.player, self, &mut text, 16);
         text
     }
     /// Gets the width and height of the letters.

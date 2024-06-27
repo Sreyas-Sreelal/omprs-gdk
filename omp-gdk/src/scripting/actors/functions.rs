@@ -23,7 +23,7 @@ native!(Actor_IsInvulnerable, actor: struct Actor, -> bool);
 native!(Actor_IsValid, actor: struct Actor, -> bool);
 native!(Actor_SetSkin, actor: struct Actor, skin: i32, -> bool);
 native!(Actor_GetSkin, actor: struct Actor, -> i32);
-native!(Actor_GetAnimation, actor: struct Actor, library: mut str, name: mut str, delta: mut f32, anim_loop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut i32, -> bool);
+native!(Actor_GetAnimation, actor: struct Actor, library: mut str, library_len:usize, name: mut str, name_len:usize, delta: mut f32, anim_loop: mut bool, lockX: mut bool, lockY: mut bool, freeze: mut bool, time: mut i32, -> bool);
 native!(Actor_GetSpawnInfo, actor: struct Actor, x: mut f32, y: mut f32, z: mut f32, angle: mut f32, skin: mut i32, -> bool);
 
 #[doc(hidden)]

@@ -291,7 +291,9 @@ impl Object {
             material_index,
             &mut modelid,
             &mut texture_library,
+            16,
             &mut texture_name,
+            16,
             &mut material_colour,
         );
 
@@ -299,8 +301,10 @@ impl Object {
             self,
             material_index,
             &mut text,
+            16,
             &mut material_size,
             &mut font_face,
+            16,
             &mut font_size,
             &mut bold,
             &mut font_colour,
@@ -619,7 +623,9 @@ impl PlayerObject {
             material_index,
             &mut modelid,
             &mut texture_library,
+            16,
             &mut texture_name,
+            16,
             &mut material_colour,
         );
 
@@ -628,8 +634,10 @@ impl PlayerObject {
             self,
             material_index,
             &mut text,
+            16,
             &mut material_size,
             &mut font_face,
+            16,
             &mut font_size,
             &mut bold,
             &mut font_colour,

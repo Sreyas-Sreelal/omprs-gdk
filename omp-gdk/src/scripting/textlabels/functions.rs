@@ -15,7 +15,7 @@ native!(TextLabel_AttachToVehicle, textlabel: struct TextLabel, vehicle: struct 
 native!(TextLabel_UpdateText, textlabel: struct TextLabel, color: u32, text: str, -> bool);
 native!(TextLabel_IsValid, textlabel: struct TextLabel, -> bool);
 native!(TextLabel_IsStreamedIn, player: struct Player, textlabel: struct TextLabel, -> bool);
-native!(TextLabel_GetText, textlabel: struct TextLabel, output: mut str, -> bool);
+native!(TextLabel_GetText, textlabel: struct TextLabel, output: mut str, output_len: usize, -> bool);
 native!(TextLabel_GetColor, textlabel: struct TextLabel, -> u32);
 native!(TextLabel_GetPos, textlabel: struct TextLabel, x: mut f32, y: mut f32, z: mut f32, -> bool);
 native!(TextLabel_SetDrawDistance, textlabel: struct TextLabel, distance: f32, -> bool);
@@ -34,7 +34,7 @@ native!(PlayerTextLabel_FromID, player: struct Player, textlabelid: i32, -> stru
 native!(PlayerTextLabel_GetID, player: struct Player, textlabel: struct PlayerTextLabel, -> i32);
 native!(PlayerTextLabel_UpdateText, player: struct Player, textlabel: struct PlayerTextLabel, color: u32, text: str, -> bool);
 native!(PlayerTextLabel_IsValid, player: struct Player, textlabel: struct PlayerTextLabel, valid: mut bool, -> bool);
-native!(PlayerTextLabel_GetText, player: struct Player, textlabel: struct PlayerTextLabel, output: mut str, -> bool);
+native!(PlayerTextLabel_GetText, player: struct Player, textlabel: struct PlayerTextLabel, output: mut str, output_len: usize, -> bool);
 native!(PlayerTextLabel_GetColor, player: struct Player, textlabel: struct PlayerTextLabel, color: mut u32, -> bool);
 native!(PlayerTextLabel_GetPos, player: struct Player, textlabel: struct PlayerTextLabel, x: mut f32, y: mut f32, z: mut f32, -> bool);
 native!(PlayerTextLabel_SetDrawDistance, player: struct Player, textlabel: struct PlayerTextLabel, distance: f32, -> bool);

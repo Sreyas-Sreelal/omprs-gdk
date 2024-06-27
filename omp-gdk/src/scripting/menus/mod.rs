@@ -112,14 +112,14 @@ impl Menu {
     /// Get caption of the menu
     pub fn get_column_header(&self, column: i32) -> String {
         let mut header = String::new();
-        functions::Menu_GetColumnHeader(self, column, &mut header);
+        functions::Menu_GetColumnHeader(self, column, &mut header, 32);
         header
     }
 
     /// Get an item at particular row and column in menu
     pub fn get_item(&self, column: i32, row: i32) -> String {
         let mut title = String::new();
-        functions::Menu_GetItem(self, column, row, &mut title);
+        functions::Menu_GetItem(self, column, row, &mut title, 32);
         title
     }
 

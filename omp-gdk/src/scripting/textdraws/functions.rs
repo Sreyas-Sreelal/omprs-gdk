@@ -32,7 +32,7 @@ native!(TextDraw_SetPreviewModel, textdraw: struct TextDraw, model: i32, -> bool
 native!(TextDraw_SetPreviewRot, textdraw: struct TextDraw, rotationX: f32, rotationY: f32, rotationZ: f32, zoom: f32, -> bool);
 native!(TextDraw_SetPreviewVehCol, textdraw: struct TextDraw, color1: i32, color2: i32, -> bool);
 native!(TextDraw_SetPos, textdraw: struct TextDraw, x: f32, y: f32, -> bool);
-native!(TextDraw_GetString, textdraw: struct TextDraw, text: mut str, -> bool);
+native!(TextDraw_GetString, textdraw: struct TextDraw, text: mut str, text_len: usize, -> bool);
 native!(TextDraw_GetLetterSize, textdraw: struct TextDraw, sizeX: mut f32, sizeY: mut f32, -> bool);
 native!(TextDraw_GetTextSize, textdraw: struct TextDraw, sizeX: mut f32, sizeY: mut f32, -> bool);
 native!(TextDraw_GetPos, textdraw: struct TextDraw, x: mut f32, y: mut f32, -> bool);
@@ -78,7 +78,7 @@ native!(PlayerTextDraw_SetPreviewModel, player: struct Player, textdraw: struct 
 native!(PlayerTextDraw_SetPreviewRot, player: struct Player, textdraw: struct PlayerTextDraw, rx: f32, ry: f32, rz: f32, zoom: f32, -> bool);
 native!(PlayerTextDraw_SetPreviewVehCol, player: struct Player, textdraw: struct PlayerTextDraw, color1: i32, color2: i32, -> bool);
 native!(PlayerTextDraw_SetPos, player: struct Player, textdraw: struct PlayerTextDraw, x: f32, y: f32, -> bool);
-native!(PlayerTextDraw_GetString, player: struct Player, textdraw: struct PlayerTextDraw, text: mut str, -> bool);
+native!(PlayerTextDraw_GetString, player: struct Player, textdraw: struct PlayerTextDraw, text: mut str, text_len: usize, -> bool);
 native!(PlayerTextDraw_GetLetterSize, player: struct Player, textdraw: struct PlayerTextDraw, x: mut f32, y: mut f32, -> bool);
 native!(PlayerTextDraw_GetTextSize, player: struct Player, textdraw: struct PlayerTextDraw, x: mut f32, y: mut f32, -> bool);
 native!(PlayerTextDraw_GetPos, player: struct Player, textdraw: struct PlayerTextDraw, x: mut f32, y: mut f32, -> bool);

@@ -368,7 +368,7 @@ impl Vehicle {
     /// Get the number plate of a vehicle.
     pub fn get_number_plate(&self) -> String {
         let mut number_plate = String::new();
-        functions::Vehicle_GetNumberPlate(self, &mut number_plate);
+        functions::Vehicle_GetNumberPlate(self, &mut number_plate, 16);
         number_plate
     }
     /// Set the respawn delay of a vehicle.
