@@ -50,7 +50,6 @@ pub fn get_module_symbol_address(_module: &str, symbol: &str) -> Option<usize> {
     unsafe { Some(dlsym(std::ptr::null_mut(), symbol.as_ptr()) as usize) }
 }
 
-
 macro_rules! add_handler {
     ($name:expr) => {
         paste::paste! {
