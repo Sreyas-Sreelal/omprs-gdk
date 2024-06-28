@@ -36,7 +36,7 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
             omp::init_functions();
 
             let component = omp::Component_Create.unwrap()(
-                0xA3CF477F384DEAFC,
+                omp::gen_uid(),
                 "omprs game mode\0".as_ptr().cast(),
                 omp::ComponentVersion {
                     major: 0,

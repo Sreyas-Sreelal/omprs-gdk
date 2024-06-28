@@ -34,6 +34,8 @@ pub use scripting::textdraws;
 pub use scripting::textlabels;
 pub use scripting::vehicles;
 
+pub use helper::gen_uid;
+
 #[doc(hidden)]
 pub fn init_functions() {
     load_function!(Component_Create);

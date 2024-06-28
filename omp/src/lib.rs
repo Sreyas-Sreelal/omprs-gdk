@@ -111,6 +111,7 @@ pub mod vehicles {
     };
 }
 
+pub use omp_gdk::gen_uid;
 pub use omp_gdk::ComponentVersion;
 pub use omp_gdk::OMPRS_Component_Create as Component_Create;
 pub use omp_gdk::{init_functions, main, types};

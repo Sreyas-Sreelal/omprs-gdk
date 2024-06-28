@@ -63,3 +63,7 @@ macro_rules! add_handler {
         }
     };
 }
+
+pub fn gen_uid() -> u64 {
+    uuid::Uuid::new_v4().as_u64_pair().0
+}
