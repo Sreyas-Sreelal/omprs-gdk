@@ -66,6 +66,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     let mut mutate_stmts = Vec::new();
     let mut orig_arg_list = Vec::new();
     let mut orig_param_list = Vec::new();
+    let mut string_conversion_stmts = Vec::new();
 
     for (param_name, param_type, is_mut, is_struct) in native.params {
         if param_name.to_string().contains("_len") {
@@ -99,7 +100,10 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name:*const c_void,))
         } else if param_type == "str" {
-            orig_arg_list.push(quote!(std::ffi::CString::new(#param_name).unwrap().as_ptr(),));
+            let string_ident = Ident::new(&format!("{}_cstring", param_name), param_name.span());
+            string_conversion_stmts
+                .push(quote!(let #string_ident = std::ffi::CString::new(#param_name).unwrap();));
+            orig_arg_list.push(quote!(#string_ident.into_raw(),));
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name: *const std::ffi::c_char,))
         } else {
@@ -136,6 +140,11 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         ));
     }
 
+    if !string_conversion_stmts.is_empty() {
+        body.push(quote!(
+            #(#string_conversion_stmts)*
+        ))
+    }
     body.push(quote!(
         let ret_val = unsafe { #orig_name.unwrap()(#(#orig_arg_list)*)};
     ));

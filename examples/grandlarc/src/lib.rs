@@ -467,7 +467,8 @@ pub fn game_entry() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut total_vehicles = 0;
     for file in vehicle_file_list {
-        total_vehicles += load_static_vehicles_from_file(&format!("vehicles/{file}.txt"))?;
+        total_vehicles +=
+            load_static_vehicles_from_file(&format!("scriptfiles/vehicles/{file}.txt"))?;
     }
 
     omp::core::Log(&format!("Total vehicles from files: {total_vehicles}"));

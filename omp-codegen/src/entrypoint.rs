@@ -8,11 +8,7 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
     let code = quote! {
         #sig
         #[no_mangle]
-        pub extern "C" fn OMPRS_Main() {
-
-
-        }
-
+        pub extern "C" fn OMPRS_Main() {}
 
         #[no_mangle]
         extern "C" fn onLoadCB() {}
@@ -37,7 +33,7 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
 
             let component = omp::Component_Create.unwrap()(
                 omp::gen_uid(),
-                "omprs game mode\0".as_ptr().cast(),
+                std::ffi::CString::new("OMPRS gamemode").unwrap().into_raw(),
                 omp::ComponentVersion {
                     major: 0,
                     minor: 0,
@@ -50,8 +46,6 @@ pub fn create_main(_args: TokenStream, input: TokenStream) -> TokenStream {
                 onResetCB as *const std::ffi::c_void,
                 onFreeCB as *const std::ffi::c_void,
             );
-
-            let _ = std::env::set_current_dir("../scriptfiles");
 
             component
         }
