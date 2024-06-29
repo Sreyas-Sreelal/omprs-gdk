@@ -3,6 +3,7 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 #![allow(clippy::too_many_arguments)]
+#![allow(clippy::missing_transmute_annotations)]
 
 #[macro_use]
 mod helper;
