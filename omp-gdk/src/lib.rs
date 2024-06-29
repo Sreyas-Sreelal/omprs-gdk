@@ -57,6 +57,7 @@ pub fn init_functions() {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug)]
 pub struct ComponentVersion {
     pub major: u8,   //< MAJOR version when you make incompatible API changes
     pub minor: u8,   //< MINOR version when you add functionality in a backwards compatible manner
@@ -64,6 +65,16 @@ pub struct ComponentVersion {
     pub prerel: u16, //< PRE-RELEASE version
 }
 
+impl ComponentVersion {
+    pub fn new(major: u8, minor: u8, patch: u8, prerel: u16) -> Self {
+        ComponentVersion {
+            major,
+            minor,
+            patch,
+            prerel,
+        }
+    }
+}
 pub static mut OMPRS_Component_Create: Option<
     unsafe extern "C" fn(
         uid: u64,
