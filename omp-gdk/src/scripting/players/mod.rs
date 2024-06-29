@@ -1186,11 +1186,11 @@ impl Player {
         objects::functions::PlayerObject_BeginEditing(self, object)
     }
 
-    /* /// Get PlayerObject from an id
+    /// Get Object from an id
     pub fn get_player_object_from_id(&self, id: i32) -> Option<PlayerObject> {
-        objects::functions::GetPlayerObjectFromID(self, id)
-    } */
-
+        objects::functions::PlayerObject_FromID(self, id)
+    }
+    
     /// Creates a textdraw for a single player.
     pub fn create_player_text_draw(&self, position: Vector2, text: &str) -> Option<PlayerTextDraw> {
         let mut _id = 0;

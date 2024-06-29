@@ -664,6 +664,11 @@ impl PlayerObject {
     pub fn is_player_object_no_camera_collision(&self) -> bool {
         functions::PlayerObject_IsNoCameraCollision(&self.player, self)
     }
+
+    /// Get player object's id
+    pub fn get_id(&self) -> i32 {
+        functions::PlayerObject_GetID(&self.player, self)
+    }
 }
 
 /// Object moving information

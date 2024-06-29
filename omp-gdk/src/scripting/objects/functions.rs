@@ -72,6 +72,8 @@ native!(PlayerObject_IsMaterialSlotUsed, player: struct Player, object: struct P
 native!(PlayerObject_GetMaterial, player: struct Player, object: struct PlayerObject, materialIndex: i32, modelid: mut i32, textureLibrary: mut str,textureLibrary_len: usize, textureName: mut str, textureName_len: usize, materialColor: mut i32, -> bool);
 native!(PlayerObject_GetMaterialText, player: struct Player, object: struct PlayerObject, materialIndex: i32, text: mut str, text_len: usize, materialSize: mut i32, fontFace: mut str, fontFace_len: usize, fontSize: mut i32, bold: mut bool, fontColor: mut i32, backgroundColor: mut i32, textAlignment: mut i32, -> bool);
 native!(PlayerObject_IsNoCameraCollision, player: struct Player, object: struct PlayerObject, -> bool);
+native!(PlayerObject_FromID, player: struct Player,objectid: i32, -> struct PlayerObject);
+native!(PlayerObject_GetID, player: struct Player, object: struct PlayerObject, -> i32);
 
 #[doc(hidden)]
 pub fn load_functions() {
