@@ -202,8 +202,11 @@ impl Object {
 
     /// Get the move data of an object.
     pub fn get_move_data(&self) -> ObjectMoveData {
-        let mut data = ObjectMoveData::default();
-        data.speed = functions::Object_GetMoveSpeed(self);
+        let mut data = ObjectMoveData {
+            speed: functions::Object_GetMoveSpeed(self),
+            ..Default::default()
+        };
+
         functions::Object_GetMovingTargetPos(
             self,
             &mut data.targetPos.x,
@@ -533,9 +536,10 @@ impl PlayerObject {
         functions::PlayerObject_GetMoveSpeed(&self.player, self)
     }
     pub fn get_player_object_moving_data(&self) -> ObjectMoveData {
-        let mut data = ObjectMoveData::default();
-
-        data.speed = functions::PlayerObject_GetMoveSpeed(&self.player, self);
+        let mut data = ObjectMoveData {
+            speed: functions::PlayerObject_GetMoveSpeed(&self.player, self),
+            ..Default::default()
+        };
         functions::PlayerObject_GetMovingTargetPos(
             &self.player,
             self,

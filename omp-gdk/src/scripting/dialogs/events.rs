@@ -1,3 +1,4 @@
+#![allow(clippy::all)]
 use crate::{events::EventArgs, players::Player};
 use std::mem::transmute;
 

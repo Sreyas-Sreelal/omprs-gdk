@@ -19,7 +19,7 @@ impl Parse for EntryArgs {
         }
         let key: Ident = input.parse()?;
 
-        if key.to_string() == "name" {
+        if key == "name" {
             let _: Token![=] = input.parse()?;
             name = Some(input.parse()?);
 
@@ -27,19 +27,19 @@ impl Parse for EntryArgs {
                 let _: Token![,] = input.parse()?;
                 let key: Ident = input.parse()?;
 
-                if key.to_string() == "version" {
+                if key == "version" {
                     let _: Token![=] = input.parse()?;
                     version = Some(input.parse()?);
                 }
             }
-        } else if key.to_string() == "version" {
+        } else if key == "version" {
             let _: Token![=] = input.parse()?;
             version = Some(input.parse()?);
             if !input.is_empty() {
                 let _: Token![,] = input.parse()?;
                 let key: Ident = input.parse()?;
 
-                if key.to_string() == "name" {
+                if key == "name" {
                     let _: Token![=] = input.parse()?;
                     name = Some(input.parse()?);
                 }
