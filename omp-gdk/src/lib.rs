@@ -81,8 +81,6 @@ pub static mut OMPRS_Component_Create: Option<
         uid: u64,
         name: *const c_char,
         version: ComponentVersion,
-        onLoadCB: *const c_void,
-        onInitCB: *const c_void,
         onReadyCB: *const c_void,
         onResetCB: *const c_void,
         onFreeCB: *const c_void,

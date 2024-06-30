@@ -70,12 +70,6 @@ pub fn create_main(args: TokenStream, input: TokenStream) -> TokenStream {
     let code = quote! {
         #sig
         #[no_mangle]
-        extern "C" fn onLoadCB() {}
-
-        #[no_mangle]
-        extern "C" fn onInitCB() {}
-
-        #[no_mangle]
         extern "C" fn onReadyCB() {
             let _ = #function_name();
         }
@@ -99,8 +93,6 @@ pub fn create_main(args: TokenStream, input: TokenStream) -> TokenStream {
                     patch: #component_version.2,
                     prerel: #component_version.3,
                 },
-                onLoadCB as *const std::ffi::c_void,
-                onInitCB as *const std::ffi::c_void,
                 onReadyCB as *const std::ffi::c_void,
                 onResetCB as *const std::ffi::c_void,
                 onFreeCB as *const std::ffi::c_void,
