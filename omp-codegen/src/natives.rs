@@ -103,7 +103,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             let string_ident = Ident::new(&format!("{}_cstring", param_name), param_name.span());
             string_conversion_stmts
                 .push(quote!(let #string_ident = std::ffi::CString::new(#param_name).unwrap();));
-            orig_arg_list.push(quote!(#string_ident.into_raw(),));
+            orig_arg_list.push(quote!(#string_ident.as_ptr(),));
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name: *const std::ffi::c_char,))
         } else {

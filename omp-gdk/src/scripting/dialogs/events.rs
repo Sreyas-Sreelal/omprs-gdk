@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player};
+use crate::{events::EventArgs, players::Player, types::stringview::StringView};
 use std::mem::transmute;
 
 #[repr(C)]
@@ -8,7 +8,7 @@ pub struct OnDialogResponseArgs {
     dialogId: *const i32,
     response: *const i32,
     listItem: *const i32,
-    inputText: *const std::ffi::c_char,
+    inputText: *const StringView,
 }
 
 #[no_mangle]
@@ -20,7 +20,7 @@ pub unsafe extern "C" fn OMPRS_OnDialogResponse(args: *const EventArgs<OnDialogR
             *(*(*args).list).dialogId,
             transmute(*(*(*args).list).response),
             *(*(*args).list).listItem,
-            (*(*(*args).list).inputText).to_string(),
+            (*(*(*args).list).inputText).get_data(),
         );
     }
 }

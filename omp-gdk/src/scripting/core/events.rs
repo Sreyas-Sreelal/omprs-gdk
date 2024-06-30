@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::events::EventArgs;
+use crate::{events::EventArgs, types::stringview::StringView};
 
 #[repr(C)]
 pub struct OnTickArgs {
@@ -16,8 +16,8 @@ pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
 
 #[repr(C)]
 pub struct OnConsoleTextArgs {
-    command: *const std::ffi::c_char,
-    parameters: *const std::ffi::c_char,
+    command: *const StringView,
+    parameters: *const StringView,
 }
 
 #[no_mangle]
@@ -26,8 +26,8 @@ pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTex
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.on_console_text(
-            (*(*(*args).list).command).to_string(),
-            (*(*(*args).list).parameters).to_string(),
+            (*(*(*args).list).command).get_data(),
+            (*(*(*args).list).parameters).get_data(),
         );
         if crate::runtime::__terminate_event_chain {
             crate::runtime::__terminate_event_chain = false;
@@ -39,8 +39,8 @@ pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTex
 
 #[repr(C)]
 pub struct OnRconLoginAttemptArgs {
-    address: *const std::ffi::c_char,
-    password: *const std::ffi::c_char,
+    address: *const StringView,
+    password: *const StringView,
     success: *const bool,
 }
 
@@ -52,8 +52,8 @@ pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.on_rcon_login_attempt(
-            (*(*(*args).list).address).to_string(),
-            (*(*(*args).list).password).to_string(),
+            (*(*(*args).list).address).get_data(),
+            (*(*(*args).list).password).get_data(),
             *(*(*args).list).success,
         );
         if crate::runtime::__terminate_event_chain {

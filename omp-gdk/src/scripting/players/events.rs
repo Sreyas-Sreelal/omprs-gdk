@@ -4,6 +4,7 @@ use std::mem::transmute;
 use super::Player;
 use crate::events::EventArgs;
 use crate::objects::{Object, PlayerObject};
+use crate::types::stringview::StringView;
 use crate::types::vector::Vector3;
 use crate::vehicles::Vehicle;
 
@@ -36,7 +37,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerSpawn(args: *const EventArgs<OnPlayerSpaw
 #[repr(C)]
 pub struct OnPlayerCommandTextArgs {
     player: *const *const std::ffi::c_void,
-    command: *const std::ffi::c_char,
+    command: *const StringView,
 }
 
 #[no_mangle]
@@ -48,7 +49,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCommandText(
     for script in scripts.iter_mut() {
         ret = script.on_player_command_text(
             Player::new(*(*(*args).list).player),
-            (*(*(*args).list).command).to_string(),
+            (*(*(*args).list).command).get_data(),
         );
         if crate::runtime::__terminate_event_chain {
             crate::runtime::__terminate_event_chain = false;
@@ -82,7 +83,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerKeyStateChange(
 #[repr(C)]
 pub struct OnIncomingConnectionArgs {
     player: *const *const std::ffi::c_void,
-    ipAddress: *const std::ffi::c_char,
+    ipAddress: *const StringView,
     port: *const i32,
 }
 
@@ -94,7 +95,7 @@ pub unsafe extern "C" fn OMPRS_OnIncomingConnection(
     for script in scripts.iter_mut() {
         script.on_incoming_connection(
             Player::new(*(*(*args).list).player),
-            (*(*(*args).list).ipAddress).to_string(),
+            (*(*(*args).list).ipAddress).get_data(),
             *(*(*args).list).port,
         );
     }
@@ -175,7 +176,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerStreamOut(args: *const EventArgs<OnPlayer
 #[repr(C)]
 pub struct OnPlayerTextArgs {
     player: *const *const std::ffi::c_void,
-    text: *const std::ffi::c_char,
+    text: *const StringView,
 }
 
 #[no_mangle]
@@ -185,7 +186,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerText(args: *const EventArgs<OnPlayerTextA
     for script in scripts.iter_mut() {
         ret = script.on_player_text(
             Player::new(*(*(*args).list).player),
-            (*(*(*args).list).text).to_string(),
+            (*(*(*args).list).text).get_data(),
         );
         if crate::runtime::__terminate_event_chain {
             crate::runtime::__terminate_event_chain = false;
