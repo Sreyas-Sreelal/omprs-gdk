@@ -5,7 +5,7 @@ pub struct AnimationData {
     pub lockX: bool,
     pub lockY: bool,
     pub freeze: bool,
-    pub time: usize,
+    pub time: i32,
     lib: String,
     name: String,
 }
@@ -17,7 +17,7 @@ impl AnimationData {
         lockX: bool,
         lockY: bool,
         freeze: bool,
-        time: usize,
+        time: i32,
         lib: &str,
         name: &str,
     ) -> Self {

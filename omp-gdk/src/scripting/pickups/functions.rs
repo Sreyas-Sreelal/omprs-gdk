@@ -1,45 +1,47 @@
 use omp_codegen::native;
 use std::ffi::c_void;
 
-use crate::{players::Player, types::vector::Vector3};
+use crate::players::Player;
 
 use super::Pickup;
 
-native!(CreatePickup, model: isize, pickup_type: isize, position: Vector3, virtualWorld: isize, -> struct Pickup);
-native!(AddStaticPickup, model: isize, pickup_type: isize, position: Vector3, virtualWorld: isize, -> struct Pickup);
-native!(DestroyPickup, pickup: struct Pickup);
-native!(IsPickupStreamedIn, pickup: struct Pickup, player: struct Player, -> bool);
-native!(GetPickupPos, pickup: struct Pickup, pos: mut Vector3);
-native!(GetPickupModel, pickup: struct Pickup, -> isize);
-native!(GetPickupType, pickup: struct Pickup, -> isize);
-native!(GetPickupVirtualWorld, pickup: struct Pickup, -> isize);
-native!(SetPickupPos, pickup: struct Pickup, pos: Vector3, update: bool);
-native!(SetPickupModel, pickup: struct Pickup, model: isize, update: bool);
-native!(SetPickupType, pickup: struct Pickup, pickup_type: isize, update: bool);
-native!(SetPickupVirtualWorld, pickup: struct Pickup, virtualworld: isize);
-native!(ShowPickupForPlayer, pickup: struct Pickup,player: struct Player);
-native!(HidePickupForPlayer, pickup: struct Pickup, player: struct Player);
-native!(IsPickupHiddenForPlayer, pickup: struct Pickup, player: struct Player, -> bool);
-native!(GetPickupID, pickup: struct Pickup, -> isize);
-native!(GetPickupFromID, pickupid: isize, -> struct Pickup);
+native!(Pickup_Create, model: i32, pickup_type: i32, x: f32, y: f32, z: f32, virtualWorld: i32, id: mut i32, -> struct Pickup);
+native!(Pickup_AddStatic, model: i32, pickup_type: i32, x: f32, y: f32, z: f32, virtualWorld: i32, -> bool);
+native!(Pickup_Destroy, pickup: struct Pickup, -> bool);
+native!(Pickup_FromID, pickupid: i32, -> struct Pickup);
+native!(Pickup_GetID, pickup: struct Pickup, -> i32);
+native!(Pickup_IsValid, pickup: struct Pickup, -> bool);
+native!(Pickup_IsStreamedIn, player: struct Player, pickup: struct Pickup, -> bool);
+native!(Pickup_GetPos, pickup: struct Pickup, x: mut f32, y: mut f32, z: mut f32, -> bool);
+native!(Pickup_GetModel, pickup: struct Pickup, -> i32);
+native!(Pickup_GetType, pickup: struct Pickup, -> i32);
+native!(Pickup_GetVirtualWorld, pickup: struct Pickup, -> i32);
+native!(Pickup_SetPos, pickup: struct Pickup, x: f32, y: f32, z: f32, update: bool, -> bool);
+native!(Pickup_SetModel, pickup: struct Pickup, model: i32, update: bool, -> bool);
+native!(Pickup_SetType, pickup: struct Pickup, pickup_type: i32, update: bool, -> bool);
+native!(Pickup_SetVirtualWorld, pickup: struct Pickup, virtualworld: i32, -> bool);
+native!(Pickup_ShowForPlayer, player: struct Player, pickup: struct Pickup, -> bool);
+native!(Pickup_HideForPlayer, player: struct Player, pickup: struct Pickup, -> bool);
+native!(Pickup_IsHiddenForPlayer, player: struct Player, pickup: struct Pickup, -> bool);
 
 #[doc(hidden)]
 pub fn load_functions() {
-    load_function!(CreatePickup);
-    load_function!(AddStaticPickup);
-    load_function!(DestroyPickup);
-    load_function!(IsPickupStreamedIn);
-    load_function!(GetPickupPos);
-    load_function!(GetPickupModel);
-    load_function!(GetPickupType);
-    load_function!(GetPickupVirtualWorld);
-    load_function!(SetPickupPos);
-    load_function!(SetPickupModel);
-    load_function!(SetPickupType);
-    load_function!(SetPickupVirtualWorld);
-    load_function!(ShowPickupForPlayer);
-    load_function!(HidePickupForPlayer);
-    load_function!(IsPickupHiddenForPlayer);
-    load_function!(GetPickupID);
-    load_function!(GetPickupFromID);
+    load_function!(Pickup_Create);
+    load_function!(Pickup_AddStatic);
+    load_function!(Pickup_Destroy);
+    load_function!(Pickup_FromID);
+    load_function!(Pickup_GetID);
+    load_function!(Pickup_IsValid);
+    load_function!(Pickup_IsStreamedIn);
+    load_function!(Pickup_GetPos);
+    load_function!(Pickup_GetModel);
+    load_function!(Pickup_GetType);
+    load_function!(Pickup_GetVirtualWorld);
+    load_function!(Pickup_SetPos);
+    load_function!(Pickup_SetModel);
+    load_function!(Pickup_SetType);
+    load_function!(Pickup_SetVirtualWorld);
+    load_function!(Pickup_ShowForPlayer);
+    load_function!(Pickup_HideForPlayer);
+    load_function!(Pickup_IsHiddenForPlayer);
 }
