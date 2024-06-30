@@ -73,12 +73,12 @@ pub fn create_main(args: TokenStream, input: TokenStream) -> TokenStream {
         extern "C" fn onLoadCB() {}
 
         #[no_mangle]
-        extern "C" fn onInitCB() {
-            let _ = #function_name();
-        }
+        extern "C" fn onInitCB() {}
 
         #[no_mangle]
-        extern "C" fn onReadyCB() {}
+        extern "C" fn onReadyCB() {
+            let _ = #function_name();
+        }
 
         #[no_mangle]
         extern "C" fn onResetCB() {}
