@@ -1132,8 +1132,8 @@ impl Player {
         dialogs::functions::Dialog_Hide(self)
     }
 
-    pub fn get_id(&self) -> usize {
-        functions::Player_GetID(self) as usize
+    pub fn get_id(&self) -> i32 {
+        functions::Player_GetID(self) as i32
     }
     pub fn from_id(playerid: i32) -> Option<Player> {
         functions::Player_FromID(playerid)
