@@ -43,7 +43,7 @@ struct PlayerData {
 
 struct GrandLarc {
     colour_white: Colour,
-    players_data: HashMap<usize, PlayerData>,
+    players_data: HashMap<i32, PlayerData>,
     class_selection_helper_td: TextDraw,
     los_santos_td: TextDraw,
     san_fierro_td: TextDraw,
