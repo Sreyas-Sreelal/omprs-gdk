@@ -12,7 +12,10 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
+        script
+            .lock()
+            .unwrap()
+            .on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -27,7 +30,10 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
+        script
+            .lock()
+            .unwrap()
+            .on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -42,7 +48,10 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
+        script
+            .lock()
+            .unwrap()
+            .on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -57,6 +66,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
+        script
+            .lock()
+            .unwrap()
+            .on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
     }
 }

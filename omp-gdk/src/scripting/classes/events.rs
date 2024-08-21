@@ -14,7 +14,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
-        ret = script.on_player_request_class(
+        ret = script.lock().unwrap().on_player_request_class(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).classId,
         );

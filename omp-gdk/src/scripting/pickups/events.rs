@@ -15,7 +15,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerPickUpPickup(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_pick_up_pickup(
+        script.lock().unwrap().on_player_pick_up_pickup(
             Player::new(*(*(*args).list).player),
             Pickup::new(*(*(*args).list).pickup),
         );

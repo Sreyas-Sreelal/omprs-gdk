@@ -14,7 +14,10 @@ pub unsafe extern "C" fn OMPRS_OnPlayerFinishedDownloading(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_finished_downloading(Player::new(*(*(*args).list).player));
+        script
+            .lock()
+            .unwrap()
+            .on_player_finished_downloading(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -31,7 +34,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestDownload(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.on_player_request_download(
+        script.lock().unwrap().on_player_request_download(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).model_type),
             *(*(*args).list).checksum,
