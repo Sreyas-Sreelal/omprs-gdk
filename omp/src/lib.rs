@@ -17,7 +17,7 @@ pub mod checkpoint {
 }
 
 pub mod classes {
-    pub use omp_gdk::classes::Class;
+    pub use omp_gdk::classes::{Class, PlayerClass};
 }
 
 pub mod core {
