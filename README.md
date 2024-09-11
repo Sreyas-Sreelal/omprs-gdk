@@ -53,7 +53,7 @@ omprs is a tool to develop open.mp gamemodes in Rust.
 9. Goto `config.json` add following to it
     ```json
     "rust":{
-        "gamemode":"mygm",
+        "gamemode":"mygm"
     }
     ```
 10. Run your server
