@@ -51,6 +51,11 @@ impl Player {
         name
     }
 
+    /// Sends a message to all players on the server.
+    pub fn send_client_message_to_all(colour: Colour, message: &str) {
+        functions::SendClientMessageToAll(colour, message);
+    }
+
     /// Sets the camera to a specific position for a player.
     pub fn set_camera_pos(&self, pos: Vector3) {
         functions::SetPlayerCameraPos(self, pos);

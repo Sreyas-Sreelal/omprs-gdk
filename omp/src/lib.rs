@@ -56,12 +56,12 @@ pub mod pickups {
 
 pub mod players {
     pub use omp_gdk::players::{
-        functions::SendClientMessageToAll, BodyPart, ClientVersion, MapIconStyle, Player,
-        PlayerAimData, PlayerAnimationData, PlayerAnimationSyncType, PlayerBulletData,
-        PlayerBulletHitType, PlayerCameraCutType, PlayerClickSource, PlayerFightingStyle,
-        PlayerKeyData, PlayerKeys, PlayerNameStatus, PlayerSpecialAction, PlayerSpectateData,
-        PlayerSpectateMode, PlayerState, PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill,
-        PlayerWeaponState, SpectateType, WeaponSlotData, WeaponSlots,
+        BodyPart, ClientVersion, MapIconStyle, Player, PlayerAimData, PlayerAnimationData,
+        PlayerAnimationSyncType, PlayerBulletData, PlayerBulletHitType, PlayerCameraCutType,
+        PlayerClickSource, PlayerFightingStyle, PlayerKeyData, PlayerKeys, PlayerNameStatus,
+        PlayerSpecialAction, PlayerSpectateData, PlayerSpectateMode, PlayerState,
+        PlayerSurfingData, PlayerWeapon, PlayerWeaponSkill, PlayerWeaponState, SpectateType,
+        WeaponSlotData, WeaponSlots,
     };
 }
 
