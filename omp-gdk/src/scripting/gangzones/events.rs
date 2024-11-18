@@ -15,7 +15,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterGangZone(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_enter_gang_zone(
+        script.lock().unwrap().on_player_enter_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
@@ -34,7 +34,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveGangZone(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_leave_gang_zone(
+        script.lock().unwrap().on_player_leave_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
@@ -53,7 +53,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickGangZone(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_gang_zone(
+        script.lock().unwrap().on_player_click_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );

@@ -1,7 +1,7 @@
 use crate::events::Events;
-use std::{cell::RefCell, rc::Rc};
+use std::sync::{Arc, Mutex};
 
-type OMPRSModule = Rc<RefCell<dyn Events + 'static>>;
+type OMPRSModule = Arc<Mutex<dyn Events + 'static>>;
 
 /// Runtime global object that implements all the callbacks and gamemode data
 pub static mut Runtime: Option<Vec<Box<OMPRSModule>>> = None;

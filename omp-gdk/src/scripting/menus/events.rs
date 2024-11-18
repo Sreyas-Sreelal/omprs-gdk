@@ -13,7 +13,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerSelectedMenuRow(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_selected_menu_row(
+        script.lock().unwrap().on_player_selected_menu_row(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).row,
         );
@@ -30,7 +30,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerExitedMenu(args: *const EventArgs<OnPlaye
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
-            .borrow_mut()
+            .lock()
+            .unwrap()
             .on_player_exited_menu(Player::new(*(*(*args).list).player));
     }
 }
