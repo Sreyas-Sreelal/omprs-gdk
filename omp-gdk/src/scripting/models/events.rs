@@ -12,7 +12,7 @@ pub struct OnPlayerFinishedDownloadingArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerFinishedDownloading(
     args: *const EventArgs<OnPlayerFinishedDownloadingArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -31,7 +31,7 @@ pub struct OnPlayerRequestDownloadArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestDownload(
     args: *const EventArgs<OnPlayerRequestDownloadArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_request_download(
             Player::new(*(*(*args).list).player),

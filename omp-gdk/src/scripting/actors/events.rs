@@ -18,7 +18,7 @@ pub struct OnPlayerGiveDamageActorArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
     args: *const EventArgs<OnPlayerGiveDamageActorArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_give_damage_actor(
             Player::new(*(*(*args).list).player),
@@ -38,7 +38,7 @@ pub struct OnActorStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamIn(args: *const EventArgs<OnActorStreamInArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_actor_stream_in(
             Actor::new(*(*(*args).list).actor),
@@ -55,7 +55,7 @@ pub struct OnActorStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamOut(args: *const EventArgs<OnActorStreamOutArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_actor_stream_out(
             Actor::new(*(*(*args).list).actor),

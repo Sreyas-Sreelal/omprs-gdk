@@ -13,7 +13,7 @@ pub struct OnDialogResponseArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnDialogResponse(args: *const EventArgs<OnDialogResponseArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_dialog_response(
             Player::new(*(*(*args).list).player),

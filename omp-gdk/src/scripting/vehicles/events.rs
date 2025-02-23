@@ -13,7 +13,7 @@ pub struct OnVehicleStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleStreamIn(args: *const EventArgs<OnVehicleStreamInArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_vehicle_stream_in(
             Vehicle::new(*(*(*args).list).vehicle),
@@ -30,7 +30,7 @@ pub struct OnVehicleStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleStreamOut(args: *const EventArgs<OnVehicleStreamOutArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_vehicle_stream_out(
             Vehicle::new(*(*(*args).list).vehicle),
@@ -47,7 +47,7 @@ pub struct OnVehicleDeathArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleDeath(args: *const EventArgs<OnVehicleDeathArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_vehicle_death(
             Vehicle::new(*(*(*args).list).vehicle),
@@ -67,7 +67,7 @@ pub struct OnPlayerEnterVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterVehicle(
     args: *const EventArgs<OnPlayerEnterVehicleArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_enter_vehicle(
             Player::new(*(*(*args).list).player),
@@ -87,7 +87,7 @@ pub struct OnPlayerExitVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerExitVehicle(
     args: *const EventArgs<OnPlayerExitVehicleArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_exit_vehicle(
             Player::new(*(*(*args).list).player),
@@ -106,7 +106,7 @@ pub struct OnVehicleDamageStatusUpdateArgs {
 pub unsafe extern "C" fn OMPRS_OnVehicleDamageStatusUpdate(
     args: *const EventArgs<OnVehicleDamageStatusUpdateArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_vehicle_damage_status_update(
             Vehicle::new(*(*(*args).list).vehicle),
@@ -126,7 +126,7 @@ pub struct OnVehiclePaintJobArgs {
 pub unsafe extern "C" fn OMPRS_OnVehiclePaintJob(
     args: *const EventArgs<OnVehiclePaintJobArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_vehicle_paint_job(
@@ -151,7 +151,7 @@ pub struct OnVehicleModArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleMod(args: *const EventArgs<OnVehicleModArgs>) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_vehicle_mod(
@@ -179,7 +179,7 @@ pub struct OnVehicleResprayArgs {
 pub unsafe extern "C" fn OMPRS_OnVehicleRespray(
     args: *const EventArgs<OnVehicleResprayArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_vehicle_respray(
@@ -205,7 +205,7 @@ pub struct OnEnterExitModShopArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnEnterExitModShop(args: *const EventArgs<OnEnterExitModShopArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_enter_exit_mod_shop(
             Player::new(*(*(*args).list).player),
@@ -222,7 +222,7 @@ pub struct OnVehicleSpawnArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleSpawn(args: *const EventArgs<OnVehicleSpawnArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -247,7 +247,7 @@ pub struct OnUnoccupiedVehicleUpdateArgs {
 pub unsafe extern "C" fn OMPRS_OnUnoccupiedVehicleUpdate(
     args: *const EventArgs<OnUnoccupiedVehicleUpdateArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_unoccupied_vehicle_update(
@@ -285,7 +285,7 @@ pub struct OnTrailerUpdateArgs {
 pub unsafe extern "C" fn OMPRS_OnTrailerUpdate(
     args: *const EventArgs<OnTrailerUpdateArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_trailer_update(
@@ -311,7 +311,7 @@ pub struct OnVehicleSirenStateChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnVehicleSirenStateChange(
     args: *const EventArgs<OnVehicleSirenStateChangeArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_vehicle_siren_state_change(

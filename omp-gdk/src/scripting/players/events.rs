@@ -15,7 +15,7 @@ pub struct OnPlayerConnectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerConnect(args: *const EventArgs<OnPlayerConnectArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -30,7 +30,7 @@ pub struct OnPlayerSpawnArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerSpawn(args: *const EventArgs<OnPlayerSpawnArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -48,7 +48,7 @@ pub struct OnPlayerCommandTextArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCommandText(
     args: *const EventArgs<OnPlayerCommandTextArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_command_text(
@@ -74,7 +74,7 @@ pub struct OnPlayerKeyStateChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerKeyStateChange(
     args: *const EventArgs<OnPlayerKeyStateChangeArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_key_state_change(
             Player::new(*(*(*args).list).player),
@@ -95,7 +95,7 @@ pub struct OnIncomingConnectionArgs {
 pub unsafe extern "C" fn OMPRS_OnIncomingConnection(
     args: *const EventArgs<OnIncomingConnectionArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_incoming_connection(
             Player::new(*(*(*args).list).player),
@@ -113,7 +113,7 @@ pub struct OnPlayerDisconnectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerDisconnect(args: *const EventArgs<OnPlayerDisconnectArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_disconnect(
             Player::new(*(*(*args).list).player),
@@ -131,7 +131,7 @@ pub struct OnPlayerRequestSpawnArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestSpawn(
     args: *const EventArgs<OnPlayerRequestSpawnArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script
@@ -153,7 +153,7 @@ pub struct OnPlayerStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerStreamIn(args: *const EventArgs<OnPlayerStreamInArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_stream_in(
             Player::new(*(*(*args).list).player),
@@ -170,7 +170,7 @@ pub struct OnPlayerStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerStreamOut(args: *const EventArgs<OnPlayerStreamOutArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_stream_out(
             Player::new(*(*(*args).list).player),
@@ -187,7 +187,7 @@ pub struct OnPlayerTextArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerText(args: *const EventArgs<OnPlayerTextArgs>) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_text(
@@ -215,7 +215,7 @@ pub struct OnPlayerShotMissedArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotMissed(
     args: *const EventArgs<OnPlayerShotMissedArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_shot_missed(
@@ -245,7 +245,7 @@ pub struct OnPlayerShotPlayerArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayer(
     args: *const EventArgs<OnPlayerShotPlayerArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_shot_player(
@@ -276,7 +276,7 @@ pub struct OnPlayerShotVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotVehicle(
     args: *const EventArgs<OnPlayerShotVehicleArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_shot_vehicle(
@@ -307,7 +307,7 @@ pub struct OnPlayerShotObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotObject(
     args: *const EventArgs<OnPlayerShotObjectArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_shot_object(
@@ -338,7 +338,7 @@ pub struct OnPlayerShotPlayerObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayerObject(
     args: *const EventArgs<OnPlayerShotPlayerObjectArgs>,
 ) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_shot_player_object(
@@ -367,7 +367,7 @@ pub struct OnPlayerDeathArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerDeath(args: *const EventArgs<OnPlayerDeathArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         let killer = if (*(*(*args).list).killer).is_null() {
             None
@@ -393,7 +393,7 @@ pub struct OnPlayerTakeDamageArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerTakeDamage(args: *const EventArgs<OnPlayerTakeDamageArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         let from = if (*(*(*args).list).from).is_null() {
             None
@@ -421,7 +421,7 @@ pub struct OnPlayerGiveDamageArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamage(args: *const EventArgs<OnPlayerGiveDamageArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_give_damage(
             Player::new(*(*(*args).list).player),
@@ -444,7 +444,7 @@ pub struct OnPlayerInteriorChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerInteriorChange(
     args: *const EventArgs<OnPlayerInteriorChangeArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_interior_change(
             Player::new(*(*(*args).list).player),
@@ -465,7 +465,7 @@ pub struct OnPlayerStateChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerStateChange(
     args: *const EventArgs<OnPlayerStateChangeArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_state_change(
             Player::new(*(*(*args).list).player),
@@ -485,7 +485,7 @@ pub struct OnPlayerClickMapArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerClickMap(args: *const EventArgs<OnPlayerClickMapArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_click_map(
             Player::new(*(*(*args).list).player),
@@ -505,7 +505,7 @@ pub struct OnPlayerClickPlayerArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayer(
     args: *const EventArgs<OnPlayerClickPlayerArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_click_player(
             Player::new(*(*(*args).list).player),
@@ -527,7 +527,7 @@ pub struct OnClientCheckResponseArgs {
 pub unsafe extern "C" fn OMPRS_OnClientCheckResponse(
     args: *const EventArgs<OnClientCheckResponseArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_client_check_response(
             Player::new(*(*(*args).list).player),
@@ -545,7 +545,7 @@ pub struct OnPlayerUpdateArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerUpdate(args: *const EventArgs<OnPlayerUpdateArgs>) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script

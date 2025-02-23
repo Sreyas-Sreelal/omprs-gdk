@@ -13,7 +13,7 @@ pub struct OnPlayerPickUpPickupArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerPickUpPickup(
     args: *const EventArgs<OnPlayerPickUpPickupArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_pick_up_pickup(
             Player::new(*(*(*args).list).player),

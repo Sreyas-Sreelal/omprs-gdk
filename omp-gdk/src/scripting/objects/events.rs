@@ -12,7 +12,7 @@ pub struct OnObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnObjectMove(args: *const EventArgs<OnObjectMoveArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -28,7 +28,7 @@ pub struct OnPlayerObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlayerObjectMoveArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_object_moved(
             Player::new(*(*(*args).list).player),
@@ -55,7 +55,7 @@ pub struct OnPlayerEditObjectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlayerEditObjectArgs>) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_edit_object(
             Player::new(*(*(*args).list).player),
@@ -110,7 +110,7 @@ pub struct OnPlayerEditAttachedObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
     args: *const EventArgs<OnPlayerEditAttachedObjectArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_edit_attached_object(
             Player::new(*(*(*args).list).player),
@@ -154,7 +154,7 @@ pub struct OnPlayerSelectObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectObject(
     args: *const EventArgs<OnPlayerSelectObjectArgs>,
 ) {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_select_object(
             Player::new(*(*(*args).list).player),
