@@ -7,7 +7,7 @@ macro_rules! register {
             if omp::runtime::Runtime.is_none() {
                 omp::runtime::Runtime = Some(Vec::new());
             }
-            let obj = std::sync::Arc::new(std::sync::Mutex::new($name));
+            let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
             omp::runtime::Runtime
                 .as_mut()
                 .unwrap()

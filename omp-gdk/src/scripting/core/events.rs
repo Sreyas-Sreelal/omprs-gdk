@@ -10,7 +10,7 @@ pub struct OnTickArgs {
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.lock().unwrap().on_tick(*(*(*args).list).elapsed);
+        script.borrow_mut().on_tick(*(*(*args).list).elapsed);
     }
 }
 
@@ -25,7 +25,7 @@ pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTex
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
-        ret = script.lock().unwrap().on_console_text(
+        ret = script.borrow_mut().on_console_text(
             (*(*(*args).list).command).get_data(),
             (*(*(*args).list).parameters).get_data(),
         );
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
-        ret = script.lock().unwrap().on_rcon_login_attempt(
+        ret = script.borrow_mut().on_rcon_login_attempt(
             (*(*(*args).list).address).get_data(),
             (*(*(*args).list).password).get_data(),
             *(*(*args).list).success,

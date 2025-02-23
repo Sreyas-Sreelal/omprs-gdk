@@ -15,8 +15,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
-            .lock()
-            .unwrap()
+            .borrow_mut()
             .on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
@@ -33,8 +32,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
         script
-            .lock()
-            .unwrap()
+            .borrow_mut()
             .on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
@@ -51,7 +49,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.lock().unwrap().on_player_click_text_draw(
+        script.borrow_mut().on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
             TextDraw::new(*(*(*args).list).textdraw),
         );
@@ -70,7 +68,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
 ) {
     let scripts = crate::runtime::Runtime.as_mut().unwrap();
     for script in scripts.iter_mut() {
-        script.lock().unwrap().on_player_click_player_text_draw(
+        script.borrow_mut().on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),
             PlayerTextDraw::new(
                 *(*(*args).list).textdraw,
