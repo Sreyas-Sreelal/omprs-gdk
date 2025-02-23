@@ -1,15 +1,8 @@
 //! codgen crate that gives proc macros to generate exported functions and FFI related code automatically
 use proc_macro::TokenStream;
 
-mod callbacks;
 mod entrypoint;
 mod natives;
-
-/// Creates a callback function for the component to call
-#[proc_macro]
-pub fn callback(args: TokenStream) -> TokenStream {
-    callbacks::create_callback(args)
-}
 
 /// Creates an entry point function for the component to call when it loads
 /// Entry point function is necessary, all the function address is calculated and initialised here

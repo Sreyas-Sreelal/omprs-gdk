@@ -7,10 +7,12 @@ macro_rules! register {
             if omp::runtime::Runtime.is_none() {
                 omp::runtime::Runtime = Some(Vec::new());
             }
+            let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
             omp::runtime::Runtime
                 .as_mut()
                 .unwrap()
-                .push(Box::new($name));
+                .push(Box::new(obj.clone()));
+            obj
         }
     };
 }
