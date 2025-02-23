@@ -38,7 +38,7 @@ pub fn load_event_functions() {
         add_handler!(onPlayerEnterRaceCheckpoint);
         add_handler!(onPlayerLeaveRaceCheckpoint);
         add_handler!(onPlayerRequestClass);
-        add_handler!(onConsoleText);
+        //add_handler!(onConsoleText);
         add_handler!(onRconLoginAttempt);
         add_handler!(onTick);
         add_handler!(onPlayerFinishedDownloading);
@@ -495,9 +495,9 @@ pub trait Events {
         true
     }
 
-    fn on_console_text(&mut self, command: String, params: String) -> bool {
-        true
-    }
+    // fn on_console_text(&mut self, command: String, params: String) -> bool {
+    //     true
+    // }
 
     fn on_tick(&mut self, elapsed: i32) {}
 }

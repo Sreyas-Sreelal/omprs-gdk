@@ -20,22 +20,22 @@ pub struct OnConsoleTextArgs {
     parameters: *const StringView,
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTextArgs>) -> bool {
-    let scripts = crate::runtime::Runtime.as_mut().unwrap();
-    let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_console_text(
-            (*(*(*args).list).command).get_data(),
-            (*(*(*args).list).parameters).get_data(),
-        );
-        if crate::runtime::__terminate_event_chain {
-            crate::runtime::__terminate_event_chain = false;
-            return ret;
-        }
-    }
-    ret
-}
+// #[no_mangle]
+// pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTextArgs>) -> bool {
+//     let scripts = crate::runtime::Runtime.as_mut().unwrap();
+//     let mut ret = false;
+//     for script in scripts.iter_mut() {
+//         ret = script.borrow_mut().on_console_text(
+//             (*(*(*args).list).command).get_data(),
+//             (*(*(*args).list).parameters).get_data(),
+//         );
+//         if crate::runtime::__terminate_event_chain {
+//             crate::runtime::__terminate_event_chain = false;
+//             return ret;
+//         }
+//     }
+//     ret
+// }
 
 #[repr(C)]
 pub struct OnRconLoginAttemptArgs {
