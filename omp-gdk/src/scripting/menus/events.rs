@@ -11,7 +11,11 @@ pub struct OnPlayerSelectedMenuRowArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectedMenuRow(
     args: *const EventArgs<OnPlayerSelectedMenuRowArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_selected_menu_row(
             Player::new(*(*(*args).list).player),
@@ -27,7 +31,11 @@ pub struct OnPlayerExitedMenuArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerExitedMenu(args: *const EventArgs<OnPlayerExitedMenuArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()

@@ -10,7 +10,11 @@ pub struct OnPlayerEnterCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
     args: *const EventArgs<OnPlayerEnterCheckpointArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -27,7 +31,11 @@ pub struct OnPlayerLeaveCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
     args: *const EventArgs<OnPlayerLeaveCheckpointArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -44,7 +52,11 @@ pub struct OnPlayerEnterRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
     args: *const EventArgs<OnPlayerEnterRaceCheckpointArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -61,7 +73,11 @@ pub struct OnPlayerLeaveRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
     args: *const EventArgs<OnPlayerLeaveRaceCheckpointArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()

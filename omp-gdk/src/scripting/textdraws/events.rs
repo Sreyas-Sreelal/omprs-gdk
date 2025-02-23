@@ -12,7 +12,11 @@ pub struct OnPlayerCancelTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelTextDrawSelectionArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -29,7 +33,11 @@ pub struct OnPlayerCancelPlayerTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelPlayerTextDrawSelectionArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script
             .borrow_mut()
@@ -47,7 +55,11 @@ pub struct OnPlayerClickTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
     args: *const EventArgs<OnPlayerClickTextDrawArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
@@ -66,7 +78,11 @@ pub struct OnPlayerClickPlayerTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
     args: *const EventArgs<OnPlayerClickPlayerTextDrawArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     for script in scripts.iter_mut() {
         script.borrow_mut().on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),

@@ -11,7 +11,11 @@ pub struct OnPlayerRequestClassArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
     args: *const EventArgs<OnPlayerRequestClassArgs>,
 ) -> bool {
-    let scripts = (&raw mut crate::runtime::Runtime).as_mut().unwrap().as_mut().unwrap();
+    let scripts = (&raw mut crate::runtime::Runtime)
+        .as_mut()
+        .unwrap()
+        .as_mut()
+        .unwrap();
     let mut ret = false;
     for script in scripts.iter_mut() {
         ret = script.borrow_mut().on_player_request_class(
