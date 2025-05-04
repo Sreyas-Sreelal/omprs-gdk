@@ -17,12 +17,8 @@ impl StringView {
     }
 
     pub fn get_data(&self) -> String {
-        unsafe {
-            std::ffi::CStr::from_ptr(self.data)
-                .to_str()
-                .unwrap()
-                .to_owned()
-        }
+        let cstr = unsafe { std::ffi::CStr::from_ptr(self.data) };
+        cstr.to_bytes().iter().map(|&c| c as char).collect()
     }
 }
 
