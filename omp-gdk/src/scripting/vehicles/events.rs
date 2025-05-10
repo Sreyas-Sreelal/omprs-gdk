@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use std::mem::transmute;
+use std::{mem::transmute, rc::Rc};
 
 use crate::{events::EventArgs, players::Player, types::vector::Vector3};
 
@@ -39,8 +39,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleStreamOut(args: *const EventArgs<OnVehic
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_vehicle_stream_out(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_vehicle_stream_out(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
         );
