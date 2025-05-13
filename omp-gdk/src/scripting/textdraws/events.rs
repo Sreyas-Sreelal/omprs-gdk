@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, players::Player};
 
 use super::{PlayerTextDraw, TextDraw};
@@ -17,10 +19,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -38,10 +39,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -60,8 +60,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_text_draw(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
             TextDraw::new(*(*(*args).list).textdraw),
         );
@@ -83,8 +84,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_player_text_draw(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),
             PlayerTextDraw::new(
                 *(*(*args).list).textdraw,

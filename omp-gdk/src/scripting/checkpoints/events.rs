@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, players::Player};
 
 #[repr(C)]
@@ -15,10 +17,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -36,10 +37,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -57,10 +57,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -78,9 +77,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
     }
 }

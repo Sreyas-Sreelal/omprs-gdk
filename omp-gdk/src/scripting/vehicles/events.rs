@@ -18,8 +18,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleStreamIn(args: *const EventArgs<OnVehicl
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_vehicle_stream_in(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_vehicle_stream_in(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
         );
@@ -61,8 +62,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleDeath(args: *const EventArgs<OnVehicleDe
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_vehicle_death(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_vehicle_death(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
         );
@@ -85,8 +87,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterVehicle(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_enter_vehicle(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_enter_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
             *(*(*args).list).passenger,
@@ -109,8 +112,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerExitVehicle(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_exit_vehicle(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_exit_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
         );
@@ -132,8 +136,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleDamageStatusUpdate(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_vehicle_damage_status_update(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_vehicle_damage_status_update(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
         );
@@ -157,8 +162,9 @@ pub unsafe extern "C" fn OMPRS_OnVehiclePaintJob(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_vehicle_paint_job(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_vehicle_paint_job(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
             *(*(*args).list).paintJob,
@@ -186,8 +192,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleMod(args: *const EventArgs<OnVehicleModA
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_vehicle_mod(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_vehicle_mod(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
             *(*(*args).list).component,
@@ -218,8 +225,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleRespray(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_vehicle_respray(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_vehicle_respray(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
             *(*(*args).list).color1,
@@ -247,8 +255,9 @@ pub unsafe extern "C" fn OMPRS_OnEnterExitModShop(args: *const EventArgs<OnEnter
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_enter_exit_mod_shop(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_enter_exit_mod_shop(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).enterexit != 0,
             *(*(*args).list).interiorId,
@@ -268,10 +277,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleSpawn(args: *const EventArgs<OnVehicleSp
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_vehicle_spawn(Vehicle::new(*(*(*args).list).vehicle));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_vehicle_spawn(Vehicle::new(*(*(*args).list).vehicle));
     }
 }
 
@@ -298,8 +306,9 @@ pub unsafe extern "C" fn OMPRS_OnUnoccupiedVehicleUpdate(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_unoccupied_vehicle_update(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_unoccupied_vehicle_update(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
             UnoccupiedVehicleUpdate {
@@ -340,8 +349,9 @@ pub unsafe extern "C" fn OMPRS_OnTrailerUpdate(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_trailer_update(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_trailer_update(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).trailer),
         );
@@ -370,8 +380,9 @@ pub unsafe extern "C" fn OMPRS_OnVehicleSirenStateChange(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_vehicle_siren_state_change(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_vehicle_siren_state_change(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
             *(*(*args).list).sirenState,

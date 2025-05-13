@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use std::mem::transmute;
+use std::{mem::transmute, rc::Rc};
 
 use crate::{events::EventArgs, players::Player};
 
@@ -23,8 +23,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_give_damage_actor(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_give_damage_actor(
             Player::new(*(*(*args).list).player),
             Actor::new(*(*(*args).list).actor),
             *(*(*args).list).amount,
@@ -47,8 +48,9 @@ pub unsafe extern "C" fn OMPRS_OnActorStreamIn(args: *const EventArgs<OnActorStr
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_actor_stream_in(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_actor_stream_in(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );
@@ -68,8 +70,9 @@ pub unsafe extern "C" fn OMPRS_OnActorStreamOut(args: *const EventArgs<OnActorSt
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_actor_stream_out(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_actor_stream_out(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );

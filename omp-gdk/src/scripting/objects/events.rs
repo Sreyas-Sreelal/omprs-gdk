@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use std::mem::transmute;
+use std::{mem::transmute, rc::Rc};
 
 use crate::{events::EventArgs, players::Player, types::vector::Vector3};
 
@@ -17,10 +17,9 @@ pub unsafe extern "C" fn OMPRS_OnObjectMove(args: *const EventArgs<OnObjectMoveA
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_object_moved(Object::new(*(*(*args).list).object));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_object_moved(Object::new(*(*(*args).list).object));
     }
 }
 
@@ -37,8 +36,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_object_moved(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_object_moved(
             Player::new(*(*(*args).list).player),
             PlayerObject::new(
                 *(*(*args).list).object,
@@ -68,8 +68,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_edit_object(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_edit_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
             transmute(*(*(*args).list).response),
@@ -127,8 +128,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_edit_attached_object(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_edit_attached_object(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).index,
             *(*(*args).list).saved,
@@ -175,8 +177,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerSelectObject(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_select_object(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_select_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
             *(*(*args).list).model,

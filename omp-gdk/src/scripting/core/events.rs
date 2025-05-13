@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, types::stringview::StringView};
 
 #[repr(C)]
@@ -13,8 +15,9 @@ pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_tick(*(*(*args).list).elapsed);
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_tick(*(*(*args).list).elapsed);
     }
 }
 
@@ -58,8 +61,9 @@ pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_rcon_login_attempt(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_rcon_login_attempt(
             (*(*(*args).list).address).get_data(),
             (*(*(*args).list).password).get_data(),
             *(*(*args).list).success,
