@@ -1,6 +1,6 @@
 #![allow(clippy::all)]
 use crate::{events::EventArgs, players::Player};
-use std::mem::transmute;
+use std::{mem::transmute, rc::Rc};
 
 #[repr(C)]
 pub struct OnPlayerFinishedDownloadingArgs {
@@ -17,10 +17,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerFinishedDownloading(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_finished_downloading(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_finished_downloading(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -40,8 +39,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestDownload(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_request_download(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_request_download(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).model_type),
             *(*(*args).list).checksum,

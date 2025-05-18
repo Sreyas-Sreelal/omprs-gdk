@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, players::Player};
 
 #[repr(C)]
@@ -16,8 +18,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerSelectedMenuRow(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_selected_menu_row(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_selected_menu_row(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).row,
         );
@@ -36,9 +39,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerExitedMenu(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_exited_menu(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_exited_menu(Player::new(*(*(*args).list).player));
     }
 }

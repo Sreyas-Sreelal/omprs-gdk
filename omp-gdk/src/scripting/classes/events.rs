@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, players::Player};
 
 #[repr(C)]
@@ -17,8 +19,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_request_class(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_request_class(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).classId,
         );

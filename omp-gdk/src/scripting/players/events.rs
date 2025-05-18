@@ -1,5 +1,6 @@
 #![allow(clippy::all)]
 use std::mem::transmute;
+use std::rc::Rc;
 
 use super::Player;
 use crate::events::EventArgs;
@@ -20,10 +21,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerConnect(args: *const EventArgs<OnPlayerCo
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_connect(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_connect(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -39,10 +39,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerSpawn(args: *const EventArgs<OnPlayerSpaw
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script
-            .borrow_mut()
-            .on_player_spawn(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_spawn(Player::new(*(*(*args).list).player));
     }
 }
 
@@ -62,8 +61,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerCommandText(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_command_text(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_command_text(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).command).get_data(),
         );
@@ -91,8 +91,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerKeyStateChange(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_key_state_change(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_key_state_change(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).newKeys,
             *(*(*args).list).oldKeys,
@@ -116,8 +117,9 @@ pub unsafe extern "C" fn OMPRS_OnIncomingConnection(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_incoming_connection(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_incoming_connection(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).ipAddress).get_data(),
             *(*(*args).list).port,
@@ -138,8 +140,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerDisconnect(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_disconnect(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_disconnect(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).reason),
         );
@@ -161,10 +164,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestSpawn(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script
-            .borrow_mut()
-            .on_player_request_spawn(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_request_spawn(Player::new(*(*(*args).list).player));
         if crate::runtime::__terminate_event_chain {
             crate::runtime::__terminate_event_chain = false;
             return ret;
@@ -186,8 +188,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerStreamIn(args: *const EventArgs<OnPlayerS
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_stream_in(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_stream_in(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).forPlayer),
         );
@@ -207,8 +210,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerStreamOut(args: *const EventArgs<OnPlayer
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_stream_out(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_stream_out(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).forPlayer),
         );
@@ -229,8 +233,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerText(args: *const EventArgs<OnPlayerTextA
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_text(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_text(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).text).get_data(),
         );
@@ -261,8 +266,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerShotMissed(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_shot_missed(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_shot_missed(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).weapon as u8),
             Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
@@ -295,8 +301,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayer(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_shot_player(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_shot_player(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).target),
             transmute(*(*(*args).list).weapon as u8),
@@ -330,8 +337,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerShotVehicle(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_shot_vehicle(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_shot_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).target),
             transmute(*(*(*args).list).weapon as u8),
@@ -365,8 +373,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerShotObject(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_shot_object(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_shot_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).target),
             transmute(*(*(*args).list).weapon as u8),
@@ -400,8 +409,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayerObject(
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script.borrow_mut().on_player_shot_player_object(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_shot_player_object(
             Player::new(*(*(*args).list).player),
             PlayerObject::new(
                 *(*(*args).list).target,
@@ -432,13 +442,14 @@ pub unsafe extern "C" fn OMPRS_OnPlayerDeath(args: *const EventArgs<OnPlayerDeat
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
+    for script in scripts.iter() {
         let killer = if (*(*(*args).list).killer).is_null() {
             None
         } else {
             Some(Player::new(*(*(*args).list).killer))
         };
-        script.borrow_mut().on_player_death(
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_death(
             Player::new(*(*(*args).list).player),
             killer,
             *(*(*args).list).reason,
@@ -462,13 +473,14 @@ pub unsafe extern "C" fn OMPRS_OnPlayerTakeDamage(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
+    for script in scripts.iter() {
         let from = if (*(*(*args).list).from).is_null() {
             None
         } else {
             Some(Player::new(*(*(*args).list).from))
         };
-        script.borrow_mut().on_player_take_damage(
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_take_damage(
             Player::new(*(*(*args).list).player),
             from,
             *(*(*args).list).amount,
@@ -494,8 +506,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamage(args: *const EventArgs<OnPlaye
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_give_damage(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_give_damage(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).to),
             *(*(*args).list).amount,
@@ -521,8 +534,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerInteriorChange(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_interior_change(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_interior_change(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).newInterior,
             *(*(*args).list).oldInterior,
@@ -546,8 +560,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerStateChange(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_state_change(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_state_change(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).newState),
             transmute(*(*(*args).list).oldState),
@@ -570,8 +585,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickMap(args: *const EventArgs<OnPlayerC
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_map(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_click_map(
             Player::new(*(*(*args).list).player),
             Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
         );
@@ -594,8 +610,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayer(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_player(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_click_player(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).clicked),
             transmute(*(*(*args).list).source),
@@ -620,8 +637,9 @@ pub unsafe extern "C" fn OMPRS_OnClientCheckResponse(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_client_check_response(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_client_check_response(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).actionType,
             *(*(*args).list).address,
@@ -643,10 +661,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerUpdate(args: *const EventArgs<OnPlayerUpd
         .as_mut()
         .unwrap();
     let mut ret = false;
-    for script in scripts.iter_mut() {
-        ret = script
-            .borrow_mut()
-            .on_player_update(Player::new(*(*(*args).list).player));
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        ret = script.on_player_update(Player::new(*(*(*args).list).player));
         if crate::runtime::__terminate_event_chain {
             crate::runtime::__terminate_event_chain = false;
             return ret;

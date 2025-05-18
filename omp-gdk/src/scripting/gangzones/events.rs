@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::rc::Rc;
+
 use crate::{events::EventArgs, players::Player};
 
 use super::GangZone;
@@ -18,8 +20,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEnterGangZone(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_enter_gang_zone(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_enter_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
@@ -41,8 +44,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerLeaveGangZone(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_leave_gang_zone(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_leave_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
@@ -64,8 +68,9 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickGangZone(
         .unwrap()
         .as_mut()
         .unwrap();
-    for script in scripts.iter_mut() {
-        script.borrow_mut().on_player_click_gang_zone(
+    for script in scripts.iter() {
+        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+        script.on_player_click_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
