@@ -1,10 +1,14 @@
 use crate::events::Events;
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::{RefCell, RefMut},
+    rc::Rc,
+};
 
-type OMPRSModule = Rc<RefCell<dyn Events + 'static>>;
+type Script = dyn Events + 'static;
+type OMPRSModule = Rc<RefCell<Script>>;
 
 /// Runtime global object that implements all the callbacks and gamemode data
-pub static mut Runtime: Option<Vec<Box<OMPRSModule>>> = None;
+pub static mut Runtime: Vec<Box<OMPRSModule>> = Vec::new();
 
 #[doc(hidden)]
 pub static mut __terminate_event_chain: bool = false;
@@ -14,20 +18,15 @@ pub struct Scripts<'a> {
 }
 
 impl<'a> Iterator for Scripts<'a> {
-    type Item = &'a mut (dyn Events + 'static);
+    type Item = RefMut<'a, Script>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|script| unsafe { &mut *(*Rc::as_ptr(script)).as_ptr() })
+        self.iter.next().map(|script| script.borrow_mut())
     }
 }
 
-pub fn get_scripts() -> Scripts<'static> {
-    let scripts = unsafe { (&raw mut crate::runtime::Runtime).as_mut() }
-        .unwrap()
-        .as_mut()
-        .unwrap();
+pub fn get_scripts<'a>() -> Scripts<'a> {
+    let scripts = unsafe { (&raw mut crate::runtime::Runtime).as_mut().unwrap() };
     Scripts {
         iter: scripts.iter(),
     }

@@ -8,7 +8,7 @@ pub struct OnTickArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_tick(*(*(*args).list).elapsed);
     }
 }
@@ -22,7 +22,7 @@ pub struct OnConsoleTextArgs {
 // #[no_mangle]
 // pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTextArgs>) -> bool {
 //     let mut ret = false;
-//     for script in get_scripts() {
+//     for mut script in get_scripts() {
 //         ret = script.borrow_mut().on_console_text(
 //             (*(*(*args).list).command).get_data(),
 //             (*(*(*args).list).parameters).get_data(),
@@ -47,7 +47,7 @@ pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
     args: *const EventArgs<OnRconLoginAttemptArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_rcon_login_attempt(
             (*(*(*args).list).address).get_data(),
             (*(*(*args).list).password).get_data(),

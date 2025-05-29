@@ -12,7 +12,7 @@ pub struct OnPlayerCancelTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelTextDrawSelectionArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
@@ -26,7 +26,7 @@ pub struct OnPlayerCancelPlayerTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelPlayerTextDrawSelectionArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
     }
 }
@@ -41,7 +41,7 @@ pub struct OnPlayerClickTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
     args: *const EventArgs<OnPlayerClickTextDrawArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
             TextDraw::new(*(*(*args).list).textdraw),
@@ -59,7 +59,7 @@ pub struct OnPlayerClickPlayerTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
     args: *const EventArgs<OnPlayerClickPlayerTextDrawArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),
             PlayerTextDraw::new(

@@ -18,7 +18,7 @@ pub struct OnPlayerGiveDamageActorArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
     args: *const EventArgs<OnPlayerGiveDamageActorArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_give_damage_actor(
             Player::new(*(*(*args).list).player),
             Actor::new(*(*(*args).list).actor),
@@ -37,7 +37,7 @@ pub struct OnActorStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamIn(args: *const EventArgs<OnActorStreamInArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_actor_stream_in(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
@@ -53,7 +53,7 @@ pub struct OnActorStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamOut(args: *const EventArgs<OnActorStreamOutArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_actor_stream_out(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),

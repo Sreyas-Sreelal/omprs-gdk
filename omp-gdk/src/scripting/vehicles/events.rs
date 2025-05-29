@@ -13,7 +13,7 @@ pub struct OnVehicleStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleStreamIn(args: *const EventArgs<OnVehicleStreamInArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_vehicle_stream_in(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
@@ -29,7 +29,7 @@ pub struct OnVehicleStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleStreamOut(args: *const EventArgs<OnVehicleStreamOutArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_vehicle_stream_out(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
@@ -45,7 +45,7 @@ pub struct OnVehicleDeathArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleDeath(args: *const EventArgs<OnVehicleDeathArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_vehicle_death(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
@@ -64,7 +64,7 @@ pub struct OnPlayerEnterVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterVehicle(
     args: *const EventArgs<OnPlayerEnterVehicleArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_enter_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
@@ -83,7 +83,7 @@ pub struct OnPlayerExitVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerExitVehicle(
     args: *const EventArgs<OnPlayerExitVehicleArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_player_exit_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
@@ -101,7 +101,7 @@ pub struct OnVehicleDamageStatusUpdateArgs {
 pub unsafe extern "C" fn OMPRS_OnVehicleDamageStatusUpdate(
     args: *const EventArgs<OnVehicleDamageStatusUpdateArgs>,
 ) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_vehicle_damage_status_update(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
@@ -121,7 +121,7 @@ pub unsafe extern "C" fn OMPRS_OnVehiclePaintJob(
     args: *const EventArgs<OnVehiclePaintJobArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_vehicle_paint_job(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
@@ -145,7 +145,7 @@ pub struct OnVehicleModArgs {
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleMod(args: *const EventArgs<OnVehicleModArgs>) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_vehicle_mod(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
@@ -172,7 +172,7 @@ pub unsafe extern "C" fn OMPRS_OnVehicleRespray(
     args: *const EventArgs<OnVehicleResprayArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_vehicle_respray(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),
@@ -196,7 +196,7 @@ pub struct OnEnterExitModShopArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnEnterExitModShop(args: *const EventArgs<OnEnterExitModShopArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_enter_exit_mod_shop(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).enterexit != 0,
@@ -212,7 +212,7 @@ pub struct OnVehicleSpawnArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnVehicleSpawn(args: *const EventArgs<OnVehicleSpawnArgs>) {
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         script.on_vehicle_spawn(Vehicle::new(*(*(*args).list).vehicle));
     }
 }
@@ -235,7 +235,7 @@ pub unsafe extern "C" fn OMPRS_OnUnoccupiedVehicleUpdate(
     args: *const EventArgs<OnUnoccupiedVehicleUpdateArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_unoccupied_vehicle_update(
             Vehicle::new(*(*(*args).list).vehicle),
             Player::new(*(*(*args).list).player),
@@ -272,7 +272,7 @@ pub unsafe extern "C" fn OMPRS_OnTrailerUpdate(
     args: *const EventArgs<OnTrailerUpdateArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_trailer_update(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).trailer),
@@ -297,7 +297,7 @@ pub unsafe extern "C" fn OMPRS_OnVehicleSirenStateChange(
     args: *const EventArgs<OnVehicleSirenStateChangeArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_vehicle_siren_state_change(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).vehicle),

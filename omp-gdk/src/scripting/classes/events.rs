@@ -12,7 +12,7 @@ pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
     args: *const EventArgs<OnPlayerRequestClassArgs>,
 ) -> bool {
     let mut ret = false;
-    for script in get_scripts() {
+    for mut script in get_scripts() {
         ret = script.on_player_request_class(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).classId,

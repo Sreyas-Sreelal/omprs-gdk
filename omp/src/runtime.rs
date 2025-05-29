@@ -3,17 +3,11 @@ pub use omp_gdk::{Runtime, __terminate_event_chain};
 #[macro_export]
 macro_rules! register {
     ($name:expr) => {
+        let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
         unsafe {
-            if omp::runtime::Runtime.is_none() {
-                omp::runtime::Runtime = Some(Vec::new());
-            }
-            let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
-            omp::runtime::Runtime
-                .as_mut()
-                .unwrap()
-                .push(Box::new(obj.clone()));
-            obj
+            omp::runtime::Runtime.push(Box::new(obj.clone()));
         }
+        obj
     };
 }
 
