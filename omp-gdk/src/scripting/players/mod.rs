@@ -9,6 +9,7 @@ use crate::{
     dialogs::{self, DialogStyle},
     models,
     objects::{self, Object, ObjectAttachmentSlotData, PlayerObject},
+    runtime::queue_api_call,
     textdraws::{self, PlayerTextDraw},
     types::{
         animationdata::AnimationData,
@@ -63,8 +64,10 @@ impl Player {
     }
 
     /// Set a player's interior.
-    pub fn set_interior(&self, interiorid: i32) -> bool {
-        functions::Player_SetInterior(self, interiorid)
+    pub fn set_interior(&self, interiorid: i32) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetInterior(&player, interiorid);
+        }));
     }
 
     /// Set a player's wanted level (6 brown stars under HUD).
@@ -143,8 +146,10 @@ impl Player {
     }
 
     /// Set the health of a player.
-    pub fn set_health(&self, health: f32) -> bool {
-        functions::Player_SetHealth(self, health)
+    pub fn set_health(&self, health: f32) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetHealth(&player, health);
+        }));
     }
 
     /// The function GetPlayerHealth allows you to retrieve the health of a player.
@@ -292,8 +297,10 @@ impl Player {
     }
 
     /// Set a player's velocity on the X, Y and Z axes.
-    pub fn set_velocity(&self, pos: Vector3) -> bool {
-        functions::Player_SetVelocity(self, pos.x, pos.y, pos.z)
+    pub fn set_velocity(&self, pos: Vector3) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetVelocity(&player, pos.x, pos.y, pos.z);
+        }));
     }
 
     /// Get the velocity (speed) of a player on the X, Y and Z axes.
@@ -329,8 +336,10 @@ impl Player {
     }
 
     /// Set a player's position.
-    pub fn set_pos(&self, pos: Vector3) -> bool {
-        functions::Player_SetPos(self, pos.x, pos.y, pos.z)
+    pub fn set_pos(&self, pos: Vector3) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetPos(&player, pos.x, pos.y, pos.z);
+        }));
     }
 
     /// Get the position of a player, represented by X, Y and Z coordinates.
@@ -442,8 +451,12 @@ impl Player {
     }
 
     /// Puts a player in a vehicle.
-    pub fn put_in_vehicle(&self, vehicle: &Vehicle, seat_id: i32) -> bool {
-        functions::Player_PutInVehicle(self, vehicle, seat_id)
+    pub fn put_in_vehicle(&self, vehicle: &Vehicle, seat_id: i32) {
+        let vehicle_id = vehicle.get_id();
+        self.defer_api_call(Box::new(move |player| {
+            let vehicle = Vehicle::get_from_id(vehicle_id).unwrap();
+            functions::Player_PutInVehicle(&player, &vehicle, seat_id);
+        }));
     }
 
     /// Removes a standard San Andreas model for a single player within a specified range.
@@ -457,8 +470,10 @@ impl Player {
     }
 
     /// Removes/ejects a player from their vehicle.
-    pub fn remove_from_vehicle(&self, force: bool) -> bool {
-        functions::Player_RemoveFromVehicle(self, force)
+    pub fn remove_from_vehicle(&self, force: bool) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_RemoveFromVehicle(&player, force);
+        }));
     }
 
     /// Removes a map icon that was set earlier for a player using SetPlayerMapIcon.
@@ -514,8 +529,10 @@ impl Player {
     }
 
     /// This sets the players position then adjusts the players z-coordinate to the nearest solid ground under the position.
-    pub fn set_pos_find_z(&self, pos: Vector3) -> bool {
-        functions::Player_SetPosFindZ(self, pos.x, pos.y, pos.z)
+    pub fn set_pos_find_z(&self, pos: Vector3) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetPosFindZ(&player, pos.x, pos.y, pos.z);
+        }));
     }
 
     /// Set the skill level of a certain weapon type for a player.
@@ -783,8 +800,10 @@ impl Player {
     }
 
     /// (Re)Spawns a player.
-    pub fn spawn(&self) -> bool {
-        functions::Player_Spawn(self)
+    pub fn spawn(&self) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_Spawn(&player);
+        }));
     }
 
     /// Fetch the CI (computer/client identification) of a user, this is linked to their SAMP/GTA on their computer.
@@ -799,8 +818,10 @@ impl Player {
         functions::Player_IsAdmin(self)
     }
     /// Kicks a player from the server. They will have to quit the game and re-connect if they wish to continue playing.
-    pub fn kick(&self) -> bool {
-        functions::Player_Kick(self)
+    pub fn kick(&self) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_Kick(&player);
+        }));
     }
 
     /// Shows 'game text' (on-screen text) for a certain length of time for a specific player.
@@ -830,13 +851,18 @@ impl Player {
     }
 
     /// Ban a player who is currently in the server.
-    pub fn ban(&self) -> bool {
-        functions::Player_Ban(self)
+    pub fn ban(&self) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_Ban(&player);
+        }));
     }
 
     /// Ban a player with a reason.
-    pub fn ban_ex(&self, msg: &str) -> bool {
-        functions::Player_BanEx(self, msg)
+    pub fn ban_ex(&self, msg: &str) {
+        let msg = msg.to_owned();
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_BanEx(&player, &msg);
+        }));
     }
 
     /// Sends a message in the name of a player to another player on the server.
@@ -878,8 +904,10 @@ impl Player {
     }
 
     /// Set a player's gravity.
-    pub fn set_gravity(&self, gravity: f32) -> bool {
-        functions::Player_SetGravity(self, gravity)
+    pub fn set_gravity(&self, gravity: f32) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_SetGravity(&player, gravity);
+        }));
     }
 
     /// Get a player's gravity.
@@ -1364,6 +1392,14 @@ impl Player {
         attachment.colour2 = Colour::from_argb(colour2 as u32);
 
         attachment
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let player_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let player = Self::from_id(player_id).unwrap();
+            callback(player);
+        }));
     }
 }
 

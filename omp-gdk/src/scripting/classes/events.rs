@@ -11,7 +11,7 @@ pub struct OnPlayerRequestClassArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
     args: *const EventArgs<OnPlayerRequestClassArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_request_class(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).classId,

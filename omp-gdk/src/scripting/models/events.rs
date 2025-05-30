@@ -12,7 +12,7 @@ pub struct OnPlayerFinishedDownloadingArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerFinishedDownloading(
     args: *const EventArgs<OnPlayerFinishedDownloadingArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_finished_downloading(Player::new(*(*(*args).list).player));
         None
     });
@@ -29,7 +29,7 @@ pub struct OnPlayerRequestDownloadArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestDownload(
     args: *const EventArgs<OnPlayerRequestDownloadArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_request_download(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).model_type),

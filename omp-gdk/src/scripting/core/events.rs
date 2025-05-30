@@ -8,7 +8,13 @@ pub struct OnTickArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
-    each_module(|mut script| {
+    crate::runtime::API_QUEUE.with_borrow_mut(|queue| {
+        while let Some(api_call) = queue.pop_front() {
+            api_call();
+        }
+    });
+
+    each_module(move |mut script| {
         script.on_tick(*(*(*args).list).elapsed);
         None
     });
@@ -42,7 +48,7 @@ pub struct OnRconLoginAttemptArgs {
 pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
     args: *const EventArgs<OnRconLoginAttemptArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_rcon_login_attempt(
             (*(*(*args).list).address).get_data(),
             (*(*(*args).list).password).get_data(),

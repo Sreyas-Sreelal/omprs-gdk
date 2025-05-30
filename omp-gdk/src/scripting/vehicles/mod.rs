@@ -5,6 +5,7 @@ use std::ffi::c_void;
 
 use crate::{
     players::Player,
+    runtime::queue_api_call,
     types::vector::{Vector3, Vector4},
 };
 
@@ -50,8 +51,10 @@ impl Vehicle {
         functions::Vehicle_GetMaxPassengerSeats(modelid)
     }
     /// Destroy a vehicle.
-    pub fn destroy(&self) -> bool {
-        functions::Vehicle_Destroy(self)
+    pub fn destroy(&self) {
+        self.defer_api_call(Box::new(|vehicle| {
+            functions::Vehicle_Destroy(&vehicle);
+        }));
     }
     /// Checks if a vehicle is streamed in for a player.
     pub fn is_streamed_in(&self, player: &Player) -> bool {
@@ -64,8 +67,10 @@ impl Vehicle {
         pos
     }
     /// Set a vehicle's position.
-    pub fn set_pos(&self, pos: Vector3) -> bool {
-        functions::Vehicle_SetPos(self, pos.x, pos.y, pos.z)
+    pub fn set_pos(&self, pos: Vector3) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_SetPos(&vehicle, pos.x, pos.y, pos.z);
+        }));
     }
     /// Get the rotation of a vehicle on the Z axis (yaw).
     pub fn get_z_angle(&self) -> f32 {
@@ -130,12 +135,16 @@ impl Vehicle {
         params
     }
     /// Sets a vehicle back to the position at where it was created.
-    pub fn set_to_respawn(&self) -> bool {
-        functions::Vehicle_SetToRespawn(self)
+    pub fn set_to_respawn(&self) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_SetToRespawn(&vehicle);
+        }));
     }
     /// Links a vehicle to an interior.
-    pub fn link_to_interior(&self, interiorid: i32) -> bool {
-        functions::Vehicle_LinkToInterior(self, interiorid)
+    pub fn link_to_interior(&self, interiorid: i32) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_LinkToInterior(&vehicle, interiorid);
+        }));
     }
     /// Adds a 'component' (often referred to as a 'mod' (modification)) to a vehicle.
     pub fn add_component(&self, componentid: i32) -> bool {
@@ -154,8 +163,10 @@ impl Vehicle {
         functions::Vehicle_ChangePaintjob(self, paintjobid)
     }
     /// Set a vehicle's health.
-    pub fn set_health(&self, health: f32) -> bool {
-        functions::Vehicle_SetHealth(self, health)
+    pub fn set_health(&self, health: f32) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_SetHealth(&vehicle, health);
+        }));
     }
     /// Get the health of a vehicle.
     pub fn get_health(&self) -> f32 {
@@ -212,8 +223,10 @@ impl Vehicle {
         functions::Vehicle_ColorIndexToColor(colourIndex, alpha)
     }
     /// Fully repairs a vehicle, including visual damage (bumps, dents, scratches, popped tires etc.
-    pub fn repair(&self) -> bool {
-        functions::Vehicle_Repair(self)
+    pub fn repair(&self) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_Repair(&vehicle);
+        }));
     }
     /// Get the velocity of a vehicle on the X, Y and Z axes.
     pub fn get_velocity(&self) -> Vector3 {
@@ -222,8 +235,10 @@ impl Vehicle {
         velocity
     }
     /// Sets the X, Y and Z velocity of a vehicle.
-    pub fn set_velocity(&self, velocity: Vector3) -> bool {
-        functions::Vehicle_SetVelocity(self, velocity.x, velocity.y, velocity.z)
+    pub fn set_velocity(&self, velocity: Vector3) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_SetVelocity(&vehicle, velocity.x, velocity.y, velocity.z);
+        }));
     }
     /// Sets the angular X, Y and Z velocity of a vehicle.
     pub fn set_angular_velocity(&self, velocity: Vector3) -> bool {
@@ -243,8 +258,10 @@ impl Vehicle {
         }
     }
     /// Sets the various visual damage statuses of a vehicle, such as popped tires, broken lights and damaged panels.
-    pub fn update_damage_status(&self, panels: i32, doors: i32, lights: i32, tires: i32) -> bool {
-        functions::Vehicle_UpdateDamageStatus(self, panels, doors, lights, tires)
+    pub fn update_damage_status(&self, panels: i32, doors: i32, lights: i32, tires: i32) {
+        self.defer_api_call(Box::new(move |vehicle| {
+            functions::Vehicle_UpdateDamageStatus(&vehicle, panels, doors, lights, tires);
+        }));
     }
     /// Retrieve information about a specific vehicle model such as the size or position of seats.
     pub fn get_model_info(model: i32, infotype: i32) -> Vector3 {
@@ -464,6 +481,14 @@ impl Vehicle {
     }
     pub fn get_id(&self) -> i32 {
         functions::Vehicle_GetID(self)
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let vehicle_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let vehicle = Self::get_from_id(vehicle_id).unwrap();
+            callback(vehicle);
+        }));
     }
 }
 

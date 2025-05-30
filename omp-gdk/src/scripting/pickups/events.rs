@@ -13,7 +13,7 @@ pub struct OnPlayerPickUpPickupArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerPickUpPickup(
     args: *const EventArgs<OnPlayerPickUpPickupArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_pick_up_pickup(
             Player::new(*(*(*args).list).player),
             Pickup::new(*(*(*args).list).pickup),

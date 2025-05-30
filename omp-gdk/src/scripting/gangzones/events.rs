@@ -13,7 +13,7 @@ pub struct OnPlayerEnterGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterGangZone(
     args: *const EventArgs<OnPlayerEnterGangZoneArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_enter_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
@@ -32,7 +32,7 @@ pub struct OnPlayerLeaveGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveGangZone(
     args: *const EventArgs<OnPlayerLeaveGangZoneArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_leave_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
@@ -51,7 +51,7 @@ pub struct OnPlayerClickGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickGangZone(
     args: *const EventArgs<OnPlayerClickGangZoneArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_click_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),

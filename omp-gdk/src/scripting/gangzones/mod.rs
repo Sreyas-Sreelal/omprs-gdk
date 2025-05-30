@@ -5,7 +5,11 @@ use std::ffi::c_void;
 
 pub use functions::load_functions;
 
-use crate::{players::Player, types::colour::Colour, types::vector::Vector2};
+use crate::{
+    players::Player,
+    runtime::queue_api_call,
+    types::{colour::Colour, vector::Vector2},
+};
 
 /// GangZone dimensions
 #[repr(C)]
@@ -44,28 +48,42 @@ impl GangZone {
     }
 
     /// Destroy a gangzone.
-    pub fn destroy(&self) -> bool {
-        functions::GangZone_Destroy(self)
+    pub fn destroy(&self) {
+        self.defer_api_call(Box::new(move |gangzone| {
+            functions::GangZone_Destroy(&gangzone);
+        }));
     }
 
     /// Show a gangzone for a player.
-    pub fn show_for_player(&self, player: &Player, colour: Colour) -> bool {
-        functions::GangZone_ShowForPlayer(player, self, colour.rgba())
+    pub fn show_for_player(&self, player: &Player, colour: Colour) {
+        let player_id = player.get_id();
+        self.defer_api_call(Box::new(move |gangzone| {
+            let player = Player::from_id(player_id).unwrap();
+            functions::GangZone_ShowForPlayer(&player, &gangzone, colour.rgba());
+        }));
     }
 
     /// Shows a gangzone with the desired color to all players.
-    pub fn show_for_all(&self, colour: Colour) -> bool {
-        functions::GangZone_FlashForAll(self, colour.rgba())
+    pub fn show_for_all(&self, colour: Colour) {
+        self.defer_api_call(Box::new(move |gangzone| {
+            functions::GangZone_FlashForAll(&gangzone, colour.rgba());
+        }));
     }
 
     /// Hide a gangzone for a player.
-    pub fn hide_for_player(&self, player: &Player) -> bool {
-        functions::GangZone_HideForPlayer(player, self)
+    pub fn hide_for_player(&self, player: &Player) {
+        let player_id = player.get_id();
+        self.defer_api_call(Box::new(move |gangzone| {
+            let player = Player::from_id(player_id).unwrap();
+            functions::GangZone_HideForPlayer(&player, &gangzone);
+        }));
     }
 
     /// Hide a gangzone for all players.
-    pub fn hide_for_all(&self) -> bool {
-        functions::GangZone_HideForAll(self)
+    pub fn hide_for_all(&self) {
+        self.defer_api_call(Box::new(move |gangzone| {
+            functions::GangZone_HideForAll(&gangzone);
+        }));
     }
 
     /// Make a gangzone flash for a player.
@@ -145,5 +163,13 @@ impl GangZone {
     /// Get a gangzone object from an id
     pub fn from_id(gangzoneid: i32) -> Option<GangZone> {
         functions::GangZone_FromID(gangzoneid)
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let gangzone_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let gangzone = Self::from_id(gangzone_id).unwrap();
+            callback(gangzone);
+        }));
     }
 }

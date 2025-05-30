@@ -10,7 +10,7 @@ pub struct OnPlayerEnterCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
     args: *const EventArgs<OnPlayerEnterCheckpointArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
         None
     });
@@ -25,7 +25,7 @@ pub struct OnPlayerLeaveCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
     args: *const EventArgs<OnPlayerLeaveCheckpointArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
         None
     });
@@ -40,7 +40,7 @@ pub struct OnPlayerEnterRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
     args: *const EventArgs<OnPlayerEnterRaceCheckpointArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
         None
     });
@@ -55,7 +55,7 @@ pub struct OnPlayerLeaveRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
     args: *const EventArgs<OnPlayerLeaveRaceCheckpointArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
         None
     });

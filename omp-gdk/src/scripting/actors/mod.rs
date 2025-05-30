@@ -4,6 +4,7 @@ pub mod functions;
 pub use functions::load_functions;
 
 use crate::players::Player;
+use crate::runtime::queue_api_call;
 use crate::types::animationdata::AnimationData;
 use crate::types::vector::Vector3;
 
@@ -32,8 +33,10 @@ impl Actor {
     }
 
     /// Destroys an Actor
-    pub fn destroy(&self) -> bool {
-        functions::Actor_Destroy(self)
+    pub fn destroy(&self) {
+        self.defer_api_call(Box::new(move |actor| {
+            functions::Actor_Destroy(&actor);
+        }));
     }
 
     /// Checks if an actor is streamed in for a player.
@@ -72,8 +75,10 @@ impl Actor {
     }
 
     /// Set the position of an actor.
-    pub fn set_pos(&self, pos: Vector3) -> bool {
-        functions::Actor_SetPos(self, pos.x, pos.y, pos.z)
+    pub fn set_pos(&self, pos: Vector3) {
+        self.defer_api_call(Box::new(move |actor| {
+            functions::Actor_SetPos(&actor, pos.x, pos.y, pos.z);
+        }));
     }
 
     /// Get the position of an actor.
@@ -98,8 +103,10 @@ impl Actor {
     }
 
     /// Set the health of an actor.
-    pub fn set_health(&self, health: f32) -> bool {
-        functions::Actor_SetHealth(self, health)
+    pub fn set_health(&self, health: f32) {
+        self.defer_api_call(Box::new(move |actor| {
+            functions::Actor_SetHealth(&actor, health);
+        }));
     }
 
     /// Get the health of an actor
@@ -188,6 +195,14 @@ impl Actor {
     /// Get the Actor object from an id
     pub fn from_id(actorid: i32) -> Option<Actor> {
         functions::Actor_FromID(actorid)
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let actor_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let actor = Self::from_id(actor_id).unwrap();
+            callback(actor);
+        }));
     }
 }
 

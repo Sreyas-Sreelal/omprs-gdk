@@ -15,7 +15,7 @@ pub struct OnDialogResponseArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnDialogResponse(args: *const EventArgs<OnDialogResponseArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_dialog_response(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).dialogId,

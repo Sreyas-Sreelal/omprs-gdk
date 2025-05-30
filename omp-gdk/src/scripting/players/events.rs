@@ -16,7 +16,7 @@ pub struct OnPlayerConnectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerConnect(args: *const EventArgs<OnPlayerConnectArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_connect(Player::new(*(*(*args).list).player));
         None
     });
@@ -29,7 +29,7 @@ pub struct OnPlayerSpawnArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerSpawn(args: *const EventArgs<OnPlayerSpawnArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_spawn(Player::new(*(*(*args).list).player));
         None
     });
@@ -45,7 +45,7 @@ pub struct OnPlayerCommandTextArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCommandText(
     args: *const EventArgs<OnPlayerCommandTextArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_command_text(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).command).get_data(),
@@ -65,7 +65,7 @@ pub struct OnPlayerKeyStateChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerKeyStateChange(
     args: *const EventArgs<OnPlayerKeyStateChangeArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_key_state_change(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).newKeys,
@@ -86,7 +86,7 @@ pub struct OnIncomingConnectionArgs {
 pub unsafe extern "C" fn OMPRS_OnIncomingConnection(
     args: *const EventArgs<OnIncomingConnectionArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_incoming_connection(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).ipAddress).get_data(),
@@ -104,7 +104,7 @@ pub struct OnPlayerDisconnectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerDisconnect(args: *const EventArgs<OnPlayerDisconnectArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_disconnect(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).reason),
@@ -122,7 +122,7 @@ pub struct OnPlayerRequestSpawnArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestSpawn(
     args: *const EventArgs<OnPlayerRequestSpawnArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_request_spawn(Player::new(*(*(*args).list).player)))
     })
     .unwrap()
@@ -136,7 +136,7 @@ pub struct OnPlayerStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerStreamIn(args: *const EventArgs<OnPlayerStreamInArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_stream_in(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).forPlayer),
@@ -153,7 +153,7 @@ pub struct OnPlayerStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerStreamOut(args: *const EventArgs<OnPlayerStreamOutArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_stream_out(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).forPlayer),
@@ -170,7 +170,7 @@ pub struct OnPlayerTextArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerText(args: *const EventArgs<OnPlayerTextArgs>) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_text(
             Player::new(*(*(*args).list).player),
             (*(*(*args).list).text).get_data(),
@@ -192,7 +192,7 @@ pub struct OnPlayerShotMissedArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotMissed(
     args: *const EventArgs<OnPlayerShotMissedArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_shot_missed(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).weapon as u8),
@@ -216,7 +216,7 @@ pub struct OnPlayerShotPlayerArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayer(
     args: *const EventArgs<OnPlayerShotPlayerArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_shot_player(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).target),
@@ -241,7 +241,7 @@ pub struct OnPlayerShotVehicleArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotVehicle(
     args: *const EventArgs<OnPlayerShotVehicleArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_shot_vehicle(
             Player::new(*(*(*args).list).player),
             Vehicle::new(*(*(*args).list).target),
@@ -266,7 +266,7 @@ pub struct OnPlayerShotObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotObject(
     args: *const EventArgs<OnPlayerShotObjectArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_shot_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).target),
@@ -291,7 +291,7 @@ pub struct OnPlayerShotPlayerObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerShotPlayerObject(
     args: *const EventArgs<OnPlayerShotPlayerObjectArgs>,
 ) -> bool {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         Some(script.on_player_shot_player_object(
             Player::new(*(*(*args).list).player),
             PlayerObject::new(
@@ -314,7 +314,7 @@ pub struct OnPlayerDeathArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerDeath(args: *const EventArgs<OnPlayerDeathArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         let killer = if (*(*(*args).list).killer).is_null() {
             None
         } else {
@@ -340,7 +340,7 @@ pub struct OnPlayerTakeDamageArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerTakeDamage(args: *const EventArgs<OnPlayerTakeDamageArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         let from = if (*(*(*args).list).from).is_null() {
             None
         } else {
@@ -368,7 +368,7 @@ pub struct OnPlayerGiveDamageArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamage(args: *const EventArgs<OnPlayerGiveDamageArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_give_damage(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).to),
@@ -391,7 +391,7 @@ pub struct OnPlayerInteriorChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerInteriorChange(
     args: *const EventArgs<OnPlayerInteriorChangeArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_interior_change(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).newInterior,
@@ -412,7 +412,7 @@ pub struct OnPlayerStateChangeArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerStateChange(
     args: *const EventArgs<OnPlayerStateChangeArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_state_change(
             Player::new(*(*(*args).list).player),
             transmute(*(*(*args).list).newState),
@@ -432,7 +432,7 @@ pub struct OnPlayerClickMapArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerClickMap(args: *const EventArgs<OnPlayerClickMapArgs>) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_click_map(
             Player::new(*(*(*args).list).player),
             Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
@@ -452,7 +452,7 @@ pub struct OnPlayerClickPlayerArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayer(
     args: *const EventArgs<OnPlayerClickPlayerArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_player_click_player(
             Player::new(*(*(*args).list).player),
             Player::new(*(*(*args).list).clicked),
@@ -474,7 +474,7 @@ pub struct OnClientCheckResponseArgs {
 pub unsafe extern "C" fn OMPRS_OnClientCheckResponse(
     args: *const EventArgs<OnClientCheckResponseArgs>,
 ) {
-    each_module(|mut script| {
+    each_module(move |mut script| {
         script.on_client_check_response(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).actionType,
@@ -492,6 +492,8 @@ pub struct OnPlayerUpdateArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerUpdate(args: *const EventArgs<OnPlayerUpdateArgs>) -> bool {
-    each_module(|mut script| Some(script.on_player_update(Player::new(*(*(*args).list).player))))
-        .unwrap()
+    each_module(move |mut script| {
+        Some(script.on_player_update(Player::new(*(*(*args).list).player)))
+    })
+    .unwrap()
 }
