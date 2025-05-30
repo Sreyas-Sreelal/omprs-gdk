@@ -4,8 +4,7 @@ use std::{
     rc::Rc,
 };
 
-type Script = dyn Events + 'static;
-type OMPRSModule = Rc<RefCell<Script>>;
+type OMPRSModule = Rc<RefCell<dyn Events + 'static>>;
 
 thread_local! {
     /// Runtime global object that implements all the callbacks and gamemode data
