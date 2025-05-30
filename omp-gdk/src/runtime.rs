@@ -1,7 +1,6 @@
 use crate::events::Events;
 use std::{
     cell::{RefCell, RefMut},
-    collections::VecDeque,
     rc::Rc,
 };
 
@@ -11,7 +10,7 @@ thread_local! {
     /// Runtime global object that implements all the callbacks and gamemode data
     pub static Runtime: RefCell<Vec<OMPRSModule>> = RefCell::new(Vec::new());
 
-    pub static API_QUEUE: RefCell<VecDeque<Box<dyn FnOnce()>>> = RefCell::new(VecDeque::new());
+    pub static API_QUEUE: RefCell<Vec<Box<dyn FnOnce()>>> = RefCell::new(Vec::new());
 
     #[doc(hidden)]
     pub static __terminate_event_chain: RefCell<bool> = const { RefCell::new(false) };
@@ -49,6 +48,6 @@ where
 
 pub fn queue_api_call(callback: Box<dyn FnOnce()>) {
     API_QUEUE.with_borrow_mut(|queue| {
-        queue.push_back(callback);
+        queue.push(callback);
     });
 }
