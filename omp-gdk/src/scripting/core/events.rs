@@ -11,7 +11,7 @@ pub struct OnTickArgs {
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
     let api_calls: VecDeque<_> =
-        crate::runtime::API_QUEUE.with_borrow_mut(|queue| queue.drain(..).collect());
+        crate::runtime::API_QUEUE.with_borrow_mut(|queue| std::mem::take(queue));
     // drop mutable reference to api queue before calling api callbacks
     for callback in api_calls {
         callback();
