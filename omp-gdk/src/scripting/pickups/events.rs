@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::Pickup;
 
@@ -13,10 +13,11 @@ pub struct OnPlayerPickUpPickupArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerPickUpPickup(
     args: *const EventArgs<OnPlayerPickUpPickupArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_pick_up_pickup(
             Player::new(*(*(*args).list).player),
             Pickup::new(*(*(*args).list).pickup),
         );
-    }
+        None
+    });
 }

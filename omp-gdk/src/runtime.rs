@@ -7,27 +7,40 @@ use std::{
 type Script = dyn Events + 'static;
 type OMPRSModule = Rc<RefCell<Script>>;
 
-/// Runtime global object that implements all the callbacks and gamemode data
-pub static mut Runtime: Vec<Box<OMPRSModule>> = Vec::new();
+thread_local! {
+    /// Runtime global object that implements all the callbacks and gamemode data
+    pub static Runtime: RefCell<Vec<OMPRSModule>> = RefCell::new(Vec::new());
 
-#[doc(hidden)]
-pub static mut __terminate_event_chain: bool = false;
-
-pub struct Scripts<'a> {
-    iter: std::slice::Iter<'a, Box<OMPRSModule>>,
+    #[doc(hidden)]
+    pub static __terminate_event_chain: RefCell<bool> = RefCell::new(false);
 }
 
-impl<'a> Iterator for Scripts<'a> {
-    type Item = RefMut<'a, Script>;
+pub fn each_module<F>(mut f: F) -> Option<bool>
+where
+    F: FnMut(RefMut<dyn Events>) -> Option<bool>,
+{
+    let mut result = None;
 
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter.next().map(|script| script.borrow_mut())
-    }
-}
+    Runtime.with(|runtime| {
+        for module in runtime.borrow().iter() {
+            let ret = f(module.borrow_mut());
+            result = ret;
+            if result.is_none() {
+                continue;
+            }
 
-pub fn get_scripts<'a>() -> Scripts<'a> {
-    let scripts = unsafe { (&raw mut crate::runtime::Runtime).as_mut().unwrap() };
-    Scripts {
-        iter: scripts.iter(),
-    }
+            let mut break_iteration = false;
+            crate::runtime::__terminate_event_chain.with_borrow_mut(|terminate| {
+                if *terminate {
+                    *terminate = false;
+                    break_iteration = true;
+                }
+            });
+            if break_iteration {
+                break;
+            }
+        }
+    });
+
+    result
 }

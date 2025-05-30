@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 #[repr(C)]
 pub struct OnPlayerRequestClassArgs {
@@ -11,16 +11,11 @@ pub struct OnPlayerRequestClassArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
     args: *const EventArgs<OnPlayerRequestClassArgs>,
 ) -> bool {
-    let mut ret = false;
-    for mut script in get_scripts() {
-        ret = script.on_player_request_class(
+    each_module(|mut script| {
+        Some(script.on_player_request_class(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).classId,
-        );
-        if crate::runtime::__terminate_event_chain {
-            crate::runtime::__terminate_event_chain = false;
-            return ret;
-        }
-    }
-    ret
+        ))
+    })
+    .unwrap()
 }

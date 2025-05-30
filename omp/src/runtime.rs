@@ -4,9 +4,9 @@ pub use omp_gdk::{Runtime, __terminate_event_chain};
 macro_rules! register {
     ($name:expr) => {
         let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
-        unsafe {
-            omp::runtime::Runtime.push(Box::new(obj.clone()));
-        }
+        omp::runtime::Runtime.with(|runtime| {
+            runtime.borrow_mut().push(obj.clone());
+        });
         obj
     };
 }
@@ -14,9 +14,9 @@ macro_rules! register {
 #[macro_export]
 macro_rules! terminate_event {
     ($name:expr) => {
-        unsafe {
-            omp::runtime::__terminate_event_chain = true;
-        }
+        omp::runtime::__terminate_event_chain.with_borrow_mut(|terminate| {
+            *terminate = true;
+        });
         return $name
     };
 }

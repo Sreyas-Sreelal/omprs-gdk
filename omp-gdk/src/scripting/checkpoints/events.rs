@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 #[repr(C)]
 pub struct OnPlayerEnterCheckpointArgs {
@@ -10,9 +10,10 @@ pub struct OnPlayerEnterCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
     args: *const EventArgs<OnPlayerEnterCheckpointArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -24,9 +25,10 @@ pub struct OnPlayerLeaveCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
     args: *const EventArgs<OnPlayerLeaveCheckpointArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -38,9 +40,10 @@ pub struct OnPlayerEnterRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
     args: *const EventArgs<OnPlayerEnterRaceCheckpointArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -52,7 +55,8 @@ pub struct OnPlayerLeaveRaceCheckpointArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
     args: *const EventArgs<OnPlayerLeaveRaceCheckpointArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }

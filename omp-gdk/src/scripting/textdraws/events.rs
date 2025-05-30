@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::{PlayerTextDraw, TextDraw};
 
@@ -12,9 +12,10 @@ pub struct OnPlayerCancelTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelTextDrawSelectionArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -26,9 +27,10 @@ pub struct OnPlayerCancelPlayerTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelPlayerTextDrawSelectionArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -41,12 +43,13 @@ pub struct OnPlayerClickTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
     args: *const EventArgs<OnPlayerClickTextDrawArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
             TextDraw::new(*(*(*args).list).textdraw),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -59,7 +62,7 @@ pub struct OnPlayerClickPlayerTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
     args: *const EventArgs<OnPlayerClickPlayerTextDrawArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),
             PlayerTextDraw::new(
@@ -67,5 +70,6 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
                 Player::new(*(*(*args).list).player),
             ),
         );
-    }
+        None
+    });
 }

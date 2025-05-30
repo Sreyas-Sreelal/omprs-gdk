@@ -1,7 +1,7 @@
 #![allow(clippy::all)]
 use std::mem::transmute;
 
-use crate::{events::EventArgs, players::Player, runtime::get_scripts, types::vector::Vector3};
+use crate::{events::EventArgs, players::Player, runtime::each_module, types::vector::Vector3};
 
 use super::{Object, ObjectAttachmentSlotData, PlayerObject};
 
@@ -12,9 +12,10 @@ pub struct OnObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnObjectMove(args: *const EventArgs<OnObjectMoveArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_object_moved(Object::new(*(*(*args).list).object));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -25,7 +26,7 @@ pub struct OnPlayerObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlayerObjectMoveArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_object_moved(
             Player::new(*(*(*args).list).player),
             PlayerObject::new(
@@ -33,7 +34,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlaye
                 Player::new(*(*(*args).list).player),
             ),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -51,7 +53,7 @@ pub struct OnPlayerEditObjectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlayerEditObjectArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_edit_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
@@ -67,7 +69,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlaye
                 *(*(*args).list).rotationZ,
             ),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -105,7 +108,7 @@ pub struct OnPlayerEditAttachedObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
     args: *const EventArgs<OnPlayerEditAttachedObjectArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_edit_attached_object(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).index,
@@ -131,7 +134,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
                 ..Default::default()
             },
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -148,14 +152,15 @@ pub struct OnPlayerSelectObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectObject(
     args: *const EventArgs<OnPlayerSelectObjectArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_select_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
             *(*(*args).list).model,
             Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]

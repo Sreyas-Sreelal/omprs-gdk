@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, runtime::get_scripts, types::stringview::StringView};
+use crate::{events::EventArgs, runtime::each_module, types::stringview::StringView};
 
 #[repr(C)]
 pub struct OnTickArgs {
@@ -8,9 +8,10 @@ pub struct OnTickArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_tick(*(*(*args).list).elapsed);
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -21,18 +22,13 @@ pub struct OnConsoleTextArgs {
 
 // #[no_mangle]
 // pub unsafe extern "C" fn OMPRS_OnConsoleText(args: *const EventArgs<OnConsoleTextArgs>) -> bool {
-//     let mut ret = false;
-//     for mut script in get_scripts() {
-//         ret = script.borrow_mut().on_console_text(
+//     each_script(|mut script| {
+//         Some(script.on_console_text(
 //             (*(*(*args).list).command).get_data(),
 //             (*(*(*args).list).parameters).get_data(),
-//         );
-//         if crate::runtime::__terminate_event_chain {
-//             crate::runtime::__terminate_event_chain = false;
-//             return ret;
-//         }
-//     }
-//     ret
+//         ))
+//     })
+//     .unwrap()
 // }
 
 #[repr(C)]
@@ -46,17 +42,12 @@ pub struct OnRconLoginAttemptArgs {
 pub unsafe extern "C" fn OMPRS_OnRconLoginAttempt(
     args: *const EventArgs<OnRconLoginAttemptArgs>,
 ) -> bool {
-    let mut ret = false;
-    for mut script in get_scripts() {
-        ret = script.on_rcon_login_attempt(
+    each_module(|mut script| {
+        Some(script.on_rcon_login_attempt(
             (*(*(*args).list).address).get_data(),
             (*(*(*args).list).password).get_data(),
             *(*(*args).list).success,
-        );
-        if crate::runtime::__terminate_event_chain {
-            crate::runtime::__terminate_event_chain = false;
-            return ret;
-        }
-    }
-    ret
+        ))
+    })
+    .unwrap()
 }

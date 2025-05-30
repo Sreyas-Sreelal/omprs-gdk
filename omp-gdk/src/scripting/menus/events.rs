@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 #[repr(C)]
 pub struct OnPlayerSelectedMenuRowArgs {
@@ -11,12 +11,13 @@ pub struct OnPlayerSelectedMenuRowArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectedMenuRow(
     args: *const EventArgs<OnPlayerSelectedMenuRowArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_selected_menu_row(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).row,
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -26,7 +27,8 @@ pub struct OnPlayerExitedMenuArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerExitedMenu(args: *const EventArgs<OnPlayerExitedMenuArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_exited_menu(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }

@@ -1,5 +1,5 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::GangZone;
 
@@ -13,12 +13,13 @@ pub struct OnPlayerEnterGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEnterGangZone(
     args: *const EventArgs<OnPlayerEnterGangZoneArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_enter_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -31,12 +32,13 @@ pub struct OnPlayerLeaveGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerLeaveGangZone(
     args: *const EventArgs<OnPlayerLeaveGangZoneArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_leave_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -49,10 +51,11 @@ pub struct OnPlayerClickGangZoneArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickGangZone(
     args: *const EventArgs<OnPlayerClickGangZoneArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_click_gang_zone(
             Player::new(*(*(*args).list).player),
             GangZone::new(*(*(*args).list).zone),
         );
-    }
+        None
+    });
 }

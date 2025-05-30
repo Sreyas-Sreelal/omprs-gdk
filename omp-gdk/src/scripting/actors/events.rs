@@ -1,7 +1,7 @@
 #![allow(clippy::all)]
 use std::mem::transmute;
 
-use crate::{events::EventArgs, players::Player, runtime::get_scripts};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::Actor;
 
@@ -18,7 +18,7 @@ pub struct OnPlayerGiveDamageActorArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
     args: *const EventArgs<OnPlayerGiveDamageActorArgs>,
 ) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_player_give_damage_actor(
             Player::new(*(*(*args).list).player),
             Actor::new(*(*(*args).list).actor),
@@ -26,7 +26,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
             *(*(*args).list).weapon,
             transmute(*(*(*args).list).part),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -37,12 +38,13 @@ pub struct OnActorStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamIn(args: *const EventArgs<OnActorStreamInArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_actor_stream_in(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -53,10 +55,11 @@ pub struct OnActorStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamOut(args: *const EventArgs<OnActorStreamOutArgs>) {
-    for mut script in get_scripts() {
+    each_module(|mut script| {
         script.on_actor_stream_out(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );
-    }
+        None
+    });
 }
