@@ -1,4 +1,6 @@
 #![allow(clippy::all)]
+use std::collections::VecDeque;
+
 use crate::{events::EventArgs, runtime::each_module, types::stringview::StringView};
 
 #[repr(C)]
@@ -8,11 +10,12 @@ pub struct OnTickArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnTick(args: *const EventArgs<OnTickArgs>) {
-    crate::runtime::API_QUEUE.with_borrow_mut(|queue| {
-        while let Some(api_call) = queue.pop_front() {
-            api_call();
-        }
-    });
+    let api_calls: VecDeque<_> =
+        crate::runtime::API_QUEUE.with_borrow_mut(|queue| queue.drain(..).collect());
+    // drop mutable reference to api queue before calling api callbacks
+    for callback in api_calls {
+        callback();
+    }
 
     each_module(move |mut script| {
         script.on_tick(*(*(*args).list).elapsed);
