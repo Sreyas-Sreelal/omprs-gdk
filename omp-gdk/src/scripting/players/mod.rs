@@ -277,8 +277,10 @@ impl Player {
     }
 
     /// Forces a player to go back to class selection.
-    pub fn force_class_selection(&self) -> bool {
-        functions::Player_ForceClassSelection(self)
+    pub fn force_class_selection(&self) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_ForceClassSelection(&player);
+        }));
     }
 
     /// Gets the wanted level of a player.
@@ -374,13 +376,21 @@ impl Player {
     }
 
     /// Makes a player spectate (watch) another player.
-    pub fn spectate_player(&self, target: &Player, mode: PlayerSpectateMode) -> bool {
-        functions::Player_SpectatePlayer(self, target, mode as i32)
+    pub fn spectate_player(&self, target: &Player, mode: PlayerSpectateMode) {
+        let target_id = target.get_id();
+        self.defer_api_call(Box::new(move |player| {
+            let target = Player::from_id(target_id).unwrap();
+            functions::Player_SpectatePlayer(&player, &target, mode as i32);
+        }));
     }
 
     /// Sets a player to spectate another vehicle.
-    pub fn spectate_vehicle(&self, vehicle: &Vehicle, mode: PlayerSpectateMode) -> bool {
-        functions::Player_SpectateVehicle(self, vehicle, mode as i32)
+    pub fn spectate_vehicle(&self, vehicle: &Vehicle, mode: PlayerSpectateMode) {
+        let vehicle_id = vehicle.get_id();
+        self.defer_api_call(Box::new(move |player| {
+            let vehicle = Vehicle::get_from_id(vehicle_id).unwrap();
+            functions::Player_SpectateVehicle(&player, &vehicle, mode as i32);
+        }));
     }
 
     /// Set the virtual world of a player.
@@ -411,8 +421,10 @@ impl Player {
     }
 
     /// Clears all animations for the given player (it also cancels all current tasks such as jetpacking, parachuting, entering vehicles, driving (removes player out of vehicle), swimming, etc).
-    pub fn clear_animations(&self, sync_type: PlayerAnimationSyncType) -> bool {
-        functions::Player_ClearAnimations(self, sync_type as i32)
+    pub fn clear_animations(&self, sync_type: PlayerAnimationSyncType) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_ClearAnimations(&player, sync_type as i32);
+        }));
     }
 
     /// Retrieves the start and end (hit) position of the last bullet a player fired.
@@ -556,8 +568,10 @@ impl Player {
     }
 
     /// Toggle whether a player is in spectator mode or not.
-    pub fn toggle_spectating(&self, enable: bool) -> bool {
-        functions::Player_ToggleSpectating(self, enable)
+    pub fn toggle_spectating(&self, enable: bool) {
+        self.defer_api_call(Box::new(move |player| {
+            functions::Player_ToggleSpectating(&player, enable);
+        }));
     }
 
     /// Apply an animation to a player.
