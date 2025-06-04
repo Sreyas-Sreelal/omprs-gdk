@@ -115,7 +115,13 @@ impl Pickup {
     pub fn show_for_player(&self, player: &Player) {
         let player_id = player.get_id();
         self.defer_api_call(Box::new(move |pickup| {
-            let player = Player::from_id(player_id).unwrap();
+            let player = match Player::from_id(player_id) {
+                Some(player) => player,
+                None => {
+                    eprintln!("player with id={player_id} not found");
+                    return;
+                }
+            };
             functions::Pickup_ShowForPlayer(&player, &pickup);
         }));
     }
@@ -143,7 +149,13 @@ impl Pickup {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let pickup_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let pickup = Self::get_from_id(pickup_id).unwrap();
+            let pickup = match Self::get_from_id(pickup_id) {
+                Some(pickup) => pickup,
+                None => {
+                    eprintln!("pickup with id={pickup_id} not found");
+                    return;
+                }
+            };
             callback(pickup);
         }));
     }

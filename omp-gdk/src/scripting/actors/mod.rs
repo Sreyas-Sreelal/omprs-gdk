@@ -200,7 +200,13 @@ impl Actor {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let actor_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let actor = Self::from_id(actor_id).unwrap();
+            let actor = match Self::from_id(actor_id) {
+                Some(actor) => actor,
+                None => {
+                    eprintln!("actor with id={actor_id} not found");
+                    return;
+                }
+            };
             callback(actor);
         }));
     }

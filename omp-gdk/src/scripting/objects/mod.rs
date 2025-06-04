@@ -366,7 +366,13 @@ impl Object {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let object_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let object = Self::from_id(object_id).unwrap();
+            let object = match Self::from_id(object_id) {
+                Some(object) => object,
+                None => {
+                    eprintln!("object with id={object_id} not found");
+                    return;
+                }
+            };
             callback(object);
         }));
     }

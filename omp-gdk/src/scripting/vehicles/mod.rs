@@ -486,7 +486,13 @@ impl Vehicle {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let vehicle_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let vehicle = Self::get_from_id(vehicle_id).unwrap();
+            let vehicle = match Self::get_from_id(vehicle_id) {
+                Some(vehicle) => vehicle,
+                None => {
+                    eprintln!("vehicle with id={vehicle_id} not found");
+                    return;
+                }
+            };
             callback(vehicle);
         }));
     }

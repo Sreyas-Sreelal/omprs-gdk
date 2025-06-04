@@ -379,7 +379,13 @@ impl Player {
     pub fn spectate_player(&self, target: &Player, mode: PlayerSpectateMode) {
         let target_id = target.get_id();
         self.defer_api_call(Box::new(move |player| {
-            let target = Player::from_id(target_id).unwrap();
+            let target = match Player::from_id(target_id) {
+                Some(target) => target,
+                None => {
+                    eprintln!("target player with id={target_id} not found");
+                    return;
+                }
+            };
             functions::Player_SpectatePlayer(&player, &target, mode as i32);
         }));
     }
@@ -388,7 +394,13 @@ impl Player {
     pub fn spectate_vehicle(&self, vehicle: &Vehicle, mode: PlayerSpectateMode) {
         let vehicle_id = vehicle.get_id();
         self.defer_api_call(Box::new(move |player| {
-            let vehicle = Vehicle::get_from_id(vehicle_id).unwrap();
+            let vehicle = match Vehicle::get_from_id(vehicle_id) {
+                Some(vehicle) => vehicle,
+                None => {
+                    eprintln!("vehicle with id={vehicle_id} not found");
+                    return;
+                }
+            };
             functions::Player_SpectateVehicle(&player, &vehicle, mode as i32);
         }));
     }
@@ -466,7 +478,13 @@ impl Player {
     pub fn put_in_vehicle(&self, vehicle: &Vehicle, seat_id: i32) {
         let vehicle_id = vehicle.get_id();
         self.defer_api_call(Box::new(move |player| {
-            let vehicle = Vehicle::get_from_id(vehicle_id).unwrap();
+            let vehicle = match Vehicle::get_from_id(vehicle_id) {
+                Some(vehicle) => vehicle,
+                None => {
+                    eprintln!("vehicle with id={vehicle_id} not found");
+                    return;
+                }
+            };
             functions::Player_PutInVehicle(&player, &vehicle, seat_id);
         }));
     }
@@ -1411,7 +1429,13 @@ impl Player {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let player_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let player = Self::from_id(player_id).unwrap();
+            let player = match Self::from_id(player_id) {
+                Some(player) => player,
+                None => {
+                    eprintln!("player with id={player_id} not found");
+                    return;
+                }
+            };
             callback(player);
         }));
     }

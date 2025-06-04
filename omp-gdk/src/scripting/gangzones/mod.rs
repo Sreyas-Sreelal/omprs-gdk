@@ -58,7 +58,13 @@ impl GangZone {
     pub fn show_for_player(&self, player: &Player, colour: Colour) {
         let player_id = player.get_id();
         self.defer_api_call(Box::new(move |gangzone| {
-            let player = Player::from_id(player_id).unwrap();
+            let player = match Player::from_id(player_id) {
+                Some(player) => player,
+                None => {
+                    eprintln!("player with id={player_id} not found");
+                    return;
+                }
+            };
             functions::GangZone_ShowForPlayer(&player, &gangzone, colour.rgba());
         }));
     }
@@ -74,7 +80,13 @@ impl GangZone {
     pub fn hide_for_player(&self, player: &Player) {
         let player_id = player.get_id();
         self.defer_api_call(Box::new(move |gangzone| {
-            let player = Player::from_id(player_id).unwrap();
+            let player = match Player::from_id(player_id) {
+                Some(player) => player,
+                None => {
+                    eprintln!("player with id={player_id} not found");
+                    return;
+                }
+            };
             functions::GangZone_HideForPlayer(&player, &gangzone);
         }));
     }
@@ -168,7 +180,13 @@ impl GangZone {
     fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
         let gangzone_id = self.get_id();
         queue_api_call(Box::new(move || {
-            let gangzone = Self::from_id(gangzone_id).unwrap();
+            let gangzone = match Self::from_id(gangzone_id) {
+                Some(gangzone) => gangzone,
+                None => {
+                    eprintln!("gangzone with id={gangzone_id} not found");
+                    return;
+                }
+            };
             callback(gangzone);
         }));
     }
