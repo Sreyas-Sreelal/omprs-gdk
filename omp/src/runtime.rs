@@ -2,13 +2,13 @@ pub use omp_gdk::{Runtime, __terminate_event_chain};
 /// Registers the gamemode object and it's events
 #[macro_export]
 macro_rules! register {
-    ($name:expr) => {
+    ($name:expr) => {{
         let obj = std::rc::Rc::new(std::cell::RefCell::new($name));
         omp::runtime::Runtime.with(|runtime| {
             runtime.borrow_mut().push(obj.clone());
         });
         obj
-    };
+    }};
 }
 
 #[macro_export]
