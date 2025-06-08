@@ -8,9 +8,9 @@ repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"
 
 [dependencies]
-omp-codegen = {path="../omp-codegen",version="0.3.0"}
+omp-codegen = { path = "../omp-codegen", version = "0.3.0" }
 paste = "1.0"
-uuid = { version="1.9.1", features=["v4"]}
+uuid = { version = "1.9.1", features = ["v4"] }
 
 [target.'cfg(windows)'.dependencies]
 windows = { version = "0.52.0", features = [
