@@ -8,6 +8,7 @@ repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"
 
 [dependencies]
+log = "0.4"
 omp-codegen = { path = "../omp-codegen", version = "0.3.0" }
 paste = "1.0"
 uuid = { version = "1.9.1", features = ["v4"] }

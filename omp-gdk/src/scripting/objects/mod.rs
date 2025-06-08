@@ -369,7 +369,7 @@ impl Object {
             let object = match Self::from_id(object_id) {
                 Some(object) => object,
                 None => {
-                    eprintln!("object with id={object_id} not found");
+                    log::error!("object with id={object_id} not found");
                     return;
                 }
             };

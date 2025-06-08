@@ -489,7 +489,7 @@ impl Vehicle {
             let vehicle = match Self::get_from_id(vehicle_id) {
                 Some(vehicle) => vehicle,
                 None => {
-                    eprintln!("vehicle with id={vehicle_id} not found");
+                    log::error!("vehicle with id={vehicle_id} not found");
                     return;
                 }
             };

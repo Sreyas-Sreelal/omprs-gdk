@@ -382,7 +382,7 @@ impl Player {
             let target = match Player::from_id(target_id) {
                 Some(target) => target,
                 None => {
-                    eprintln!("target player with id={target_id} not found");
+                    log::error!("target player with id={target_id} not found");
                     return;
                 }
             };
@@ -397,7 +397,7 @@ impl Player {
             let vehicle = match Vehicle::get_from_id(vehicle_id) {
                 Some(vehicle) => vehicle,
                 None => {
-                    eprintln!("vehicle with id={vehicle_id} not found");
+                    log::error!("vehicle with id={vehicle_id} not found");
                     return;
                 }
             };
@@ -481,7 +481,7 @@ impl Player {
             let vehicle = match Vehicle::get_from_id(vehicle_id) {
                 Some(vehicle) => vehicle,
                 None => {
-                    eprintln!("vehicle with id={vehicle_id} not found");
+                    log::error!("vehicle with id={vehicle_id} not found");
                     return;
                 }
             };
@@ -1432,7 +1432,7 @@ impl Player {
             let player = match Self::from_id(player_id) {
                 Some(player) => player,
                 None => {
-                    eprintln!("player with id={player_id} not found");
+                    log::error!("player with id={player_id} not found");
                     return;
                 }
             };

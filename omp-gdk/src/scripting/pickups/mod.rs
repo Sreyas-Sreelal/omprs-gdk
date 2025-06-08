@@ -118,7 +118,7 @@ impl Pickup {
             let player = match Player::from_id(player_id) {
                 Some(player) => player,
                 None => {
-                    eprintln!("player with id={player_id} not found");
+                    log::error!("player with id={player_id} not found");
                     return;
                 }
             };
@@ -152,7 +152,7 @@ impl Pickup {
             let pickup = match Self::get_from_id(pickup_id) {
                 Some(pickup) => pickup,
                 None => {
-                    eprintln!("pickup with id={pickup_id} not found");
+                    log::error!("pickup with id={pickup_id} not found");
                     return;
                 }
             };

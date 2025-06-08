@@ -203,7 +203,7 @@ impl Actor {
             let actor = match Self::from_id(actor_id) {
                 Some(actor) => actor,
                 None => {
-                    eprintln!("actor with id={actor_id} not found");
+                    log::error!("actor with id={actor_id} not found");
                     return;
                 }
             };

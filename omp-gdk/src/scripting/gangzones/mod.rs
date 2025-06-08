@@ -61,7 +61,7 @@ impl GangZone {
             let player = match Player::from_id(player_id) {
                 Some(player) => player,
                 None => {
-                    eprintln!("player with id={player_id} not found");
+                    log::error!("player with id={player_id} not found");
                     return;
                 }
             };
@@ -83,7 +83,7 @@ impl GangZone {
             let player = match Player::from_id(player_id) {
                 Some(player) => player,
                 None => {
-                    eprintln!("player with id={player_id} not found");
+                    log::error!("player with id={player_id} not found");
                     return;
                 }
             };
@@ -183,7 +183,7 @@ impl GangZone {
             let gangzone = match Self::from_id(gangzone_id) {
                 Some(gangzone) => gangzone,
                 None => {
-                    eprintln!("gangzone with id={gangzone_id} not found");
+                    log::error!("gangzone with id={gangzone_id} not found");
                     return;
                 }
             };
