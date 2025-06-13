@@ -1,7 +1,7 @@
 #![allow(clippy::all)]
-use std::{mem::transmute, rc::Rc};
+use std::mem::transmute;
 
-use crate::{events::EventArgs, players::Player, types::vector::Vector3};
+use crate::{events::EventArgs, players::Player, runtime::each_module, types::vector::Vector3};
 
 use super::{Object, ObjectAttachmentSlotData, PlayerObject};
 
@@ -12,15 +12,10 @@ pub struct OnObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnObjectMove(args: *const EventArgs<OnObjectMoveArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_object_moved(Object::new(*(*(*args).list).object));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -31,13 +26,7 @@ pub struct OnPlayerObjectMoveArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlayerObjectMoveArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_object_moved(
             Player::new(*(*(*args).list).player),
             PlayerObject::new(
@@ -45,7 +34,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlaye
                 Player::new(*(*(*args).list).player),
             ),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -63,13 +53,7 @@ pub struct OnPlayerEditObjectArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlayerEditObjectArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_edit_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
@@ -85,7 +69,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlaye
                 *(*(*args).list).rotationZ,
             ),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -123,13 +108,7 @@ pub struct OnPlayerEditAttachedObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
     args: *const EventArgs<OnPlayerEditAttachedObjectArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_edit_attached_object(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).index,
@@ -155,7 +134,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
                 ..Default::default()
             },
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -172,20 +152,15 @@ pub struct OnPlayerSelectObjectArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectObject(
     args: *const EventArgs<OnPlayerSelectObjectArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_select_object(
             Player::new(*(*(*args).list).player),
             Object::new(*(*(*args).list).object),
             *(*(*args).list).model,
             Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]

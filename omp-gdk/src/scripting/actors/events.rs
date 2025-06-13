@@ -1,7 +1,7 @@
 #![allow(clippy::all)]
-use std::{mem::transmute, rc::Rc};
+use std::mem::transmute;
 
-use crate::{events::EventArgs, players::Player};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::Actor;
 
@@ -18,13 +18,7 @@ pub struct OnPlayerGiveDamageActorArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
     args: *const EventArgs<OnPlayerGiveDamageActorArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_give_damage_actor(
             Player::new(*(*(*args).list).player),
             Actor::new(*(*(*args).list).actor),
@@ -32,7 +26,8 @@ pub unsafe extern "C" fn OMPRS_OnPlayerGiveDamageActor(
             *(*(*args).list).weapon,
             transmute(*(*(*args).list).part),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -43,18 +38,13 @@ pub struct OnActorStreamInArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamIn(args: *const EventArgs<OnActorStreamInArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_actor_stream_in(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -65,16 +55,11 @@ pub struct OnActorStreamOutArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnActorStreamOut(args: *const EventArgs<OnActorStreamOutArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_actor_stream_out(
             Actor::new(*(*(*args).list).actor),
             Player::new(*(*(*args).list).forPlayer),
         );
-    }
+        None
+    });
 }

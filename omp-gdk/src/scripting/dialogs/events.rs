@@ -1,6 +1,8 @@
 #![allow(clippy::all)]
-use crate::{events::EventArgs, players::Player, types::stringview::StringView};
-use std::{mem::transmute, rc::Rc};
+use crate::{
+    events::EventArgs, players::Player, runtime::each_module, types::stringview::StringView,
+};
+use std::mem::transmute;
 
 #[repr(C)]
 pub struct OnDialogResponseArgs {
@@ -13,13 +15,7 @@ pub struct OnDialogResponseArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnDialogResponse(args: *const EventArgs<OnDialogResponseArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_dialog_response(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).dialogId,
@@ -27,5 +23,6 @@ pub unsafe extern "C" fn OMPRS_OnDialogResponse(args: *const EventArgs<OnDialogR
             *(*(*args).list).listItem,
             (*(*(*args).list).inputText).get_data(),
         );
-    }
+        None
+    });
 }

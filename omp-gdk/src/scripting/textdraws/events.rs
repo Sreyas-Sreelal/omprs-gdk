@@ -1,7 +1,5 @@
 #![allow(clippy::all)]
-use std::rc::Rc;
-
-use crate::{events::EventArgs, players::Player};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 use super::{PlayerTextDraw, TextDraw};
 
@@ -14,15 +12,10 @@ pub struct OnPlayerCancelTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelTextDrawSelectionArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_cancel_text_draw_selection(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -34,15 +27,10 @@ pub struct OnPlayerCancelPlayerTextDrawSelectionArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerCancelPlayerTextDrawSelection(
     args: *const EventArgs<OnPlayerCancelPlayerTextDrawSelectionArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_cancel_player_text_draw_selection(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -55,18 +43,13 @@ pub struct OnPlayerClickTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickTextDraw(
     args: *const EventArgs<OnPlayerClickTextDrawArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_click_text_draw(
             Player::new(*(*(*args).list).player),
             TextDraw::new(*(*(*args).list).textdraw),
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -79,13 +62,7 @@ pub struct OnPlayerClickPlayerTextDrawArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
     args: *const EventArgs<OnPlayerClickPlayerTextDrawArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_click_player_text_draw(
             Player::new(*(*(*args).list).player),
             PlayerTextDraw::new(
@@ -93,5 +70,6 @@ pub unsafe extern "C" fn OMPRS_OnPlayerClickPlayerTextDraw(
                 Player::new(*(*(*args).list).player),
             ),
         );
-    }
+        None
+    });
 }

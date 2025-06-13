@@ -3,7 +3,12 @@ pub mod functions;
 
 use std::ffi::c_void;
 
-use crate::{players::Player, types::colour::Colour, types::vector::Vector3, vehicles::Vehicle};
+use crate::{
+    players::Player,
+    runtime::queue_api_call,
+    types::{colour::Colour, vector::Vector3},
+    vehicles::Vehicle,
+};
 
 pub use functions::load_functions;
 
@@ -42,8 +47,10 @@ impl Object {
     }
 
     /// Destroys (removes) an object that was created using create method.
-    pub fn destroy(&self) -> bool {
-        functions::Object_Destroy(self)
+    pub fn destroy(&self) {
+        self.defer_api_call(Box::new(move |object| {
+            functions::Object_Destroy(&object);
+        }));
     }
 
     /// Attach an object to a vehicle.
@@ -117,16 +124,26 @@ impl Object {
 
     /// Move an object to a new position with a set speed. Players/vehicles will 'surf' the object as it moves.
     pub fn move_object(&self, data: ObjectMoveData) -> i32 {
-        functions::Object_Move(
-            self,
-            data.targetPos.x,
-            data.targetPos.y,
-            data.targetPos.z,
-            data.speed,
-            data.targetRot.x,
-            data.targetRot.y,
-            data.targetRot.z,
-        )
+        self.defer_api_call(Box::new(move |object| {
+            functions::Object_Move(
+                &object,
+                data.targetPos.x,
+                data.targetPos.y,
+                data.targetPos.z,
+                data.speed,
+                data.targetRot.x,
+                data.targetRot.y,
+                data.targetRot.z,
+            );
+        }));
+
+        if data.speed <= 0.0 {
+            return 0; // avoid division by zero or negative time
+        }
+
+        let distance = (data.targetPos - self.get_pos()).length();
+        let time_ms = (distance / data.speed) * 1000.0;
+        time_ms as i32
     }
 
     /// Stop an object from moving.
@@ -344,6 +361,20 @@ impl Object {
     /// Get Object from an id
     pub fn from_id(id: i32) -> Option<Object> {
         functions::Object_FromID(id)
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let object_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let object = match Self::from_id(object_id) {
+                Some(object) => object,
+                None => {
+                    log::error!("object with id={object_id} not found");
+                    return;
+                }
+            };
+            callback(object);
+        }));
     }
 }
 

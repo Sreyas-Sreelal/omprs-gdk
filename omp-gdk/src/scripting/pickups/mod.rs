@@ -5,7 +5,7 @@ pub mod functions;
 
 pub use functions::load_functions;
 
-use crate::{players::Player, types::vector::Vector3};
+use crate::{players::Player, runtime::queue_api_call, types::vector::Vector3};
 
 pub struct Pickup {
     handle: *const c_void,
@@ -90,8 +90,10 @@ impl Pickup {
     }
 
     /// Sets the position of a pickup.
-    pub fn set_pos(&self, pos: Vector3, update: bool) -> bool {
-        functions::Pickup_SetPos(self, pos.x, pos.y, pos.z, update)
+    pub fn set_pos(&self, pos: Vector3, update: bool) {
+        self.defer_api_call(Box::new(move |pickup| {
+            functions::Pickup_SetPos(&pickup, pos.x, pos.y, pos.z, update);
+        }));
     }
 
     /// Sets the model of a pickup.
@@ -110,8 +112,18 @@ impl Pickup {
     }
 
     /// Shows a pickup for a specific player.
-    pub fn show_for_player(&self, player: &Player) -> bool {
-        functions::Pickup_ShowForPlayer(player, self)
+    pub fn show_for_player(&self, player: &Player) {
+        let player_id = player.get_id();
+        self.defer_api_call(Box::new(move |pickup| {
+            let player = match Player::from_id(player_id) {
+                Some(player) => player,
+                None => {
+                    log::error!("player with id={player_id} not found");
+                    return;
+                }
+            };
+            functions::Pickup_ShowForPlayer(&player, &pickup);
+        }));
     }
 
     /// Hides a pickup for a specific player.
@@ -132,5 +144,19 @@ impl Pickup {
     /// Get a pickup object from an id
     pub fn get_from_id(pickupid: i32) -> Option<Pickup> {
         functions::Pickup_FromID(pickupid)
+    }
+
+    fn defer_api_call(&self, callback: Box<dyn FnOnce(Self)>) {
+        let pickup_id = self.get_id();
+        queue_api_call(Box::new(move || {
+            let pickup = match Self::get_from_id(pickup_id) {
+                Some(pickup) => pickup,
+                None => {
+                    log::error!("pickup with id={pickup_id} not found");
+                    return;
+                }
+            };
+            callback(pickup);
+        }));
     }
 }

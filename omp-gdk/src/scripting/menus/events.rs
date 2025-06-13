@@ -1,7 +1,5 @@
 #![allow(clippy::all)]
-use std::rc::Rc;
-
-use crate::{events::EventArgs, players::Player};
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
 #[repr(C)]
 pub struct OnPlayerSelectedMenuRowArgs {
@@ -13,18 +11,13 @@ pub struct OnPlayerSelectedMenuRowArgs {
 pub unsafe extern "C" fn OMPRS_OnPlayerSelectedMenuRow(
     args: *const EventArgs<OnPlayerSelectedMenuRowArgs>,
 ) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_selected_menu_row(
             Player::new(*(*(*args).list).player),
             *(*(*args).list).row,
         );
-    }
+        None
+    });
 }
 
 #[repr(C)]
@@ -34,13 +27,8 @@ pub struct OnPlayerExitedMenuArgs {
 
 #[no_mangle]
 pub unsafe extern "C" fn OMPRS_OnPlayerExitedMenu(args: *const EventArgs<OnPlayerExitedMenuArgs>) {
-    let scripts = (&raw mut crate::runtime::Runtime)
-        .as_mut()
-        .unwrap()
-        .as_mut()
-        .unwrap();
-    for script in scripts.iter() {
-        let script = &mut *(*Rc::as_ptr(script)).as_ptr();
+    each_module(move |mut script| {
         script.on_player_exited_menu(Player::new(*(*(*args).list).player));
-    }
+        None
+    });
 }
