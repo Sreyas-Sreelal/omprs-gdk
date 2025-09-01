@@ -292,14 +292,14 @@ impl Events for GrandLarc {
             .get_mut(&player.get_id())
             .unwrap()
             .has_city_selected = false;
-        if killer.is_none() {
-            player.reset_money();
-        } else {
+        if let Some(killer) = killer {
             let playercash = player.get_money();
             if playercash > 0 {
-                killer.unwrap().give_money(playercash);
+                killer.give_money(playercash);
                 player.reset_money();
             }
+        } else {
+            player.reset_money();
         }
     }
 
