@@ -76,9 +76,9 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         if is_mut {
             if param_type == "str" {
                 param_list.push(quote!(#param_name:&mut String,));
-                let addr_var_name = Ident::new(&format!("addr_{}", param_name), param_name.span());
-                let addr_len = Ident::new(&format!("{}_len", param_name), param_name.span());
-                let addr_buf = Ident::new(&format!("{}_buf", param_name), param_name.span());
+                let addr_var_name = Ident::new(&format!("addr_{param_name}"), param_name.span());
+                let addr_len = Ident::new(&format!("{param_name}_len"), param_name.span());
+                let addr_buf = Ident::new(&format!("{param_name}_buf"), param_name.span());
                 address_decl_stmts.push(
                     quote!(
                         let mut #addr_buf = vec![0 as std::ffi::c_char; #addr_len + 1];
@@ -100,7 +100,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name:*const c_void,))
         } else if param_type == "str" {
-            let string_ident = Ident::new(&format!("{}_cstring", param_name), param_name.span());
+            let string_ident = Ident::new(&format!("{param_name}_cstring"), param_name.span());
             string_conversion_stmts
                 .push(quote!(let #string_ident = std::ffi::CString::new(#param_name).unwrap();));
             orig_arg_list.push(quote!(#string_ident.as_ptr(),));
