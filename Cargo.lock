@@ -41,14 +41,14 @@ checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
 
 [[package]]
 name = "omp"
-version = "1.1.0"
+version = "2.0.0"
 dependencies = [
  "omp-gdk",
 ]
 
 [[package]]
 name = "omp-codegen"
-version = "0.3.0"
+version = "1.0.0"
 dependencies = [
  "quote",
  "syn",
@@ -56,7 +56,7 @@ dependencies = [
 
 [[package]]
 name = "omp-gdk"
-version = "1.1.0"
+version = "2.0.0"
 dependencies = [
  "log",
  "omp-codegen",

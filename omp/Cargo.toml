@@ -1,6 +1,6 @@
 [package]
 name = "omp"
-version = "1.1.0"
+version = "2.0.0"
 authors = ["Sreyas <sreyassreelal@gmail.com>"]
 description = "Rust SDK for developing open.mp gamemodes"
 license = "Apache-2.0"
@@ -8,4 +8,4 @@ repository = "https://github.com/sreyas-sreelal/omprs-gdk/"
 edition = "2021"
 
 [dependencies]
-omp-gdk = {path="../omp-gdk",version="1.1.0"}
+omp-gdk = {path="../omp-gdk",version="2.0.0"}

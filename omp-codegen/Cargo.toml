@@ -1,6 +1,6 @@
 [package]
 name = "omp-codegen"
-version = "0.3.0"
+version = "1.0.0"
 authors = ["Sreyas <sreyassreelal@gmail.com>"]
 description = "Codegen for omprs"
 license = "Apache-2.0"
