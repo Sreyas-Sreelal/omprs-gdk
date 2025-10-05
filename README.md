@@ -7,29 +7,28 @@
 [<img alt="kofi" src="https://img.shields.io/badge/kofi-sreyas-blue?style=for-the-badge&logo=kofi" height="20">](https://ko-fi.com/sreyas)
 
 
-omprs is a tool to develop open.mp gamemodes in Rust.
+omprs is a tool to develop open.mp gamemodes and components in Rust.
 
 ## Structure
 |**Crate**|**Description**|
 |-----|----------------------------------------------------------------------|
 |`omp-codegen`| Generates exported functions and FFI related code automatically|
 |`omp-sdk`| GDK crate, that does the core functionality like loading function address, executing, providing necessary types etc|
-|`omp`| The main crate the is supposed to be used by the players, neatly exposing all of the functionalities and APIs.
+|`omp`| The main crate the is supposed to be used by the component or server developers, neatly exposing all of the functionalities and APIs.
 
 
 ## Writing my first gamemode in Rust
-1. Download the omprs component from [here](https://github.com/Sreyas-Sreelal/omprs/releases)
-2. Place the `Rust.dll` or `Rust.so` component in `components` folder
-3. Create a new rust project
+1. Download and install latest open.mp C-API component from [here](https://github.com/openmultiplayer/omp-capi/releases)
+2. Create a new rust project
    `cargo new mygm --lib`
-4. Add `omp` to dependecies
+3. Add `omp` to dependecies
     `cargo add omp`
-5. Add this to your `Cargo.toml`
+4. Add this to your `Cargo.toml`
     ```toml
     [lib]
     crate-type = ["cdylib"]
     ```
-6. Write a basic code like this
+5. Write a basic code like this
     ```Rust
     use omp::{events::Events, main, register, types::colour::Colour};
 
@@ -46,17 +45,12 @@ omprs is a tool to develop open.mp gamemodes in Rust.
         register!(MyGM);
     }
     ```
-7. Build the gamemode
+6. Build your gamemode or component
 
    `cargo +stable-i686 build`
-8. Put the compile `mygm.dll` or `mygm.so` to `gamemodes` folder
-9. Goto `config.json` add following to it
-    ```json
-    "rust":{
-        "gamemode":"mygm"
-    }
-    ```
-10. Run your server
+7. Put the compile `mygm.dll` or `mygm.so` to `components` folder
+
+8. Run your server
 
 
 
