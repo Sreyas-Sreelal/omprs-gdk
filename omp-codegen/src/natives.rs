@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::{
     parse::{Parse, ParseStream},
     parse_macro_input, token, Ident, Token, Type,
@@ -66,6 +66,7 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     let mut mutate_stmts = Vec::new();
     let mut orig_arg_list = Vec::new();
     let mut orig_param_list = Vec::new();
+    let mut string_conversion_stmts = Vec::new();
 
     for (param_name, param_type, is_mut, is_struct) in native.params {
         if param_name.to_string().contains("_len") {
@@ -75,9 +76,14 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         if is_mut {
             if param_type == "str" {
                 param_list.push(quote!(#param_name:&mut String,));
-                let addr_var_name = Ident::new(&format!("addr_{}", param_name), param_name.span());
+                let addr_var_name = Ident::new(&format!("addr_{param_name}"), param_name.span());
+                let addr_len = Ident::new(&format!("{param_name}_len"), param_name.span());
+                let addr_buf = Ident::new(&format!("{param_name}_buf"), param_name.span());
                 address_decl_stmts.push(
-                    quote!(let mut #addr_var_name = crate::types::stringview::StringView::new();),
+                    quote!(
+                        let mut #addr_buf = vec![0 as std::ffi::c_char; #addr_len + 1];
+                        let mut #addr_var_name = crate::types::stringview::StringView::new(#addr_buf.as_mut_ptr(), #addr_len + 1);
+                    ),
                 );
                 orig_arg_list.push(quote!(&mut #addr_var_name,));
                 mutate_stmts.push(quote!(
@@ -94,9 +100,12 @@ pub fn create_native(input: TokenStream) -> TokenStream {
             param_list.push(quote!(#param_name: &#param_type,));
             orig_param_list.push(quote!(#param_name:*const c_void,))
         } else if param_type == "str" {
-            orig_arg_list.push(quote!(crate::types::stringview::StringView::from(#param_name),));
+            let string_ident = Ident::new(&format!("{param_name}_cstring"), param_name.span());
+            string_conversion_stmts
+                .push(quote!(let #string_ident = std::ffi::CString::new(#param_name).unwrap();));
+            orig_arg_list.push(quote!(#string_ident.as_ptr(),));
             param_list.push(quote!(#param_name: &#param_type,));
-            orig_param_list.push(quote!(#param_name: crate::types::stringview::StringView,))
+            orig_param_list.push(quote!(#param_name: *const std::ffi::c_char,))
         } else {
             orig_arg_list.push(quote!(#param_name,));
             param_list.push(quote!(#param_name: #param_type,));
@@ -131,6 +140,11 @@ pub fn create_native(input: TokenStream) -> TokenStream {
         ));
     }
 
+    if !string_conversion_stmts.is_empty() {
+        body.push(quote!(
+            #(#string_conversion_stmts)*
+        ))
+    }
     body.push(quote!(
         let ret_val = unsafe { #orig_name.unwrap()(#(#orig_arg_list)*)};
     ));
@@ -142,11 +156,19 @@ pub fn create_native(input: TokenStream) -> TokenStream {
     }
     if let Some((ref return_type, is_struct)) = return_type {
         if is_struct {
+            let return_stmt = if return_type.to_token_stream().to_string() == "PlayerObject"
+                || return_type.to_token_stream().to_string() == "PlayerTextDraw"
+                || return_type.to_token_stream().to_string() == "PlayerTextLabel"
+            {
+                quote!(Some(#return_type::new(ret_val,*player)))
+            } else {
+                quote!(Some(#return_type::new(ret_val)))
+            };
             body.push(quote!(
                 if ret_val.is_null() {
                     None
                 } else {
-                    Some(#return_type::new(ret_val))
+                    #return_stmt
                 }
             ))
         } else {

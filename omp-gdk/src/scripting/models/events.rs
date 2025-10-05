@@ -1,8 +1,40 @@
-use omp_codegen::callback;
+#![allow(clippy::all)]
+use crate::{events::EventArgs, players::Player, runtime::each_module};
+use std::mem::transmute;
 
-use crate::players::Player;
+#[repr(C)]
+pub struct OnPlayerFinishedDownloadingArgs {
+    player: *const *const std::ffi::c_void,
+    vw: *const i32,
+}
 
-use super::ModelDownloadType;
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerFinishedDownloading(
+    args: *const EventArgs<OnPlayerFinishedDownloadingArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_finished_downloading(Player::new(*(*(*args).list).player));
+        None
+    });
+}
 
-callback!(OnPlayerFinishedDownloading, player:Player);
-callback!(OnPlayerRequestDownload, player:Player, model_type:ModelDownloadType, checksum:u32, ->bool);
+#[repr(C)]
+pub struct OnPlayerRequestDownloadArgs {
+    player: *const *const std::ffi::c_void,
+    model_type: *const i32,
+    checksum: *const i32,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerRequestDownload(
+    args: *const EventArgs<OnPlayerRequestDownloadArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_request_download(
+            Player::new(*(*(*args).list).player),
+            transmute(*(*(*args).list).model_type),
+            *(*(*args).list).checksum,
+        );
+        None
+    });
+}

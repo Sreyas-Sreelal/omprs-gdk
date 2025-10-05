@@ -1,5 +1,21 @@
-use omp_codegen::callback;
+#![allow(clippy::all)]
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
-use crate::players::Player;
+#[repr(C)]
+pub struct OnPlayerRequestClassArgs {
+    player: *const *const std::ffi::c_void,
+    classId: *const i32,
+}
 
-callback!(onPlayerRequestClass, player: Player,classId: usize, -> bool);
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerRequestClass(
+    args: *const EventArgs<OnPlayerRequestClassArgs>,
+) -> bool {
+    each_module(move |mut script| {
+        Some(script.on_player_request_class(
+            Player::new(*(*(*args).list).player),
+            *(*(*args).list).classId,
+        ))
+    })
+    .unwrap()
+}

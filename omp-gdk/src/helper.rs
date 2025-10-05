@@ -16,8 +16,8 @@ extern "C" {
 macro_rules! load_function {
     ($name: expr) => {
         paste::paste! {
-            let prefixed =  format!("OMPRS_{}",stringify!($name));
-            let address = crate::helper::get_module_symbol_address("Rust", &prefixed)
+            let prefixed =  stringify!($name);
+            let address = crate::helper::get_module_symbol_address("$CAPI", &prefixed)
                 .expect(&format!("could not find '{prefixed}' address"));
             unsafe {
                 [<OMPRS_ $name>] = Some(std::mem::transmute(address));
@@ -48,4 +48,22 @@ pub fn get_module_symbol_address(_module: &str, symbol: &str) -> Option<usize> {
     let symbol = CString::new(symbol).unwrap();
 
     unsafe { Some(dlsym(std::ptr::null_mut(), symbol.as_ptr()) as usize) }
+}
+
+macro_rules! add_handler {
+    ($name:expr) => {
+        paste::paste! {
+            let cstring = std::ffi::CString::new(stringify!($name)).unwrap();
+
+            OMPRS_Event_AddHandler.unwrap()(
+                cstring.as_ptr(),
+                0,
+                [<OMPRS_ $name:camel>] as *const std::ffi::c_void,
+            );
+        }
+    };
+}
+
+pub fn gen_uid() -> u64 {
+    uuid::Uuid::new_v4().as_u64_pair().0
 }

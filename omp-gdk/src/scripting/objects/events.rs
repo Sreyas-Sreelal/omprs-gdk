@@ -1,13 +1,174 @@
-use omp_codegen::callback;
+#![allow(clippy::all)]
+use std::mem::transmute;
 
-use crate::{players::Player, types::vector::Vector3};
+use crate::{events::EventArgs, players::Player, runtime::each_module, types::vector::Vector3};
 
-use super::{Object, ObjectAttachmentSlotData, ObjectEditResponse, PlayerObject};
+use super::{Object, ObjectAttachmentSlotData, PlayerObject};
 
-callback!(onObjectMoved, object: Object);
-callback!(onPlayerObjectMoved,player:Player,object:PlayerObject);
-callback!(onPlayerEditObject, player:Player,object:Object, response: ObjectEditResponse, offset: Vector3, rotation: Vector3);
-callback!(onPlayerObjectEdited, player:Player,object:PlayerObject,response: ObjectEditResponse, offset: Vector3, rotation: Vector3);
-callback!(onPlayerEditAttachedObject, player: Player, index:isize, saved: bool, data: ObjectAttachmentSlotData);
-callback!(onPlayerSelectObject, player:Player,object:Object, model:isize, position: Vector3);
-callback!(onPlayerObjectSelected, player:Player,object:PlayerObject,  model:isize, position: Vector3);
+#[repr(C)]
+pub struct OnObjectMoveArgs {
+    object: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnObjectMove(args: *const EventArgs<OnObjectMoveArgs>) {
+    each_module(move |mut script| {
+        script.on_object_moved(Object::new(*(*(*args).list).object));
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerObjectMoveArgs {
+    player: *const *const std::ffi::c_void,
+    object: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerObjectMove(args: *const EventArgs<OnPlayerObjectMoveArgs>) {
+    each_module(move |mut script| {
+        script.on_player_object_moved(
+            Player::new(*(*(*args).list).player),
+            PlayerObject::new(
+                *(*(*args).list).object,
+                Player::new(*(*(*args).list).player),
+            ),
+        );
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerEditObjectArgs {
+    player: *const *const std::ffi::c_void,
+    object: *const *const std::ffi::c_void,
+    response: *const i32,
+    offsetX: *const f32,
+    offsetY: *const f32,
+    offsetZ: *const f32,
+    rotationX: *const f32,
+    rotationY: *const f32,
+    rotationZ: *const f32,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerEditObject(args: *const EventArgs<OnPlayerEditObjectArgs>) {
+    each_module(move |mut script| {
+        script.on_player_edit_object(
+            Player::new(*(*(*args).list).player),
+            Object::new(*(*(*args).list).object),
+            transmute(*(*(*args).list).response),
+            Vector3::new(
+                *(*(*args).list).offsetX,
+                *(*(*args).list).offsetY,
+                *(*(*args).list).offsetZ,
+            ),
+            Vector3::new(
+                *(*(*args).list).rotationX,
+                *(*(*args).list).rotationY,
+                *(*(*args).list).rotationZ,
+            ),
+        );
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerEditPlayerObjectArgs {
+    player: *const *const std::ffi::c_void,
+    object: *const *const std::ffi::c_void,
+    response: *const i32,
+    offsetX: *const f32,
+    offsetY: *const f32,
+    offsetZ: *const f32,
+    rotationX: *const f32,
+    rotationY: *const f32,
+    rotationZ: *const f32,
+}
+
+#[repr(C)]
+pub struct OnPlayerEditAttachedObjectArgs {
+    player: *const *const std::ffi::c_void,
+    saved: *const bool,
+    index: *const i32,
+    model: *const i32,
+    bone: *const i32,
+    offsetX: *const f32,
+    offsetY: *const f32,
+    offsetZ: *const f32,
+    rotationX: *const f32,
+    rotationY: *const f32,
+    rotationZ: *const f32,
+    scaleX: *const f32,
+    scaleY: *const f32,
+    scaleZ: *const f32,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerEditAttachedObject(
+    args: *const EventArgs<OnPlayerEditAttachedObjectArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_edit_attached_object(
+            Player::new(*(*(*args).list).player),
+            *(*(*args).list).index,
+            *(*(*args).list).saved,
+            ObjectAttachmentSlotData {
+                model: *(*(*args).list).model,
+                bone: *(*(*args).list).bone,
+                offset: Vector3::new(
+                    *(*(*args).list).offsetX,
+                    *(*(*args).list).offsetY,
+                    *(*(*args).list).offsetZ,
+                ),
+                rotation: Vector3::new(
+                    *(*(*args).list).rotationX,
+                    *(*(*args).list).rotationY,
+                    *(*(*args).list).rotationZ,
+                ),
+                scale: Vector3::new(
+                    *(*(*args).list).scaleX,
+                    *(*(*args).list).scaleY,
+                    *(*(*args).list).scaleZ,
+                ),
+                ..Default::default()
+            },
+        );
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerSelectObjectArgs {
+    player: *const *const std::ffi::c_void,
+    object: *const *const std::ffi::c_void,
+    model: *const i32,
+    x: *const f32,
+    y: *const f32,
+    z: *const f32,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerSelectObject(
+    args: *const EventArgs<OnPlayerSelectObjectArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_select_object(
+            Player::new(*(*(*args).list).player),
+            Object::new(*(*(*args).list).object),
+            *(*(*args).list).model,
+            Vector3::new(*(*(*args).list).x, *(*(*args).list).y, *(*(*args).list).z),
+        );
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerSelectPlayerObjectArgs {
+    player: *const *const std::ffi::c_void,
+    object: *const *const std::ffi::c_void,
+    model: *const i32,
+    x: *const f32,
+    y: *const f32,
+    z: *const f32,
+}

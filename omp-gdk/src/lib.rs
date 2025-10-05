@@ -3,6 +3,7 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 #![allow(clippy::too_many_arguments)]
+#![allow(clippy::missing_transmute_annotations)]
 
 #[macro_use]
 mod helper;
@@ -12,6 +13,9 @@ mod events;
 mod scripting;
 
 mod runtime;
+
+use std::ffi::c_char;
+use std::os::raw::c_void;
 
 pub use events::Events;
 pub use omp_codegen::main;
@@ -31,8 +35,11 @@ pub use scripting::textdraws;
 pub use scripting::textlabels;
 pub use scripting::vehicles;
 
+pub use helper::gen_uid;
+
 #[doc(hidden)]
 pub fn init_functions() {
+    load_function!(Component_Create);
     core::load_functions();
     models::load_functions();
     players::load_functions();
@@ -47,4 +54,35 @@ pub fn init_functions() {
     textdraws::load_functions();
     textlabels::load_functions();
     vehicles::load_functions();
+    events::load_event_functions();
 }
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub struct ComponentVersion {
+    pub major: u8,   //< MAJOR version when you make incompatible API changes
+    pub minor: u8,   //< MINOR version when you add functionality in a backwards compatible manner
+    pub patch: u8,   //< PATCH version when you make backwards compatible bug fixes
+    pub prerel: u16, //< PRE-RELEASE version
+}
+
+impl ComponentVersion {
+    pub fn new(major: u8, minor: u8, patch: u8, prerel: u16) -> Self {
+        ComponentVersion {
+            major,
+            minor,
+            patch,
+            prerel,
+        }
+    }
+}
+pub static mut OMPRS_Component_Create: Option<
+    unsafe extern "C" fn(
+        uid: u64,
+        name: *const c_char,
+        version: ComponentVersion,
+        onReadyCB: *const c_void,
+        onResetCB: *const c_void,
+        onFreeCB: *const c_void,
+    ) -> *const c_void,
+> = None;

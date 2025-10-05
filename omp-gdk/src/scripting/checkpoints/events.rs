@@ -1,7 +1,62 @@
-use crate::players::Player;
-use omp_codegen::callback;
+#![allow(clippy::all)]
+use crate::{events::EventArgs, players::Player, runtime::each_module};
 
-callback!(onPlayerEnterCheckpoint, player:Player);
-callback!(onPlayerLeaveCheckpoint, player:Player);
-callback!(onPlayerEnterRaceCheckpoint, player:Player);
-callback!(onPlayerLeaveRaceCheckpoint, player:Player);
+#[repr(C)]
+pub struct OnPlayerEnterCheckpointArgs {
+    player: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerEnterCheckpoint(
+    args: *const EventArgs<OnPlayerEnterCheckpointArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_enter_checkpoint(Player::new(*(*(*args).list).player));
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerLeaveCheckpointArgs {
+    player: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerLeaveCheckpoint(
+    args: *const EventArgs<OnPlayerLeaveCheckpointArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_leave_checkpoint(Player::new(*(*(*args).list).player));
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerEnterRaceCheckpointArgs {
+    player: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerEnterRaceCheckpoint(
+    args: *const EventArgs<OnPlayerEnterRaceCheckpointArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_enter_race_checkpoint(Player::new(*(*(*args).list).player));
+        None
+    });
+}
+
+#[repr(C)]
+pub struct OnPlayerLeaveRaceCheckpointArgs {
+    player: *const *const std::ffi::c_void,
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn OMPRS_OnPlayerLeaveRaceCheckpoint(
+    args: *const EventArgs<OnPlayerLeaveRaceCheckpointArgs>,
+) {
+    each_module(move |mut script| {
+        script.on_player_leave_race_checkpoint(Player::new(*(*(*args).list).player));
+        None
+    });
+}
